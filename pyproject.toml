@@ -1,0 +1,17 @@
+[project]
+name = "exkhatabot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.141.1",
+    "langchain-openai>=1.6.6",
+    "langgraph>=1.2.12",
+    "load-dotenv>=0.1.0",
+    "openai>=3.19.2",
+    "psycopg[binary,pool]>=3.3.6",
+    "pydantic>=2.13.5",
+    "requests>=2.34.2",
+    "supabase>=2.31.0",
+]
