@@ -4,6 +4,8 @@ import re
 from collections.abc import Callable
 from typing import TypeVar
 
+from app.services.amounts import parse_amount_answer
+
 T = TypeVar("T")
 
 # Urdu/Arabic-Indic digits -> ASCII
@@ -33,6 +35,8 @@ def is_trivial_answer(text: str, expects: str) -> bool:
         return parse_number(text) is not None
     if expects == "yes_no":
         return parse_yes_no(text) is not None
+    if expects == "amount":
+        return parse_amount_answer(text) is not None
     return False
 
 

@@ -22,7 +22,9 @@ from langgraph.graph import END, START, StateGraph
 from pydantic import ValidationError
 
 import app.handlers.foundation  # noqa: F401  registers foundation intents
+import app.handlers.party  # noqa: F401  registers party khata intents
 from app.ai.classifier import AIError, classify
+from app.core.dates import today
 from app.core.database import transaction
 from app.db import crud
 from app.handlers.foundation import ask_choose_business, help_
@@ -67,18 +69,30 @@ def check_rules(state: AgentState) -> AgentState:
 def classify_message(state: AgentState) -> AgentState:
     """One LLM call: intent + fields + language."""
     ctx, pending = state["ctx"], state.get("pending")
-    try:
-        result = classify(
+
+    def call_ai(pending_question: str | None):
+        return classify(
             ctx.text,
             intents=INTENTS,
             history=state.get("history", []),
-            pending_question=ctx.conversation["pending_question"] if pending else None,
+            pending_question=pending_question,
             memories=_memory_texts(ctx),
+            today=today(ctx.business["timezone"] if ctx.business else None),
         )
+
+    try:
+        result = call_ai(ctx.conversation["pending_question"] if pending else None)
+        # Money guard: an amount question is answered only by a plain amount ("500", "Rs 500"),
+        # which check_rules already handles. Anything else (e.g. "Bilal ko 300 diye") is a new
+        # request, so it is classified again without the question.
+        if pending and pending.expects == "amount" and result.answers_pending:
+            result = call_ai(None)
     except AIError:
         return {"outcome": Outcome("unknown", t("not_understood", ctx.language))}
 
-    if not state.get("preference"):
+    # The AI's language guess is used unless a language is saved, or the message is one
+    # word ("undo", "ok"), which is too short to tell
+    if not state.get("preference") and len(ctx.text.split()) > 1:
         ctx = replace(ctx, language=result.language)
 
     if pending and result.answers_pending:
@@ -108,6 +122,8 @@ def run_intent(state: AgentState) -> AgentState:
         return {"outcome": INTENTS["unknown"].handler(ctx, None)}
     if spec.needs_business and ctx.business is None:
         return {"outcome": Outcome(spec.name, t("no_business", ctx.language))}
+    if spec.owner_only and (ctx.business is None or ctx.business["role"] != "owner"):
+        return {"outcome": Outcome(spec.name, t("owner_only", ctx.language))}
     return {"outcome": spec.handler(ctx, fields)}
 
 

@@ -18,25 +18,25 @@ TEXTS: dict[str, dict[str, str]] = {
     },
     "help": {
         "en": (
-            "Right now I can:\n"
-            "• switch shop — \"switch shop\"\n"
-            "• change language — \"talk in English\"\n"
-            "• remember notes — \"remember Ali is Rohaan's brother\"\n\n"
-            "Khata entries are coming soon."
+            "Send me messages like:\n"
+            "• \"Gave 500 to Ali\" / \"Got 300 from Ali\"\n"
+            "• \"Ali's balance\" / \"all balances\"\n"
+            "• \"add supplier Rohaan\" / \"undo\"\n"
+            "• \"switch shop\" / \"talk in English\" / \"remember …\""
         ),
         "roman_ur": (
-            "Abhi main yeh kar sakta hoon:\n"
-            "• dukaan badalna — \"dukaan badlo\"\n"
-            "• zubaan badalna — \"English mein baat karo\"\n"
-            "• baatein yaad rakhna — \"yaad rakhna Ali Rohaan ka bhai hai\"\n\n"
-            "Khata entries jald aa rahi hain."
+            "Mujhe aise likhein:\n"
+            "• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n"
+            "• \"Ali ka hisaab\" / \"sab ka hisaab\"\n"
+            "• \"Rohaan supplier add karo\" / \"undo\"\n"
+            "• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\""
         ),
         "ur": (
-            "ابھی میں یہ کر سکتا ہوں:\n"
-            "• دکان بدلنا — \"دکان بدلو\"\n"
-            "• زبان بدلنا — \"انگریزی میں بات کرو\"\n"
-            "• باتیں یاد رکھنا — \"یاد رکھنا علی روحان کا بھائی ہے\"\n\n"
-            "کھاتہ اندراجات جلد آ رہے ہیں۔"
+            "مجھے ایسے لکھیں:\n"
+            "• \"علی کو 500 دیے\" / \"علی سے 300 ملے\"\n"
+            "• \"علی کا حساب\" / \"سب کا حساب\"\n"
+            "• \"روحان سپلائر شامل کرو\" / \"undo\"\n"
+            "• \"دکان بدلو\" / \"انگریزی میں بات کرو\" / \"یاد رکھنا …\""
         ),
     },
     "current_business": {
@@ -129,6 +129,146 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
         "ur": "معاف کیجیے، سمجھ نہیں آیا۔ /help بھیج کر دیکھیں میں کیا کر سکتا ہوں۔",
     },
+    # ---- Party khata -------------------------------------------------------
+    "owner_only": {
+        "en": "Only the shop owner can do this. You can check balances.",
+        "roman_ur": "Yeh sirf dukaan ka maalik kar sakta hai. Aap hisaab dekh sakte hain.",
+        "ur": "یہ صرف دکان کا مالک کر سکتا ہے۔ آپ حساب دیکھ سکتے ہیں۔",
+    },
+    "entry_gave": {
+        "en": "✅ Gave {amount} to {name} ({date})",
+        "roman_ur": "✅ {name} ko {amount} diye ({date})",
+        "ur": "✅ {name} کو {amount} دیے ({date})",
+    },
+    "entry_got": {
+        "en": "✅ Got {amount} from {name} ({date})",
+        "roman_ur": "✅ {name} se {amount} liye ({date})",
+        "ur": "✅ {name} سے {amount} لیے ({date})",
+    },
+    "balance_get": {
+        "en": "You will get {amount} from {name}",
+        "roman_ur": "{name} se lene hain: {amount}",
+        "ur": "{name} سے لینے ہیں: {amount}",
+    },
+    "balance_give": {
+        "en": "You will give {amount} to {name}",
+        "roman_ur": "{name} ko dene hain: {amount}",
+        "ur": "{name} کو دینے ہیں: {amount}",
+    },
+    "balance_settled": {
+        "en": "{name}'s account is settled",
+        "roman_ur": "{name} ka hisaab barabar hai",
+        "ur": "{name} کا حساب برابر ہے",
+    },
+    "ask_party": {
+        "en": "Whose entry is this? Send the name.",
+        "roman_ur": "Kis ka hisaab hai? Naam likhein.",
+        "ur": "کس کا حساب ہے؟ نام لکھیں۔",
+    },
+    "ask_amount": {
+        "en": "{name}: how much?",
+        "roman_ur": "{name}: kitne paise?",
+        "ur": "{name}: کتنے پیسے؟",
+    },
+    "ask_direction": {
+        "en": "{amount}:\n1) You gave to {name}\n2) You got from {name}",
+        "roman_ur": "{amount}:\n1) {name} ko diye\n2) {name} se liye",
+        "ur": "{amount}:\n1) {name} کو دیے\n2) {name} سے لیے",
+    },
+    "ask_opening_direction": {
+        "en": "Old balance {amount}:\n1) You will get from {name}\n2) You will give to {name}",
+        "roman_ur": "Pehle ka {amount}:\n1) {name} se lene hain\n2) {name} ko dene hain",
+        "ur": "پہلے کا {amount}:\n1) {name} سے لینے ہیں\n2) {name} کو دینے ہیں",
+    },
+    "ask_party_type": {
+        "en": "{name} is new.\n1) Customer\n2) Supplier",
+        "roman_ur": "{name} naya hai.\n1) Customer\n2) Supplier",
+        "ur": "{name} نیا ہے۔\n1) گاہک\n2) سپلائر",
+    },
+    "choose_party": {
+        "en": "Which {name}?\n{options}",
+        "roman_ur": "Kaun sa {name}?\n{options}",
+        "ur": "کون سا {name}؟\n{options}",
+    },
+    "new_party_option": {"en": "New party", "roman_ur": "Naya party", "ur": "نئی پارٹی"},
+    "type_customer": {"en": "customer", "roman_ur": "customer", "ur": "گاہک"},
+    "type_supplier": {"en": "supplier", "roman_ur": "supplier", "ur": "سپلائر"},
+    "party_added": {
+        "en": "✅ {name} added as {type}",
+        "roman_ur": "✅ {name} {type} add ho gaya",
+        "ur": "✅ {name} بطور {type} شامل ہو گیا",
+    },
+    "party_exists": {
+        "en": "{name} is already a {type}. Use a fuller name (e.g. {name} Khan).",
+        "roman_ur": "{name} pehle se {type} hai. Poora naam likhein (jaise {name} Khan).",
+        "ur": "{name} پہلے سے {type} ہے۔ پورا نام لکھیں (جیسے {name} خان)۔",
+    },
+    "party_not_found": {
+        "en": "No party named {name}.",
+        "roman_ur": "{name} naam ki koi party nahi mili.",
+        "ur": "{name} نام کی کوئی پارٹی نہیں ملی۔",
+    },
+    "phone_saved": {
+        "en": "✅ Saved {name}'s number",
+        "roman_ur": "✅ {name} ka number save ho gaya",
+        "ur": "✅ {name} کا نمبر محفوظ ہو گیا",
+    },
+    "invalid_phone": {
+        "en": "That number doesn't look right. Write it like 03001234567.",
+        "roman_ur": "Number theek nahi. Aise likhein: 03001234567",
+        "ur": "نمبر درست نہیں۔ ایسے لکھیں: 03001234567",
+    },
+    "future_date": {
+        "en": "Entries can't be added for a future date.",
+        "roman_ur": "Aage ki tareekh ki entry nahi ho sakti.",
+        "ur": "آنے والی تاریخ کی انٹری نہیں ہو سکتی۔",
+    },
+    "verb_gave": {"en": "gave", "roman_ur": "diye", "ur": "دیے"},
+    "verb_got": {"en": "got", "roman_ur": "liye", "ur": "لیے"},
+    "verb_opening": {"en": "old bal.", "roman_ur": "pehle ka", "ur": "پہلے کا"},
+    "short_get": {"en": "get {amount}", "roman_ur": "lene {amount}", "ur": "لینے {amount}"},
+    "short_give": {"en": "give {amount}", "roman_ur": "dene {amount}", "ur": "دینے {amount}"},
+    "short_settled": {"en": "settled", "roman_ur": "barabar", "ur": "برابر"},
+    "no_entries": {
+        "en": "No entries yet.",
+        "roman_ur": "Abhi koi entry nahi.",
+        "ur": "ابھی کوئی انٹری نہیں۔",
+    },
+    "party_list": {
+        "en": "Total you will get: {get}\nTotal you will give: {give}\n\n{items}",
+        "roman_ur": "Kul lene hain: {get}\nKul dene hain: {give}\n\n{items}",
+        "ur": "کل لینے ہیں: {get}\nکل دینے ہیں: {give}\n\n{items}",
+    },
+    "no_parties": {
+        "en": "No parties yet. Try: \"Gave 500 to Ali\"",
+        "roman_ur": "Abhi koi party nahi. Likhein: \"Ali ko 500 diye\"",
+        "ur": "ابھی کوئی پارٹی نہیں۔ لکھیں: \"علی کو 500 دیے\"",
+    },
+    "confirm_delete": {
+        "en": "Delete {name}'s {amount} entry ({date})? yes/no",
+        "roman_ur": "{name} ki {amount} wali entry ({date}) delete karun? haan/nahi",
+        "ur": "{name} کی {amount} والی انٹری ({date}) ڈیلیٹ کروں؟ ہاں/نہیں",
+    },
+    "entry_deleted": {
+        "en": "🗑️ Entry deleted",
+        "roman_ur": "🗑️ Entry delete ho gayi",
+        "ur": "🗑️ انٹری ڈیلیٹ ہو گئی",
+    },
+    "delete_kept": {
+        "en": "OK, the entry is kept.",
+        "roman_ur": "Theek hai, entry nahi hati.",
+        "ur": "ٹھیک ہے، انٹری نہیں ہٹی۔",
+    },
+    "no_entry_to_delete": {
+        "en": "No entry found to delete.",
+        "roman_ur": "Delete karne ko koi entry nahi mili.",
+        "ur": "ڈیلیٹ کرنے کو کوئی انٹری نہیں ملی۔",
+    },
+    "answer_yes_no": {
+        "en": "Please reply yes or no.",
+        "roman_ur": "Haan ya nahi likhein.",
+        "ur": "ہاں یا نہیں لکھیں۔",
+    },
     "error": {
         "en": "Something went wrong. Please send your message again.",
         "roman_ur": "Kuch masla hua. Apna message dobara bhejein.",
@@ -167,4 +307,6 @@ def detect_language(text: str, default: str = "roman_ur") -> str:
         return default
     if any(w in _ROMAN_URDU_WORDS for w in words):
         return "roman_ur"
+    if len(words) == 1:  # "undo", "ok", "list": too short to tell, keep the conversation's language
+        return default
     return "en"

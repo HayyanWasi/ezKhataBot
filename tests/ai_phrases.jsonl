@@ -38,3 +38,35 @@
 {"text": "2", "pending": "Kaun si dukaan?\n1) Test Store\n2) Second Shop", "intent": "pending_answer", "answers_pending": true, "fields": {"answer": "2"}}
 {"text": "second shop wali", "pending": "Kaun si dukaan?\n1) Test Store\n2) Second Shop", "intent": "pending_answer", "answers_pending": true}
 {"text": "rehne do, kya yaad hai?", "pending": "Kaun si dukaan?\n1) Test Store\n2) Second Shop", "intent": "list_memories", "answers_pending": false}
+{"text": "Ali ko 500 udhaar diye", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "direction": "gave", "amount": 500}}
+{"text": "Ali se 300 mile", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "direction": "got", "amount": 300}}
+{"text": "Rohaan se 5000 ka maal liya kal", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Rohaan", "direction": "got", "amount": 5000, "date": "2026-09-27"}}
+{"text": "Ali ne 200 wapis kiye", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "direction": "got", "amount": 200}}
+{"text": "Bilal ne 1000 diye", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Bilal", "direction": "got", "amount": 1000}}
+{"text": "Rohaan ko 5 hazar payment ki", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Rohaan", "direction": "gave", "amount": 5000}}
+{"text": "Ahmed ko 2 kilo cheeni 400 ki udhaar di", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Ahmed", "direction": "gave", "amount": 400}}
+{"text": "Ali 500", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "direction": null, "amount": 500}}
+{"text": "Ali ko udhaar diya", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "direction": "gave", "amount": null}}
+{"text": "gave 200 to Bilal", "intent": "party_entry", "language": "en", "fields": {"party_name": "Bilal", "direction": "gave", "amount": 200}}
+{"text": "received 1500 from Ahmed yesterday", "intent": "party_entry", "language": "en", "fields": {"party_name": "Ahmed", "direction": "got", "amount": 1500, "date": "2026-09-27"}}
+{"text": "علی کو 500 دیے", "intent": "party_entry", "language": "ur", "fields": {"direction": "gave", "amount": 500}}
+{"text": "روحان سے 3000 ملے", "intent": "party_entry", "language": "ur", "fields": {"direction": "got", "amount": 3000}}
+{"text": "Bilal naya customer hai 03001234567", "intent": "add_party", "language": "roman_ur", "fields": {"name": "Bilal", "type": "customer", "phone": "03001234567"}}
+{"text": "Rohaan supplier add karo, pehle ke 2000 dene hain", "intent": "add_party", "language": "roman_ur", "fields": {"name": "Rohaan", "type": "supplier", "opening_amount": 2000, "opening_direction": "will_give"}}
+{"text": "add customer Ahmed", "intent": "add_party", "language": "en", "fields": {"name": "Ahmed", "type": "customer"}}
+{"text": "Ali ka number 03001234567", "intent": "set_party_phone", "language": "roman_ur", "fields": {"party_name": "Ali", "phone": "03001234567"}}
+{"text": "Ali ka hisaab", "intent": "party_balance", "language": "roman_ur", "fields": {"party_name": "Ali"}}
+{"text": "Ali ka khata dikhao", "intent": "party_balance", "language": "roman_ur", "fields": {"party_name": "Ali"}}
+{"text": "how much does Bilal owe me", "intent": "party_balance", "language": "en", "fields": {"party_name": "Bilal"}}
+{"text": "علی کا حساب", "intent": "party_balance", "language": "ur"}
+{"text": "sab ka hisaab", "intent": "list_parties", "language": "roman_ur"}
+{"text": "kis kis se paise lene hain", "intent": "list_parties", "language": "roman_ur"}
+{"text": "suppliers ko kitne dene hain", "intent": "list_parties", "language": "roman_ur", "fields": {"type": "supplier"}}
+{"text": "show all customers", "intent": "list_parties", "language": "en", "fields": {"type": "customer"}}
+{"text": "undo", "intent": "delete_entry", "fields": {"party_name": null}}
+{"text": "galti ho gayi, last entry hatao", "intent": "delete_entry", "language": "roman_ur", "fields": {"party_name": null}}
+{"text": "Ali ki 500 wali entry delete karo", "intent": "delete_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "amount": 500}}
+{"text": "Ali", "pending": "Kis ka hisaab hai? Naam likhein.", "intent": "pending_answer", "answers_pending": true, "fields": {"answer": "Ali"}}
+{"text": "diye the", "pending": "Rs 500:\n1) Ali ko diye\n2) Ali se liye", "intent": "pending_answer", "answers_pending": true}
+{"text": "Bilal ko 300 diye", "pending": "Ali: kitne paise?", "intent": "party_entry", "answers_pending": false, "fields": {"party_name": "Bilal", "amount": 300}}
+{"text": "500 rupay", "pending": "Ali: kitne paise?", "intent": "pending_answer", "answers_pending": true}

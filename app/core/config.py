@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     # LLM (any OpenAI-compatible API: Groq, OpenRouter)
     llm_base_url: str = "https://api.groq.com/openai/v1"
     llm_api_key: str
+    llm_fallback_api_keys: str = ""  # comma-separated; tried in order when a key is rate limited
     llm_model: str = "openai/gpt-oss-120b"
     llm_reasoning_effort: str = "low"  # empty = don't send (for providers that reject it)
     llm_timeout_seconds: float = 20
@@ -37,6 +38,12 @@ class Settings(BaseSettings):
     # Duplicate handling: a message stuck in 'received' longer than this is
     # treated as a crashed attempt and may be processed again
     processing_lease_seconds: int = 60
+
+    @property
+    def llm_api_keys(self) -> list[str]:
+        """Main key first, then the fallbacks."""
+        fallbacks = [k.strip() for k in self.llm_fallback_api_keys.split(",") if k.strip()]
+        return [self.llm_api_key, *fallbacks]
 
 
 @lru_cache
