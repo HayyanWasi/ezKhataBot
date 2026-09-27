@@ -1,5 +1,6 @@
 """Structured data passed between the AI classifier and the handlers."""
 
+import datetime as dt
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field, field_validator
@@ -26,7 +27,7 @@ class PendingAction(BaseModel):
 
     kind: str  # name of the pending resolver that handles the answer
     language: Language
-    expects: Literal["choice", "yes_no", "text"] = "text"
+    expects: Literal["choice", "yes_no", "amount", "text"] = "text"
     data: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -63,3 +64,46 @@ class RememberFields(_Fields):
 
 class ForgetMemoryFields(_Fields):
     query: str | None = None
+
+
+# ---------------------------------------------------------------------------
+# Party khata fields. Amounts stay raw here: the code checks them against the
+# user's own text (app/services/amounts.py) before anything is saved.
+# ---------------------------------------------------------------------------
+
+PartyType = Literal["customer", "supplier"]
+
+
+class PartyEntryFields(_Fields):
+    party_name: str | None = None
+    party_type: PartyType | None = None
+    direction: Literal["gave", "got"] | None = None
+    amount: Any = None
+    date: dt.date | None = None
+    note: str | None = None
+
+
+class AddPartyFields(_Fields):
+    name: str = Field(min_length=1)
+    type: PartyType | None = None
+    phone: str | None = None
+    opening_amount: Any = None
+    opening_direction: Literal["will_get", "will_give"] | None = None
+
+
+class SetPartyPhoneFields(_Fields):
+    party_name: str = Field(min_length=1)
+    phone: str = Field(min_length=1)
+
+
+class PartyBalanceFields(_Fields):
+    party_name: str | None = None
+
+
+class ListPartiesFields(_Fields):
+    type: PartyType | None = None
+
+
+class DeleteEntryFields(_Fields):
+    party_name: str | None = None
+    amount: Any = None

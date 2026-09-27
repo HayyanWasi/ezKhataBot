@@ -1,0 +1,213 @@
+"""Party khata tools: the ONLY code that reads or writes party data.
+
+The AI never calls these and never sees SQL. Handlers call them with values the
+code has already checked. Every tool is scoped to one business_id, so one shop
+can never see or change another shop's parties.
+
+Read tools can run in any short transaction. Write tools run only inside the
+pipeline's commit transaction (Outcome.commit(conn)) and never commit themselves.
+
+Sign rule for khata_entries.amount:
+    > 0  you will get   (maine diye: gave goods/money to the party)
+    < 0  you will give  (maine liye: got goods/money from the party)
+"""
+
+from datetime import date
+from decimal import Decimal
+from uuid import UUID
+
+from psycopg import Connection
+
+Id = UUID | str
+
+
+# ---------------------------------------------------------------------------
+# Read tools
+# ---------------------------------------------------------------------------
+
+
+def find_parties(conn: Connection, business_id: Id, name: str, type: str | None = None) -> list[dict]:
+    """Parties matching a name: exact matches if any, else partial matches."""
+    rows = conn.execute(
+        """
+        select id, type, name, phone from accounts
+        where business_id = %s and deleted_at is null
+          and type in ('customer', 'supplier')
+          and (%s::text is null or type = %s)
+          and position(lower(%s) in lower(name)) > 0
+        order by name
+        """,
+        (business_id, type, type, name.strip()),
+    ).fetchall()
+    exact = [r for r in rows if r["name"].lower() == name.strip().lower()]
+    return exact or rows
+
+
+def get_party(conn: Connection, business_id: Id, account_id: Id) -> dict | None:
+    return conn.execute(
+        """
+        select id, type, name, phone from accounts
+        where id = %s and business_id = %s and deleted_at is null
+        """,
+        (account_id, business_id),
+    ).fetchone()
+
+
+def get_balance(conn: Connection, business_id: Id, account_id: Id) -> Decimal:
+    row = conn.execute(
+        """
+        select coalesce(sum(k.amount), 0) as balance
+        from khata_entries k
+        join business_transactions t on t.id = k.transaction_id
+        where k.account_id = %s and t.business_id = %s and t.deleted_at is null
+        """,
+        (account_id, business_id),
+    ).fetchone()
+    return row["balance"]
+
+
+def recent_entries(conn: Connection, business_id: Id, account_id: Id, limit: int = 5) -> list[dict]:
+    """Newest entries first, each with the running balance after it."""
+    return conn.execute(
+        """
+        select * from (
+            select t.transaction_date, t.transaction_type, t.created_at, k.amount, k.notes,
+                   sum(k.amount) over (order by t.transaction_date, t.created_at) as running_balance
+            from khata_entries k
+            join business_transactions t on t.id = k.transaction_id
+            where k.account_id = %s and t.business_id = %s and t.deleted_at is null
+        ) e
+        order by transaction_date desc, created_at desc
+        limit %s
+        """,
+        (account_id, business_id, limit),
+    ).fetchall()
+
+
+def list_balances(conn: Connection, business_id: Id, type: str | None = None) -> list[dict]:
+    """Every live party with its balance, biggest balance first."""
+    return conn.execute(
+        """
+        select a.id, a.type, a.name,
+               coalesce(sum(k.amount) filter (where t.id is not null), 0) as balance
+        from accounts a
+        left join khata_entries k on k.account_id = a.id
+        left join business_transactions t on t.id = k.transaction_id and t.deleted_at is null
+        where a.business_id = %s and a.deleted_at is null
+          and a.type in ('customer', 'supplier')
+          and (%s::text is null or a.type = %s)
+        group by a.id
+        order by abs(coalesce(sum(k.amount) filter (where t.id is not null), 0)) desc, a.name
+        """,
+        (business_id, type, type),
+    ).fetchall()
+
+
+def find_entry_to_delete(
+    conn: Connection,
+    business_id: Id,
+    user_id: Id,
+    account_id: Id | None = None,
+    amount: Decimal | None = None,
+) -> dict | None:
+    """The latest live entry: the user's own last one, or the one matching party/amount."""
+    return conn.execute(
+        """
+        select t.id as transaction_id, t.transaction_date, t.transaction_type,
+               k.amount, a.id as account_id, a.name, a.type
+        from business_transactions t
+        join khata_entries k on k.transaction_id = t.id
+        join accounts a on a.id = k.account_id
+        where t.business_id = %s and t.deleted_at is null
+          and (%s::uuid is not null or t.created_by = %s)
+          and (%s::uuid is null or k.account_id = %s)
+          and (%s::numeric is null or abs(k.amount) = %s)
+        order by t.created_at desc
+        limit 1
+        """,
+        (business_id, account_id, user_id, account_id, account_id, amount, amount),
+    ).fetchone()
+
+
+# ---------------------------------------------------------------------------
+# Write tools (only inside the commit transaction)
+# ---------------------------------------------------------------------------
+
+
+def create_party(
+    conn: Connection, business_id: Id, type: str, name: str, phone: str | None, created_by: Id
+) -> dict:
+    return conn.execute(
+        """
+        insert into accounts (business_id, type, name, phone, created_by)
+        values (%s, %s, %s, %s, %s)
+        returning id, type, name, phone
+        """,
+        (business_id, type, name.strip(), phone, created_by),
+    ).fetchone()
+
+
+def set_party_phone(conn: Connection, business_id: Id, account_id: Id, phone: str) -> None:
+    conn.execute(
+        "update accounts set phone = %s where id = %s and business_id = %s and deleted_at is null",
+        (phone, account_id, business_id),
+    )
+
+
+def record_entry(
+    conn: Connection,
+    *,
+    business_id: Id,
+    account_id: Id,
+    direction: str,  # "gave" (you will get) | "got" (you will give)
+    amount: Decimal,  # always positive; the sign comes from direction
+    entry_date: date,
+    note: str | None,
+    message_id: Id,
+    user_id: Id,
+    opening: bool = False,
+) -> UUID:
+    """One transaction + one entry on the party. Returns the transaction id."""
+    if amount <= 0:
+        raise ValueError("amount must be positive")
+    if direction not in ("gave", "got"):
+        raise ValueError(f"bad direction {direction!r}")
+    signed = amount if direction == "gave" else -amount
+    transaction_type = "opening_balance" if opening else direction
+
+    transaction_id = conn.execute(
+        """
+        insert into business_transactions
+            (business_id, transaction_date, transaction_type, source_message_id, created_by)
+        values (%s, %s, %s, %s, %s)
+        returning id
+        """,
+        (business_id, entry_date, transaction_type, message_id, user_id),
+    ).fetchone()["id"]
+
+    # The select makes sure the account belongs to this business
+    entry = conn.execute(
+        """
+        insert into khata_entries (transaction_id, account_id, amount, notes)
+        select %s, a.id, %s, %s from accounts a
+        where a.id = %s and a.business_id = %s and a.deleted_at is null
+        returning id
+        """,
+        (transaction_id, signed, note, account_id, business_id),
+    ).fetchone()
+    if entry is None:
+        raise ValueError("account not found in this business")
+    return transaction_id
+
+
+def delete_entry(conn: Connection, business_id: Id, transaction_id: Id, user_id: Id) -> bool:
+    """Soft delete. False if it was already deleted."""
+    row = conn.execute(
+        """
+        update business_transactions set deleted_at = now(), deleted_by = %s
+        where id = %s and business_id = %s and deleted_at is null
+        returning id
+        """,
+        (user_id, transaction_id, business_id),
+    ).fetchone()
+    return row is not None

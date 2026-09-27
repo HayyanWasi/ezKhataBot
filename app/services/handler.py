@@ -21,6 +21,7 @@ from app.core.config import get_settings
 from app.core.database import transaction
 from app.db import crud
 from app.schemas.khata import PendingAction
+from app.services.answers import is_trivial_answer
 from app.services.registry import Context, Outcome
 from app.services.replies import detect_language, t
 
@@ -149,10 +150,17 @@ def _think(user: dict, conversation_id: UUID, message: dict) -> tuple[Outcome, U
     # question's language, then to the user's previous message
     last_user_text = next((m["text"] for m in reversed(history) if m["role"] == "user"), "")
     fallback = pending.language if pending else detect_language(last_user_text)
-    language = preference or (fallback if text.startswith("/") else detect_language(text, default=fallback))
+    # A short answer to the bot's question ("2", "bas 300", "haan") keeps the question's language
+    short_answer = pending is not None and is_trivial_answer(text, pending.expects)
+    if preference:
+        language = preference
+    elif text.startswith("/") or short_answer:
+        language = fallback
+    else:
+        language = detect_language(text, default=fallback)
     # The agent doesn't need the phone; leaving it out keeps it out of LangSmith traces
     agent_user = {k: v for k, v in user.items() if k != "phone"}
-    ctx = Context(agent_user, conversation, None, businesses, language, text)
+    ctx = Context(agent_user, conversation, None, businesses, language, text, message["id"])
 
     if not businesses:
         return Outcome("no_business", t("no_business", language)), None

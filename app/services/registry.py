@@ -25,6 +25,7 @@ class Context:
     businesses: list[dict]  # all businesses the user can access
     language: str  # reply language
     text: str  # the user's message
+    message_id: UUID | None = None  # the user message being handled (source of money entries)
 
     def business_by_id(self, business_id: str | UUID) -> dict | None:
         return next((b for b in self.businesses if str(b["id"]) == str(business_id)), None)
@@ -61,6 +62,7 @@ class IntentSpec:
     fields_hint: str = ""  # JSON shape shown to the AI
     examples: list[str] = field(default_factory=list)
     needs_business: bool = False
+    owner_only: bool = False  # employees can only view (checked in code, not by the AI)
 
 
 INTENTS: dict[str, IntentSpec] = {}
@@ -75,10 +77,11 @@ def intent(
     fields_hint: str = "",
     examples: list[str] | tuple[str, ...] = (),
     needs_business: bool = False,
+    owner_only: bool = False,
 ) -> Callable[[Handler], Handler]:
     def register(handler: Handler) -> Handler:
         INTENTS[name] = IntentSpec(
-            name, description, handler, fields, fields_hint, list(examples), needs_business
+            name, description, handler, fields, fields_hint, list(examples), needs_business, owner_only
         )
         return handler
 

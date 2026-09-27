@@ -11,21 +11,27 @@ import argparse
 import json
 import sys
 import time
+from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import app.handlers.foundation  # noqa: E402,F401  registers intents
+import app.handlers.party  # noqa: E402,F401
 from app.ai import classifier  # noqa: E402
+from app.services.amounts import to_decimal  # noqa: E402
 from app.core.config import get_settings  # noqa: E402
 from app.services.registry import INTENTS  # noqa: E402
 
 PHRASES = Path(__file__).with_name("ai_phrases.jsonl")
+TODAY = date(2026, 9, 28)  # fixed, so "kal" in the phrases is always 2026-09-27
 
 
 def _same(expected, actual) -> bool:
     if isinstance(expected, str) and isinstance(actual, str):
         return expected.strip().lower() == actual.strip().lower()
+    if isinstance(expected, (int, float)) and not isinstance(expected, bool):
+        return to_decimal(actual) == to_decimal(expected)
     return expected == actual
 
 
@@ -48,15 +54,22 @@ def run(model: str, cases: list[dict]) -> None:
     passed, slow = 0, 0.0
     print(f"\n=== {model} ===")
     for case in cases:
-        started = time.monotonic()
-        try:
-            out = classifier.classify(
-                case["text"], intents=INTENTS, history=[], pending_question=case.get("pending"), memories=[]
-            )
-            problems = check(case, out)
-        except classifier.AIError as e:
-            problems = [f"AI error: {e}"]
-        elapsed = time.monotonic() - started
+        elapsed = 0.0
+        for wait in (0, 30, 60):  # free tier: wait out the per-minute limit, then retry
+            time.sleep(wait)
+            started = time.monotonic()
+            try:
+                out = classifier.classify(
+                    case["text"], intents=INTENTS, history=[], pending_question=case.get("pending"),
+                    memories=[], today=TODAY,
+                )
+                problems = check(case, out)
+                elapsed = time.monotonic() - started
+                break
+            except classifier.AIError as e:
+                problems = [f"AI error: {e}"]
+                if "429" not in str(e):
+                    break
         slow = max(slow, elapsed)
         if problems:
             print(f"  FAIL {case['text']!r}: " + "; ".join(problems))

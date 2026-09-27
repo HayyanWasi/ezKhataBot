@@ -1,5 +1,10 @@
 """Prompt for the message classifier. The intent list is built from the registry,
-so new features only need to register their intents."""
+so new features only need to register their intents.
+
+The AI only sees the message, recent chat and saved notes. It never sees the
+database, SQL, ids or balances; it only picks an intent and fills its fields."""
+
+from datetime import date
 
 from app.services.registry import IntentSpec
 
@@ -21,6 +26,12 @@ Rules:
 - answers_pending: true only when a pending question is shown and the latest message answers it.
   Then use intent "pending_answer" and fields {{"answer": "<the answer as a short value, e.g. a number or a name>"}}.
 - If a pending question exists but the latest message is a new request, answers_pending is false; classify it normally.
+  A message that names a different person, or is a complete request on its own (e.g. "Bilal ko 300 diye"),
+  is a new request, not an answer.
+- Amounts: only numbers the user actually wrote. Convert "5 hazar" -> 5000, "5k" -> 5000, "1.5 lakh" -> 150000.
+  Never add, subtract or guess amounts. null if no amount is written.
+- Dates: use the "Today" line to turn words like "kal" (yesterday), "parson", "15 tareekh" into YYYY-MM-DD.
+  null when no day is mentioned.
 
 Intents:
 {intents}
@@ -44,8 +55,9 @@ def build_user_prompt(
     history: list[dict],
     pending_question: str | None,
     memories: list[str],
+    today: date,
 ) -> str:
-    parts = []
+    parts = [f"Today: {today.isoformat()} ({today:%A}), Pakistan time"]
     if history:
         convo = "\n".join(f"{m['role']}: {m['text']}" for m in history)
         parts.append(f"Recent conversation (oldest first):\n{convo}")
