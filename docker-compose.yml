@@ -1,0 +1,52 @@
+services:
+  evolution-api:
+    image: evoapicloud/evolution-api:latest
+    container_name: evolution_api
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    env_file:
+      - .env
+    environment:
+      - SERVER_PORT=8080
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CLIENT_NAME=evolution_api
+      - CACHE_REDIS_ENABLED=true
+      - CACHE_REDIS_URI=redis://redis:6379/6
+      - CACHE_REDIS_PREFIX_KEY=evolution
+      - CACHE_REDIS_SAVE_INSTANCES=false
+      - CACHE_LOCAL_ENABLED=false
+    volumes:
+      - evolution_instances:/evolution/instances
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - evolution_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  redis:
+    image: redis:7-alpine
+    container_name: evolution_redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - evolution_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  evolution_instances:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  evolution_network:
+    driver: bridge

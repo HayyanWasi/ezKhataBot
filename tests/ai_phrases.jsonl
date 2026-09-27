@@ -1,0 +1,40 @@
+{"text": "salam", "intent": "greeting", "language": "roman_ur"}
+{"text": "Assalam o alaikum bhai", "intent": "greeting", "language": "roman_ur"}
+{"text": "hello", "intent": "greeting", "language": "en"}
+{"text": "السلام علیکم", "intent": "greeting", "language": "ur"}
+{"text": "kya haal hai", "intent": "greeting", "language": "roman_ur"}
+{"text": "help", "intent": "help", "language": "en"}
+{"text": "madad chahiye", "intent": "help", "language": "roman_ur"}
+{"text": "tum kya kya kar sakte ho?", "intent": "help", "language": "roman_ur"}
+{"text": "مدد چاہیے", "intent": "help", "language": "ur"}
+{"text": "how do I use this", "intent": "help", "language": "en"}
+{"text": "kaun si dukaan hai abhi", "intent": "which_business", "language": "roman_ur"}
+{"text": "which shop am I in?", "intent": "which_business", "language": "en"}
+{"text": "meri dukaanein dikhao", "intent": "which_business", "language": "roman_ur"}
+{"text": "میں کس دکان میں ہوں", "intent": "which_business", "language": "ur"}
+{"text": "dukaan badlo", "intent": "switch_business", "language": "roman_ur", "fields": {"business_name": null}}
+{"text": "switch to Ali Traders", "intent": "switch_business", "language": "en", "fields": {"business_name": "Ali Traders"}}
+{"text": "Hayyan Store pe le chalo", "intent": "switch_business", "language": "roman_ur", "fields": {"business_name": "Hayyan Store"}}
+{"text": "دکان تبدیل کرو", "intent": "switch_business", "language": "ur"}
+{"text": "mujhse English mein baat karo", "intent": "set_language", "language": "roman_ur", "fields": {"language": "en"}}
+{"text": "please reply in urdu", "intent": "set_language", "language": "en", "fields": {"language": "ur"}}
+{"text": "roman urdu mein jawab do", "intent": "set_language", "language": "roman_ur", "fields": {"language": "roman_ur"}}
+{"text": "اردو میں بات کرو", "intent": "set_language", "language": "ur", "fields": {"language": "ur"}}
+{"text": "jis zubaan mein likhun usi mein jawab do", "intent": "set_language", "language": "roman_ur", "fields": {"language": "auto"}}
+{"text": "mujhe Hayyan bhai kehna", "intent": "remember_user_fact", "language": "roman_ur"}
+{"text": "call me boss from now on", "intent": "remember_user_fact", "language": "en"}
+{"text": "yaad rakhna Ali Rohaan ka bhai hai", "intent": "remember_business_fact", "language": "roman_ur", "fields": {"content": "Ali Rohaan ka bhai hai"}}
+{"text": "remember that the shop is closed on Friday", "intent": "remember_business_fact", "language": "en"}
+{"text": "yaad rakho Bilal sirf cash mein deta hai", "intent": "remember_business_fact", "language": "roman_ur"}
+{"text": "یاد رکھنا دکان جمعہ کو بند ہوتی ہے", "intent": "remember_business_fact", "language": "ur"}
+{"text": "kya yaad hai tumhe", "intent": "list_memories", "language": "roman_ur"}
+{"text": "what do you remember?", "intent": "list_memories", "language": "en"}
+{"text": "mere notes dikhao", "intent": "list_memories", "language": "roman_ur"}
+{"text": "Ali wali baat bhool jao", "intent": "forget_memory", "language": "roman_ur", "fields": {"query": "Ali"}}
+{"text": "forget the note about Friday", "intent": "forget_memory", "language": "en"}
+{"text": "ek note delete karo", "intent": "forget_memory", "language": "roman_ur"}
+{"text": "asdfgh", "intent": "unknown"}
+{"text": "aaj mausam kaisa hai", "intent": "unknown", "language": "roman_ur"}
+{"text": "2", "pending": "Kaun si dukaan?\n1) Test Store\n2) Second Shop", "intent": "pending_answer", "answers_pending": true, "fields": {"answer": "2"}}
+{"text": "second shop wali", "pending": "Kaun si dukaan?\n1) Test Store\n2) Second Shop", "intent": "pending_answer", "answers_pending": true}
+{"text": "rehne do, kya yaad hai?", "pending": "Kaun si dukaan?\n1) Test Store\n2) Second Shop", "intent": "list_memories", "answers_pending": false}
