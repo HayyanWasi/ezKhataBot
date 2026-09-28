@@ -21,7 +21,10 @@ TEXTS: dict[str, dict[str, str]] = {
             "Send me messages like:\n"
             "• \"Gave 500 to Ali\" / \"Got 300 from Ali\"\n"
             "• \"Ali's balance\" / \"all balances\"\n"
-            "• \"add supplier Rohaan\" / \"undo\"\n"
+            "• \"tea 200\" / \"3000 came in\" / \"today's sale 20000\"\n"
+            "• \"Ali paid back 1000\" / \"deposited 10000 in JazzCash\"\n"
+            "• \"today's cash\" / \"September cash book PDF\"\n"
+            "• \"add supplier Rohaan\" / \"undo\" / \"Ali's entry was 600, not 500\"\n"
             "• \"Ali's statement for September\" / \"all parties statement\"\n"
             "• \"remind me tomorrow at 10 to pay Rohaan\" / \"my reminders\"\n"
             "• \"switch shop\" / \"talk in English\" / \"remember …\""
@@ -30,7 +33,10 @@ TEXTS: dict[str, dict[str, str]] = {
             "Mujhe aise likhein:\n"
             "• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n"
             "• \"Ali ka hisaab\" / \"sab ka hisaab\"\n"
-            "• \"Rohaan supplier add karo\" / \"undo\"\n"
+            "• \"chai 200\" / \"3000 aaye\" / \"aaj 20000 ki sale hui\"\n"
+            "• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n"
+            "• \"aaj ka cash\" / \"September ki cash book PDF\"\n"
+            "• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n"
             "• \"Ali ka September ka statement\" / \"sab ka statement\"\n"
             "• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n"
             "• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\""
@@ -39,6 +45,8 @@ TEXTS: dict[str, dict[str, str]] = {
             "مجھے ایسے لکھیں:\n"
             "• \"علی کو 500 دیے\" / \"علی سے 300 ملے\"\n"
             "• \"علی کا حساب\" / \"سب کا حساب\"\n"
+            "• \"چائے 200\" / \"3000 آئے\" / \"آج 20000 کی سیل ہوئی\"\n"
+            "• \"علی نے 1000 واپس دیے\" / \"آج کا کیش\"\n"
             "• \"روحان سپلائر شامل کرو\" / \"undo\"\n"
             "• \"علی کا ستمبر کا اسٹیٹمنٹ\" / \"سب کا اسٹیٹمنٹ\"\n"
             "• \"کل 10 بجے یاد دلانا روحان کو پیمنٹ کرنی ہے\" / \"میری یاد دہانیاں\"\n"
@@ -137,9 +145,9 @@ TEXTS: dict[str, dict[str, str]] = {
     },
     # ---- Party khata -------------------------------------------------------
     "owner_only": {
-        "en": "Only the shop owner can do this. You can check balances.",
-        "roman_ur": "Yeh sirf dukaan ka maalik kar sakta hai. Aap hisaab dekh sakte hain.",
-        "ur": "یہ صرف دکان کا مالک کر سکتا ہے۔ آپ حساب دیکھ سکتے ہیں۔",
+        "en": "Only the shop owner can do this. You can check balances and add cash entries.",
+        "roman_ur": "Yeh sirf dukaan ka maalik kar sakta hai. Aap hisaab dekh sakte hain aur cash entries kar sakte hain.",
+        "ur": "یہ صرف دکان کا مالک کر سکتا ہے۔ آپ حساب دیکھ سکتے ہیں اور کیش انٹریاں کر سکتے ہیں۔",
     },
     "entry_gave": {
         "en": "✅ Gave {amount} to {name} ({date})",
@@ -416,6 +424,137 @@ TEXTS: dict[str, dict[str, str]] = {
     "cat_cash_out": {"en": "Cash out", "roman_ur": "Cash nikala", "ur": "کیش نکالا"},
     "cat_bank": {"en": "Bank", "roman_ur": "Bank", "ur": "بینک"},
     "cat_sale": {"en": "Counter sale", "roman_ur": "Counter sale", "ur": "کاؤنٹر سیل"},
+    "image_section_cash": {"en": "Cash book:", "roman_ur": "Cash book:", "ur": "کیش بک:"},
+    "image_section_bank": {"en": "Bank:", "roman_ur": "Bank:", "ur": "بینک:"},
+    "image_missing_category": {"en": "which category?", "roman_ur": "kaunsi category?", "ur": "کون سی کیٹیگری؟"},
+    "image_missing_bank": {"en": "which bank?", "roman_ur": "kaunsa bank?", "ur": "کون سا بینک؟"},
+    "image_missing_in_out": {"en": "in or out?", "roman_ur": "aaye ya gaye?", "ur": "آئے یا گئے؟"},
+    # ---- Cash book + banks ------------------------------------------------
+    "cash_name": {"en": "Cash", "roman_ur": "Cash", "ur": "کیش"},
+    "ask_opening_cash": {
+        "en": "First, how much cash is in the shop right now? (send 0 or skip if you don't know)",
+        "roman_ur": "Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)",
+        "ur": "پہلے بتا دیں، ابھی دکان میں کتنا کیش ہے؟ (معلوم نہیں تو 0 لکھیں)",
+    },
+    "ask_cash_amount": {"en": "How much?", "roman_ur": "Kitne paise?", "ur": "کتنے پیسے؟"},
+    "ask_cash_direction": {
+        "en": "{amount}:\n1) Came in\n2) Went out",
+        "roman_ur": "{amount}:\n1) Aaye (cash in)\n2) Gaye (cash out)",
+        "ur": "{amount}:\n1) آئے (کیش اِن)\n2) گئے (کیش آؤٹ)",
+    },
+    "ask_category": {
+        "en": "Which category for \"{word}\"?\n{options}\nOr send a new name.",
+        "roman_ur": "\"{word}\" kis category mein daalun?\n{options}\nYa naya naam likhein.",
+        "ur": "\"{word}\" کس کیٹیگری میں ڈالوں؟\n{options}\nیا نیا نام لکھیں۔",
+    },
+    "new_category_option": {"en": "{name} (new)", "roman_ur": "{name} (nayi)", "ur": "{name} (نئی)"},
+    "choose_bank": {"en": "Which bank?\n{options}", "roman_ur": "Kaunsa bank?\n{options}", "ur": "کون سا بینک؟\n{options}"},
+    "confirm_new_bank": {
+        "en": "{name} is a new account. Add it? yes/no",
+        "roman_ur": "{name} naya account hai, add karun? haan/nahi",
+        "ur": "{name} نیا اکاؤنٹ ہے، شامل کروں؟ ہاں/نہیں",
+    },
+    "ask_bank_name": {
+        "en": "Which bank or wallet? (e.g. JazzCash)",
+        "roman_ur": "Kaunsa bank ya wallet? (jaise JazzCash)",
+        "ur": "کون سا بینک یا والٹ؟ (جیسے JazzCash)",
+    },
+    "bank_owner_only": {
+        "en": "Only the shop owner can add a new bank.",
+        "roman_ur": "Naya bank sirf dukaan ka maalik add kar sakta hai.",
+        "ur": "نیا بینک صرف دکان کا مالک شامل کر سکتا ہے۔",
+    },
+    "money_in_saved": {
+        "en": "✅ In: {amount}{detail} ({date})",
+        "roman_ur": "✅ {amount} aaye{detail} ({date})",
+        "ur": "✅ {amount} آئے{detail} ({date})",
+    },
+    "money_out_saved": {
+        "en": "✅ Out: {amount}{detail} ({date})",
+        "roman_ur": "✅ {amount} gaye{detail} ({date})",
+        "ur": "✅ {amount} گئے{detail} ({date})",
+    },
+    "sale_saved": {
+        "en": "✅ Sale {amount} ({date})",
+        "roman_ur": "✅ {amount} ki sale ({date})",
+        "ur": "✅ {amount} کی سیل ({date})",
+    },
+    "ask_transfer_direction": {
+        "en": "{amount} with {bank}:\n1) Cash deposited into {bank}\n2) Cash taken out of {bank}",
+        "roman_ur": "{amount} {bank}:\n1) Cash {bank} mein jama kiya\n2) {bank} se cash nikala",
+        "ur": "{amount} {bank}:\n1) کیش {bank} میں جمع کیا\n2) {bank} سے کیش نکالا",
+    },
+    "transfer_saved": {
+        "en": "✅ {amount}: {source} → {target} ({date})",
+        "roman_ur": "✅ {amount}: {source} → {target} ({date})",
+        "ur": "✅ {amount}: {source} ← {target} ({date})",
+    },
+    "bank_added": {"en": "✅ {name} added", "roman_ur": "✅ {name} add ho gaya", "ur": "✅ {name} شامل ہو گیا"},
+    "bank_exists": {
+        "en": "{name} is already added.",
+        "roman_ur": "{name} pehle se add hai.",
+        "ur": "{name} پہلے سے شامل ہے۔",
+    },
+    "bank_not_found": {
+        "en": "No bank named {name}.",
+        "roman_ur": "{name} naam ka koi bank nahi mila.",
+        "ur": "{name} نام کا کوئی بینک نہیں ملا۔",
+    },
+    "money_report": {
+        "en": "📒 {name} · {period}\nOpening: {opening}\nIn: {money_in}\nOut: {money_out}\nBalance: {closing}",
+        "roman_ur": "📒 {name} · {period}\nShuru mein: {opening}\nAaye: {money_in}\nGaye: {money_out}\nBaqi: {closing}",
+        "ur": "📒 {name} · {period}\nشروع میں: {opening}\nآئے: {money_in}\nگئے: {money_out}\nباقی: {closing}",
+    },
+    "report_expenses": {"en": "Expenses:\n{items}", "roman_ur": "Kharche:\n{items}", "ur": "خرچے:\n{items}"},
+    "report_other_accounts": {
+        "en": "Other accounts:\n{items}",
+        "roman_ur": "Baqi accounts:\n{items}",
+        "ur": "باقی اکاؤنٹس:\n{items}",
+    },
+    "no_money_yet": {
+        "en": "No cash book entries yet. Try: \"tea 200\" or \"3000 came in\"",
+        "roman_ur": "Abhi cash book mein koi entry nahi. Likhein: \"chai 200\" ya \"3000 aaye\"",
+        "ur": "ابھی کیش بک میں کوئی انٹری نہیں۔ لکھیں: \"چائے 200\"",
+    },
+    "entry_cash_in": {"en": "Cash in", "roman_ur": "Cash in", "ur": "کیش اِن"},
+    "entry_cash_out": {"en": "Cash out", "roman_ur": "Cash out", "ur": "کیش آؤٹ"},
+    "entry_sale": {"en": "Sale", "roman_ur": "Sale", "ur": "سیل"},
+    "entry_transfer": {"en": "Transfer", "roman_ur": "Transfer", "ur": "ٹرانسفر"},
+    "entry_opening_balance": {"en": "Opening balance", "roman_ur": "Shuru ka balance", "ur": "ابتدائی بیلنس"},
+    "entry_adjustment": {"en": "Adjustment", "roman_ur": "Adjustment", "ur": "ایڈجسٹمنٹ"},
+    # ---- Edit / delete / photo -------------------------------------------
+    "confirm_edit": {
+        "en": "{name} entry ({date}): {changes}. OK? yes/no",
+        "roman_ur": "{name} wali entry ({date}): {changes}. Theek hai? haan/nahi",
+        "ur": "{name} والی انٹری ({date}): {changes}۔ ٹھیک ہے؟ ہاں/نہیں",
+    },
+    "no_entry_found": {
+        "en": "I couldn't find that entry.",
+        "roman_ur": "Aisi koi entry nahi mili.",
+        "ur": "ایسی کوئی انٹری نہیں ملی۔",
+    },
+    "edit_nothing": {
+        "en": "What should I change? e.g. \"Ali's entry was 600, not 500\"",
+        "roman_ur": "Kya badalna hai? Jaise: \"Ali wali entry 500 nahi 600 thi\"",
+        "ur": "کیا بدلنا ہے؟ جیسے: \"علی والی انٹری 500 نہیں 600 تھی\"",
+    },
+    "entry_edited": {"en": "✏️ Entry updated", "roman_ur": "✏️ Entry theek ho gayi", "ur": "✏️ انٹری درست ہو گئی"},
+    "edit_kept": {"en": "OK, nothing changed.", "roman_ur": "Theek hai, kuch nahi badla.", "ur": "ٹھیک ہے، کچھ نہیں بدلا۔"},
+    "staff_own_cash_only": {
+        "en": "You can only change your own cash entries.",
+        "roman_ur": "Aap sirf apni cash entries badal sakte hain.",
+        "ur": "آپ صرف اپنی کیش انٹریاں بدل سکتے ہیں۔",
+    },
+    "entry_photo": {
+        "en": "📷 Photo of {name} {amount} ({date})",
+        "roman_ur": "📷 {name} {amount} ({date}) ki photo",
+        "ur": "📷 {name} {amount} ({date}) کی تصویر",
+    },
+    "no_entry_photo": {
+        "en": "No photo found for that entry.",
+        "roman_ur": "Is entry ki koi photo nahi mili.",
+        "ur": "اس انٹری کی کوئی تصویر نہیں ملی۔",
+    },
     "answer_yes_no": {
         "en": "Please reply yes or no.",
         "roman_ur": "Haan ya nahi likhein.",

@@ -31,7 +31,8 @@ Rules:
 - Amounts: only numbers the user actually wrote. Convert "5 hazar" -> 5000, "5k" -> 5000, "1.5 lakh" -> 150000.
   Never add, subtract or guess amounts. null if no amount is written.
 - Dates: use the "Today" line to turn words like "kal", "parson", "15 tareekh" into YYYY-MM-DD.
-  For entries "kal" means yesterday; for reminders "kal" means tomorrow. null when no day is mentioned.
+  For entries, corrections of entries and reports "kal" means yesterday; only for reminders "kal" means tomorrow.
+  null when no day is mentioned.
   A month ("September ka") means its first and last day.
 - Times: 24h "HH:MM". Vague times: subah = 09:00, dopahar = 13:00, shaam = 18:00, raat = 21:00.
   "2 minute baad" / "1 ghante baad" -> today's date and the exact time from the Today line.

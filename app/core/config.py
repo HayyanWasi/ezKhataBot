@@ -30,6 +30,12 @@ class Settings(BaseSettings):
     llm_model: str = "openai/gpt-oss-120b"
     llm_reasoning_effort: str = "low"  # empty = don't send (for providers that reject it)
     llm_timeout_seconds: float = 20
+    llm_max_tokens: int = 2500  # answer cap; without it providers reserve the whole context per call
+
+    # Second provider, tried after every key above is rate limited (empty = off)
+    openrouter_base_url: str = "https://openrouter.ai/api/v1"
+    openrouter_api_keys: str = ""  # comma-separated
+    openrouter_model: str = "openai/gpt-oss-120b"
 
     # Conversation
     pending_ttl_seconds: int = 600  # pending question expires after 10 min
@@ -56,6 +62,13 @@ class Settings(BaseSettings):
         """Main key first, then the fallbacks."""
         fallbacks = [k.strip() for k in self.llm_fallback_api_keys.split(",") if k.strip()]
         return [self.llm_api_key, *fallbacks]
+
+    @property
+    def llm_endpoints(self) -> list[tuple[str, str, str]]:
+        """(base_url, model, api_key) in the order they are tried: main provider's keys, then OpenRouter's."""
+        main = [(self.llm_base_url, self.llm_model, key) for key in self.llm_api_keys]
+        backup = [k.strip() for k in self.openrouter_api_keys.split(",") if k.strip()]
+        return main + [(self.openrouter_base_url, self.openrouter_model, key) for key in backup]
 
 
 @lru_cache

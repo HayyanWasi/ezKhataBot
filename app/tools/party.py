@@ -18,6 +18,8 @@ from uuid import UUID
 
 from psycopg import Connection
 
+from app.tools import money
+
 Id = UUID | str
 
 
@@ -103,32 +105,6 @@ def list_balances(conn: Connection, business_id: Id, type: str | None = None) ->
     ).fetchall()
 
 
-def find_entry_to_delete(
-    conn: Connection,
-    business_id: Id,
-    user_id: Id,
-    account_id: Id | None = None,
-    amount: Decimal | None = None,
-) -> dict | None:
-    """The latest live entry: the user's own last one, or the one matching party/amount."""
-    return conn.execute(
-        """
-        select t.id as transaction_id, t.transaction_date, t.transaction_type,
-               k.amount, a.id as account_id, a.name, a.type
-        from business_transactions t
-        join khata_entries k on k.transaction_id = t.id
-        join accounts a on a.id = k.account_id
-        where t.business_id = %s and t.deleted_at is null
-          and (%s::uuid is not null or t.created_by = %s)
-          and (%s::uuid is null or k.account_id = %s)
-          and (%s::numeric is null or abs(k.amount) = %s)
-        order by t.created_at desc
-        limit 1
-        """,
-        (business_id, account_id, user_id, account_id, account_id, amount, amount),
-    ).fetchone()
-
-
 # ---------------------------------------------------------------------------
 # Write tools (only inside the commit transaction)
 # ---------------------------------------------------------------------------
@@ -167,48 +143,28 @@ def record_entry(
     user_id: Id,
     opening: bool = False,
     source_line: int = 0,  # position of the row when one message saves several (a photo)
+    money_account_id: Id | None = None,  # paid in cash / a bank: the money leg (Ali -1000, Cash +1000)
 ) -> UUID:
-    """One transaction + one entry on the party. Returns the transaction id."""
+    """One transaction with the party leg (and the cash/bank leg, if paid). Returns the transaction id."""
     if amount <= 0:
         raise ValueError("amount must be positive")
     if direction not in ("gave", "got"):
         raise ValueError(f"bad direction {direction!r}")
     signed = amount if direction == "gave" else -amount
-    transaction_type = "opening_balance" if opening else direction
-
-    transaction_id = conn.execute(
-        """
-        insert into business_transactions
-            (business_id, transaction_date, transaction_type, source_message_id, source_line, created_by)
-        values (%s, %s, %s, %s, %s, %s)
-        returning id
-        """,
-        (business_id, entry_date, transaction_type, message_id, source_line, user_id),
-    ).fetchone()["id"]
-
-    # The select makes sure the account belongs to this business
-    entry = conn.execute(
-        """
-        insert into khata_entries (transaction_id, account_id, amount, notes)
-        select %s, a.id, %s, %s from accounts a
-        where a.id = %s and a.business_id = %s and a.deleted_at is null
-        returning id
-        """,
-        (transaction_id, signed, note, account_id, business_id),
-    ).fetchone()
-    if entry is None:
-        raise ValueError("account not found in this business")
-    return transaction_id
+    legs = [(account_id, signed)]
+    if money_account_id is not None:
+        legs.append((money_account_id, -signed))  # the shop gave money -> money went out
+    return money.record_transaction(
+        conn,
+        business_id=business_id,
+        type="opening_balance" if opening else direction,
+        entry_date=entry_date,
+        legs=legs,
+        note=note,
+        message_id=message_id,
+        user_id=user_id,
+        source_line=source_line,
+    )
 
 
-def delete_entry(conn: Connection, business_id: Id, transaction_id: Id, user_id: Id) -> bool:
-    """Soft delete. False if it was already deleted."""
-    row = conn.execute(
-        """
-        update business_transactions set deleted_at = now(), deleted_by = %s
-        where id = %s and business_id = %s and deleted_at is null
-        returning id
-        """,
-        (user_id, transaction_id, business_id),
-    ).fetchone()
-    return row is not None
+delete_entry = money.delete_transaction

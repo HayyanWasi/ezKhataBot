@@ -29,6 +29,15 @@ def parse_yes_no(text: str) -> bool | None:
     return None
 
 
+_SKIP = {"skip", "chhor", "chhoro", "chor", "choro", "pata nahi", "pata nhi", "nahi pata", "nhi pata", "چھوڑو"}
+
+
+def is_skip(text: str) -> bool:
+    """"skip" / "nahi" / "pata nahi": the user doesn't want to answer."""
+    word = text.strip().lower().rstrip(".!")
+    return word in _SKIP or parse_yes_no(word) is False
+
+
 def is_trivial_answer(text: str, expects: str) -> bool:
     """True if the message can be answered by rules alone (no AI)."""
     if expects == "choice":
@@ -37,6 +46,14 @@ def is_trivial_answer(text: str, expects: str) -> bool:
         return parse_yes_no(text) is not None
     if expects == "amount":
         return parse_amount_answer(text) is not None
+    if expects == "amount_or_skip":
+        return parse_amount_answer(text) is not None or text.strip() == "0" or is_skip(text)
+    if expects == "choice_or_name":  # "2", or a short name like "Bills" / "Ghar ka kharcha"
+        words = text.split()
+        if parse_number(text) is not None:
+            return True
+        not_a_name = is_skip(text) or parse_yes_no(text) is not None or text.strip().lower() in ("undo", "cancel")
+        return 0 < len(words) <= 3 and not re.search(r"\d", text) and not not_a_name
     return False
 
 

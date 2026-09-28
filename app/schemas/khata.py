@@ -27,7 +27,9 @@ class PendingAction(BaseModel):
 
     kind: str  # name of the pending resolver that handles the answer
     language: Language
-    expects: Literal["choice", "yes_no", "amount", "text"] = "text"
+    # amount_or_skip: an amount, or "skip" / "nahi" / "0" (e.g. opening cash)
+    # choice_or_name: a list number, or a short name (a new category / bank), handled without the AI
+    expects: Literal["choice", "choice_or_name", "yes_no", "amount", "amount_or_skip", "text"] = "text"
     data: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -81,6 +83,8 @@ class PartyEntryFields(_Fields):
     amount: Any = None
     date: dt.date | None = None
     note: str | None = None
+    paid_via: Literal["cash", "bank"] | None = None  # real money moved (payment); None = udhaar / goods
+    bank_name: str | None = None
 
 
 class AddPartyFields(_Fields):
@@ -106,7 +110,56 @@ class ListPartiesFields(_Fields):
 
 class DeleteEntryFields(_Fields):
     party_name: str | None = None
+    item: str | None = None  # an expense / note word that describes the entry ("bijli", "chai")
     amount: Any = None
+
+
+class EntryPhotoFields(DeleteEntryFields):
+    pass
+
+
+class EditEntryFields(_Fields):
+    party_name: str | None = None
+    item: str | None = None
+    amount: Any = None  # the entry's current amount, if said ("500 nahi 600 thi" -> 500)
+    new_amount: Any = None
+    new_date: dt.date | None = None
+    new_note: str | None = None
+
+
+# ---------------------------------------------------------------------------
+# Cash book + banks
+# ---------------------------------------------------------------------------
+
+
+class CashEntryFields(_Fields):
+    direction: Literal["in", "out"] | None = None
+    amount: Any = None
+    date: dt.date | None = None
+    note: str | None = None
+    category_word: str | None = None  # expense word as written: "bijli", "kiraya", "chai"
+    is_sale: bool | None = None
+    bank_name: str | None = None
+
+
+class TransferFields(_Fields):
+    direction: Literal["to_bank", "from_bank"] | None = None
+    bank_name: str | None = None
+    amount: Any = None
+    date: dt.date | None = None
+
+
+class AddBankFields(_Fields):
+    name: str = Field(min_length=1)
+    account_number: str | None = None
+    opening_amount: Any = None
+
+
+class MoneyReportFields(_Fields):
+    account: str | None = None  # "cash", a bank name, or None = cash + all banks
+    start_date: dt.date | None = None
+    end_date: dt.date | None = None
+    pdf: bool | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -146,6 +199,7 @@ class ExtractedRow(_Fields):
     amount: Any = None
     date: dt.date | None = None
     note: str | None = None
+    bank_name: str | None = None  # bank rows: JazzCash / Easypaisa / Meezan ...
 
     @field_validator("category", mode="before")
     @classmethod

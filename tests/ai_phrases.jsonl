@@ -86,3 +86,54 @@
 {"text": "kal raat 9 baje", "pending": "Kab yaad dilaun? (jaise: kal 10 baje)", "intent": "pending_answer", "answers_pending": true, "fields": {"answer": "2026-09-29 21:00"}}
 {"text": "yaad rakhna Bilal sirf cash mein deta hai", "intent": "remember_business_fact", "language": "roman_ur"}
 {"text": "mujhe yaad krwana 30 sep tak Ali ko paise wapis karne hain", "intent": "set_reminder", "language": "roman_ur", "fields": {"date": "2026-09-30"}}
+{"text": "500 gae aaj", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 500}}
+{"text": "500 out", "intent": "cash_entry", "fields": {"direction": "out", "amount": 500}}
+{"text": "cash out 500", "intent": "cash_entry", "fields": {"direction": "out", "amount": 500}}
+{"text": "3000 aaye", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "in", "amount": 3000}}
+{"text": "cash in 2000", "intent": "cash_entry", "fields": {"direction": "in", "amount": 2000}}
+{"text": "galle mein 1500 daale", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "in", "amount": 1500}}
+{"text": "bijli ka bill 3000", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 3000, "category_word": "bijli"}}
+{"text": "chai 200", "intent": "cash_entry", "fields": {"direction": "out", "amount": 200, "category_word": "chai"}}
+{"text": "dukaan ka kiraya 25000 diya", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 25000, "category_word": "kiraya"}}
+{"text": "Ahmed ko salary 15000 di", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 15000, "category_word": "salary"}}
+{"text": "larke ki tankhwah 12000", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 12000}}
+{"text": "rickshaw ka kiraya 300 lag gaya", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 300}}
+{"text": "aaj 20000 ki sale hui", "intent": "cash_entry", "language": "roman_ur", "fields": {"amount": 20000, "is_sale": true}}
+{"text": "aj ki bikri 15 hazar", "intent": "cash_entry", "language": "roman_ur", "fields": {"amount": 15000, "is_sale": true}}
+{"text": "kal 800 ka kharcha hua petrol pe", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 800, "date": "2026-09-27"}}
+{"text": "paani ki bottle 150", "intent": "cash_entry", "fields": {"direction": "out", "amount": 150}}
+{"text": "yaar 1000 nikale galle se ghar ke liye", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 1000}}
+{"text": "saman ki dhulai ke 500 diye", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 500}}
+{"text": "JazzCash mein 1000 aaye", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "in", "amount": 1000, "bank_name": "JazzCash"}}
+{"text": "easypaisa se bijli ka bill 2500 bhara", "intent": "cash_entry", "language": "roman_ur", "fields": {"direction": "out", "amount": 2500, "bank_name": "easypaisa"}}
+{"text": "spent 300 on tea", "intent": "cash_entry", "language": "en", "fields": {"direction": "out", "amount": 300}}
+{"text": "today's sale 18000", "intent": "cash_entry", "language": "en", "fields": {"amount": 18000, "is_sale": true}}
+{"text": "بجلی کا بل 3000", "intent": "cash_entry", "language": "ur", "fields": {"direction": "out", "amount": 3000}}
+{"text": "آج 20000 کی سیل ہوئی", "intent": "cash_entry", "language": "ur", "fields": {"amount": 20000, "is_sale": true}}
+{"text": "چائے پر 200 خرچ ہوئے", "intent": "cash_entry", "language": "ur", "fields": {"direction": "out", "amount": 200}}
+{"text": "Ali ne 1000 wapas diye", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "direction": "got", "amount": 1000, "paid_via": "cash"}}
+{"text": "Bilal ko 5000 payment ki", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Bilal", "direction": "gave", "amount": 5000, "paid_via": "cash"}}
+{"text": "Ali ne 1000 JazzCash pe bheje", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "direction": "got", "amount": 1000, "paid_via": "bank", "bank_name": "JazzCash"}}
+{"text": "Ali ko 2000 ka saman udhaar diya", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "direction": "gave", "amount": 2000, "paid_via": null}}
+{"text": "Rohaan ne 3000 cash diye", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Rohaan", "direction": "got", "amount": 3000, "paid_via": "cash"}}
+{"text": "Kamran ko uske 4000 lota diye nakad", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Kamran", "direction": "gave", "amount": 4000, "paid_via": "cash"}}
+{"text": "Zafar supplier ko Meezan se 10000 transfer kiye", "intent": "party_entry", "language": "roman_ur", "fields": {"party_name": "Zafar", "direction": "gave", "amount": 10000, "paid_via": "bank"}}
+{"text": "bank se 10000 nikale", "intent": "transfer_money", "language": "roman_ur", "fields": {"direction": "from_bank", "amount": 10000}}
+{"text": "10000 Meezan mein jama karaye", "intent": "transfer_money", "language": "roman_ur", "fields": {"direction": "to_bank", "amount": 10000, "bank_name": "Meezan"}}
+{"text": "ATM se 5000 nikale", "intent": "transfer_money", "language": "roman_ur", "fields": {"direction": "from_bank", "amount": 5000}}
+{"text": "JazzCash account add karo", "intent": "add_bank", "language": "roman_ur", "fields": {"name": "JazzCash"}}
+{"text": "Meezan bank add karo, us mein 20000 hain", "intent": "add_bank", "language": "roman_ur", "fields": {"opening_amount": 20000}}
+{"text": "aaj ka hisaab", "intent": "money_report", "language": "roman_ur", "fields": {"start_date": "2026-09-28", "end_date": "2026-09-28"}}
+{"text": "kitna cash hai galle mein", "intent": "money_report", "language": "roman_ur"}
+{"text": "September ka cash dikhao", "intent": "money_report", "language": "roman_ur", "fields": {"start_date": "2026-09-01", "end_date": "2026-09-30"}}
+{"text": "JazzCash ka hisaab", "intent": "money_report", "language": "roman_ur", "fields": {"account": "JazzCash"}}
+{"text": "is mahine ke kharche", "intent": "money_report", "language": "roman_ur", "fields": {"start_date": "2026-09-01", "end_date": "2026-09-30"}}
+{"text": "cash book PDF bhejo", "intent": "money_report", "fields": {"pdf": true}}
+{"text": "how much cash do I have", "intent": "money_report", "language": "en"}
+{"text": "Ali wali entry 500 nahi 600 thi", "intent": "edit_entry", "language": "roman_ur", "fields": {"party_name": "Ali", "amount": 500, "new_amount": 600}}
+{"text": "last entry 700 karo", "intent": "edit_entry", "language": "roman_ur", "fields": {"new_amount": 700}}
+{"text": "chai wali entry ki date kal karo", "intent": "edit_entry", "language": "roman_ur", "fields": {"new_date": "2026-09-27"}}
+{"text": "Ali wali entry ki photo bhejo", "intent": "entry_photo", "language": "roman_ur", "fields": {"party_name": "Ali"}}
+{"text": "bijli bill ka proof dikhao", "intent": "entry_photo", "language": "roman_ur"}
+{"text": "5000", "pending": "Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)", "intent": "pending_answer", "answers_pending": true}
+{"text": "Bills", "pending": "\"bijli\" kis category mein daalun?\n1) Bijli (nayi)\nYa naya naam likhein.", "intent": "pending_answer", "answers_pending": true, "fields": {"answer": "Bills"}}
