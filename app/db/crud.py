@@ -117,18 +117,18 @@ def clear_pending(conn: Connection, conversation_id: UUID) -> None:
 
 
 def claim_user_message(
-    conn: Connection, conversation_id: UUID, external_id: str, text: str
+    conn: Connection, conversation_id: UUID, external_id: str, text: str, attachment_path: str | None = None
 ) -> Row | None:
-    """Insert an incoming message. Returns None if this external_id was already received."""
+    """Insert an incoming message (with its photo, if any). Returns None if this external_id was already received."""
     return conn.execute(
         """
         insert into messages
-            (conversation_id, role, text, external_id, processing_status, processing_started_at)
-        values (%s, 'user', %s, %s, 'received', now())
+            (conversation_id, role, text, external_id, attachment_path, processing_status, processing_started_at)
+        values (%s, 'user', %s, %s, %s, 'received', now())
         on conflict (conversation_id, external_id) where role = 'user' do nothing
         returning *
         """,
-        (conversation_id, text, external_id),
+        (conversation_id, text, external_id, attachment_path),
     ).fetchone()
 
 

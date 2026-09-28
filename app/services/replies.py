@@ -334,6 +334,88 @@ TEXTS: dict[str, dict[str, str]] = {
         "ur": "یہ وقت گزر چکا ہے۔ آگے کا وقت بتائیں۔",
     },
     "word_and": {"en": "and", "roman_ur": "aur", "ur": "اور"},
+    # ---- Image entries (OCR) ----------------------------------------------
+    "image_found": {
+        "en": "📷 Found {n} entries:",
+        "roman_ur": "📷 {n} entries mili:",
+        "ur": "📷 {n} انٹریاں ملیں:",
+    },
+    "image_section_party": {"en": "Party khata:", "roman_ur": "Party khata:", "ur": "پارٹی کھاتہ:"},
+    "image_section_later": {
+        "en": "Can't be saved yet (Cash Book coming soon):",
+        "roman_ur": "Abhi save nahi hongi (Cash Book jald aa raha hai):",
+        "ur": "ابھی محفوظ نہیں ہوں گی (کیش بک جلد آ رہی ہے):",
+    },
+    "image_row_gave": {
+        "en": "{date} · Gave {amount} to {name}",
+        "roman_ur": "{date} · {name} ko {amount} diye",
+        "ur": "{date} · {name} کو {amount} دیے",
+    },
+    "image_row_got": {
+        "en": "{date} · Got {amount} from {name}",
+        "roman_ur": "{date} · {name} se {amount} liye",
+        "ur": "{date} · {name} سے {amount} لیے",
+    },
+    "image_new": {"en": "(new)", "roman_ur": "(naya)", "ur": "(نیا)"},
+    "image_missing_amount": {"en": "no amount", "roman_ur": "amount nahi mila", "ur": "رقم نہیں ملی"},
+    "image_missing_direction": {
+        "en": "gave or got not clear",
+        "roman_ur": "diye ya liye clear nahi",
+        "ur": "دیے یا لیے واضح نہیں",
+    },
+    "image_missing_party": {"en": "no name", "roman_ur": "naam nahi mila", "ur": "نام نہیں ملا"},
+    "image_missing_choice": {"en": "which {name}?", "roman_ur": "kaun sa {name}?", "ur": "کون سا {name}؟"},
+    "image_ask_later": {
+        "en": "I'll ask after saving",
+        "roman_ur": "baad mein poochunga",
+        "ur": "بعد میں پوچھوں گا",
+    },
+    "image_total_mismatch": {
+        "en": "⚠️ The sheet's total is {written}, the entries add up to {sum}. Please check once.",
+        "roman_ur": "⚠️ Sheet ka total {written} hai, entries ka jor {sum}. Ek baar check kar lein.",
+        "ur": "⚠️ شیٹ کا ٹوٹل {written} ہے، انٹریوں کا جوڑ {sum}۔ ایک بار چیک کر لیں۔",
+    },
+    "image_confirm": {"en": "Save them? yes/no", "roman_ur": "Save karun? haan/nahi", "ur": "محفوظ کروں؟ ہاں/نہیں"},
+    "image_new_names": {
+        "en": "New names: {names}\n1) All customers\n2) All suppliers\n3) Skip their entries",
+        "roman_ur": "Naye naam: {names}\n1) Sab customer\n2) Sab supplier\n3) Inki entries chhor do",
+        "ur": "نئے نام: {names}\n1) سب گاہک\n2) سب سپلائر\n3) ان کی انٹریاں چھوڑ دو",
+    },
+    "image_saved": {
+        "en": "✅ Saved {n} entries",
+        "roman_ur": "✅ {n} entries save ho gayin",
+        "ur": "✅ {n} انٹریاں محفوظ ہو گئیں",
+    },
+    "image_nothing_found": {
+        "en": "I couldn't find any entries in this photo.",
+        "roman_ur": "Tasveer mein koi entry nahi mili.",
+        "ur": "تصویر میں کوئی انٹری نہیں ملی۔",
+    },
+    "image_cancelled": {
+        "en": "OK, nothing was saved.",
+        "roman_ur": "Theek hai, kuch save nahi kiya.",
+        "ur": "ٹھیک ہے، کچھ محفوظ نہیں کیا۔",
+    },
+    "ocr_unavailable": {
+        "en": "Reading photos isn't switched on yet. Please send the entries as text.",
+        "roman_ur": "Tasveer parhne ki service abhi on nahi. Entries text mein bhej dein.",
+        "ur": "تصویر پڑھنے کی سروس ابھی آن نہیں۔ انٹریاں ٹیکسٹ میں بھیج دیں۔",
+    },
+    "ocr_failed": {
+        "en": "I couldn't read this photo. Please send a clearer photo.",
+        "roman_ur": "Tasveer parh nahi saka. Saaf tasveer dobara bhejein.",
+        "ur": "تصویر پڑھ نہیں سکا۔ صاف تصویر دوبارہ بھیجیں۔",
+    },
+    "ocr_too_big": {
+        "en": "This photo is too large (over 10 MB).",
+        "roman_ur": "Tasveer bohat bari hai (10 MB se zyada).",
+        "ur": "تصویر بہت بڑی ہے (10 MB سے زیادہ)۔",
+    },
+    "cat_expense": {"en": "Expense", "roman_ur": "Kharcha", "ur": "خرچہ"},
+    "cat_cash_in": {"en": "Cash in", "roman_ur": "Cash jama", "ur": "کیش جمع"},
+    "cat_cash_out": {"en": "Cash out", "roman_ur": "Cash nikala", "ur": "کیش نکالا"},
+    "cat_bank": {"en": "Bank", "roman_ur": "Bank", "ur": "بینک"},
+    "cat_sale": {"en": "Counter sale", "roman_ur": "Counter sale", "ur": "کاؤنٹر سیل"},
     "answer_yes_no": {
         "en": "Please reply yes or no.",
         "roman_ur": "Haan ya nahi likhein.",

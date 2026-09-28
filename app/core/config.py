@@ -46,6 +46,11 @@ class Settings(BaseSettings):
     reminder_day_times: str = "10:00,18:00"
     scheduler_interval_seconds: int = 30
 
+    # Image entries: Google Cloud Vision OCR (empty key = feature off)
+    google_vision_api_key: str = ""
+    ocr_max_rows: int = 20
+    ocr_max_image_mb: int = 10
+
     @property
     def llm_api_keys(self) -> list[str]:
         """Main key first, then the fallbacks."""

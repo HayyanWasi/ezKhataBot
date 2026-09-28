@@ -21,3 +21,6 @@ store/
 
 # Generated files (PDF statements)
 storage/
+
+# Real shop photos for OCR testing (private data)
+tests/ocr_samples/

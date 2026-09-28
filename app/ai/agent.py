@@ -30,9 +30,10 @@ from app.core.dates import now
 from app.core.database import transaction
 from app.db import crud
 from app.handlers.foundation import ask_choose_business, help_
+from app.handlers.images import read_image
 from app.schemas.khata import ClassifierOutput, PendingAction, PendingAnswerFields
 from app.services.answers import is_trivial_answer
-from app.services.registry import INTENTS, PENDING_RESOLVERS, Context, Outcome
+from app.services.registry import INTENTS, PENDING_RESOLVERS, Context, Outcome, chain
 from app.services.replies import t
 
 log = logging.getLogger("ezkhata.agent")
@@ -63,6 +64,12 @@ def check_rules(state: AgentState) -> AgentState:
         return {"outcome": Outcome("cancel", t("cancelled" if pending else "nothing_to_cancel", ctx.language))}
     if command == "/help":
         return {"outcome": help_(ctx, None)}
+    if ctx.image_path:  # a photo: read it (OCR), no classifier call
+        if ctx.business is None:
+            return {}  # after_rules asks which shop; the photo is kept for the replay
+        if ctx.business["role"] != "owner":  # photos write money
+            return {"outcome": Outcome("read_image", t("owner_only", ctx.language))}
+        return {"outcome": read_image(ctx)}
     if pending and is_trivial_answer(ctx.text, pending.expects):
         return {"answer": ctx.text}
     return {}
@@ -147,15 +154,7 @@ def finish(state: AgentState) -> AgentState:
     first = state.get("first_outcome")
     if first is None:
         return {}
-    second = state["outcome"]
-
-    def commit(conn) -> str:
-        a = first.commit(conn) if first.commit else first.reply
-        b = second.commit(conn) if second.commit else second.reply
-        return f"{a}\n\n{b}"
-
-    merged = Outcome(second.intent, commit=commit, pending=second.pending, active_business_id=first.active_business_id)
-    return {"outcome": merged}
+    return {"outcome": chain(first, state["outcome"])}
 
 
 # ---------------------------------------------------------------------------
