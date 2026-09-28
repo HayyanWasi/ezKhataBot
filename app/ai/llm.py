@@ -1,11 +1,12 @@
 """One structured LLM call, shared by the classifier and the image extractor.
 
-Any OpenAI-compatible API via the .env settings: Groq keys first, then
-OpenRouter keys (settings.llm_endpoints). The model returns JSON that LangChain
-parses into the given Pydantic schema. On a rate limit (or no credits left) the
-next key is tried; any other failure gets one retry. Keys are never logged.
+Any OpenAI-compatible API via the .env settings: Groq, OpenRouter and Gemini keys
+(settings.llm_endpoints). Calls take turns across the keys. The model returns JSON
+that LangChain parses into the given Pydantic schema. On a rate limit, no credits
+left or an error, the next key is tried. Keys are never logged.
 """
 
+import itertools
 import logging
 import time
 from functools import lru_cache
@@ -19,14 +20,19 @@ from app.core.config import get_settings
 
 log = logging.getLogger("ezkhata.ai")
 
+_turn = itertools.count()  # which key the next call starts at
+
 
 class AIError(Exception):
     """The LLM could not produce a valid answer."""
 
 
 def _used_up(error: Exception) -> bool:
-    """Rate limited (429), or no credits left on this key (402)."""
-    return isinstance(error, RateLimitError) or (isinstance(error, APIStatusError) and error.status_code == 402)
+    """Rate limited (429), no credits left (402), the model is not open to this key (404), or it is
+    busy (500 / 503). The next key is tried without counting it as a failure."""
+    return isinstance(error, RateLimitError) or (
+        isinstance(error, APIStatusError) and error.status_code in (402, 404, 500, 503)
+    )
 
 
 @lru_cache
@@ -50,31 +56,40 @@ def call_structured[T: BaseModel](
     schema: type[T], messages: list[tuple[str, str]], run_name: str, max_tokens: int | None = None
 ) -> T:
     """max_tokens: the answer cap. Groq counts prompt + cap against its per-minute limit, so short
-    answers (the classifier) use a small cap; the default (settings) is for long ones (photo rows)."""
+    answers (the classifier) use a small cap; the default (settings) is for long ones (photo rows).
+
+    Calls take turns: each one starts at the next key (Groq, OpenRouter, Gemini ...), so the load is
+    spread and no single key hits its per-minute limit. A key that is used up or fails passes the call
+    on to the next one; after 4 real failures (not limits) the call gives up."""
     settings = get_settings()
-    endpoints = settings.llm_endpoints  # Groq keys first, then OpenRouter keys
+    endpoints = settings.llm_endpoints
+    if not endpoints:
+        raise AIError("no LLM key is set")
     cap = max_tokens or settings.llm_max_tokens
+    start = next(_turn) % len(endpoints)
+    order = endpoints[start:] + endpoints[:start]
 
     last_error: Exception | None = None
-    key_index, failures, attempt = 0, 0, 0
-    while key_index < len(endpoints) and failures < 2:  # one retry on invalid output / API error
-        attempt += 1
-        model = _model(schema, *endpoints[key_index], cap)
+    failures = 0
+    for attempt, endpoint in enumerate(order, 1):
+        key_no = endpoints.index(endpoint) + 1
+        model = _model(schema, *endpoint, cap)
         started = time.monotonic()
         try:
             result = model.invoke(messages, config={"run_name": run_name})
         except Exception as e:
             last_error = e
-            if _used_up(e):  # this key is used up: try the next one
-                log.warning("%s call %d: key #%d used up, trying the next key", run_name, attempt, key_index + 1)
-                key_index += 1
-            else:  # API error or unparseable JSON
+            if _used_up(e):
+                log.warning("%s call %d: key #%d used up / busy, trying the next key", run_name, attempt, key_no)
+            else:  # API error, timeout or unparseable JSON
                 failures += 1
-                log.warning("%s call %d failed: %s", run_name, attempt, e)
+                log.warning("%s call %d (key #%d) failed: %s", run_name, attempt, key_no, e)
+                if failures >= 4:
+                    break
             continue
         log.info(
             "%s call %d (key #%d): %.2fs -> %s",
-            run_name, attempt, key_index + 1, time.monotonic() - started, result.model_dump_json(),
+            run_name, attempt, key_no, time.monotonic() - started, result.model_dump_json(),
         )
         return result
     raise AIError(str(last_error))
