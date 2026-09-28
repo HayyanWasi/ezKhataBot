@@ -70,3 +70,19 @@
 {"text": "diye the", "pending": "Rs 500:\n1) Ali ko diye\n2) Ali se liye", "intent": "pending_answer", "answers_pending": true}
 {"text": "Bilal ko 300 diye", "pending": "Ali: kitne paise?", "intent": "party_entry", "answers_pending": false, "fields": {"party_name": "Bilal", "amount": 300}}
 {"text": "500 rupay", "pending": "Ali: kitne paise?", "intent": "pending_answer", "answers_pending": true}
+{"text": "Ali ka statement bhejo", "intent": "statement", "language": "roman_ur", "fields": {"party_name": "Ali", "start_date": null}}
+{"text": "Ali ka September ka statement", "intent": "statement", "language": "roman_ur", "fields": {"party_name": "Ali", "start_date": "2026-09-01", "end_date": "2026-09-30"}}
+{"text": "sab ka statement pdf bhejo", "intent": "statement", "language": "roman_ur", "fields": {"party_name": null}}
+{"text": "send me Rohaan's report for August", "intent": "statement", "language": "en", "fields": {"party_name": "Rohaan", "start_date": "2026-08-01", "end_date": "2026-08-31"}}
+{"text": "علی کا اسٹیٹمنٹ بھیجو", "intent": "statement", "language": "ur"}
+{"text": "kal 10 baje yaad dilana Rohaan ko payment karni hai", "intent": "set_reminder", "language": "roman_ur", "fields": {"date": "2026-09-29", "time": "10:00", "party_name": "Rohaan"}}
+{"text": "30 Sep ko yaad dilana Ali se paise lene hain", "intent": "set_reminder", "language": "roman_ur", "fields": {"date": "2026-09-30", "time": null, "party_name": "Ali"}}
+{"text": "shaam ko yaad krwana dukaan band karni hai", "intent": "set_reminder", "language": "roman_ur", "fields": {"time": "18:00"}}
+{"text": "remind me at 5 pm to call the supplier", "intent": "set_reminder", "language": "en", "fields": {"time": "17:00"}}
+{"text": "yaad dilana bijli ka bill jama karna hai", "intent": "set_reminder", "language": "roman_ur", "fields": {"date": null, "time": null}}
+{"text": "کل صبح یاد دلانا کرایہ دینا ہے", "intent": "set_reminder", "language": "ur", "fields": {"date": "2026-09-29", "time": "09:00"}}
+{"text": "meri reminders dikhao", "intent": "list_reminders", "language": "roman_ur"}
+{"text": "Rohaan wali reminder cancel karo", "intent": "cancel_reminder", "language": "roman_ur", "fields": {"query": "Rohaan"}}
+{"text": "kal raat 9 baje", "pending": "Kab yaad dilaun? (jaise: kal 10 baje)", "intent": "pending_answer", "answers_pending": true, "fields": {"answer": "2026-09-29 21:00"}}
+{"text": "yaad rakhna Bilal sirf cash mein deta hai", "intent": "remember_business_fact", "language": "roman_ur"}
+{"text": "mujhe yaad krwana 30 sep tak Ali ko paise wapis karne hain", "intent": "set_reminder", "language": "roman_ur", "fields": {"date": "2026-09-30"}}

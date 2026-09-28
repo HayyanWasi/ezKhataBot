@@ -154,9 +154,10 @@ REMEMBER_HINT = (
 
 @intent(
     "remember_user_fact",
-    "User explicitly asks the bot to remember something about THEMSELVES only: "
+    "User explicitly asks the bot to remember (keep as a note) something about THEMSELVES only: "
     "how to address them or their own personal habits. Anything about other people "
-    "(customers, suppliers, family of customers) or the shop is remember_business_fact.",
+    "(customers, suppliers, family of customers) or the shop is remember_business_fact. "
+    'Asking to be REMINDED at a time or on a day ("yaad dilana", "yaad krwana", "remind me") is set_reminder.',
     fields=RememberFields,
     fields_hint=REMEMBER_HINT,
     examples=["mujhe Hayyan bhai kehna", "call me boss", "yaad rakhna main subah 9 baje aata hoon"],
@@ -171,8 +172,9 @@ def remember_user_fact(ctx: Context, fields: RememberFields) -> Outcome:
 
 @intent(
     "remember_business_fact",
-    "User explicitly asks the bot to remember a non-money fact about the SHOP or about OTHER people "
-    "(customers, suppliers, how they are related, shop timings).",
+    "User explicitly asks the bot to remember (keep as a note) a non-money fact about the SHOP or about "
+    "OTHER people (customers, suppliers, how they are related, shop timings), with no reminding time. "
+    'Asking to be reminded ("yaad dilana", "yaad krwana", "remind me") is set_reminder.',
     fields=RememberFields,
     fields_hint=REMEMBER_HINT,
     examples=["yaad rakhna Ali Rohaan ka bhai hai", "remember the shop is closed on Friday"],

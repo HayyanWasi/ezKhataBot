@@ -10,6 +10,7 @@ handle_message() runs four phases:
 import logging
 from datetime import datetime, timedelta, timezone
 from enum import StrEnum
+from pathlib import Path
 from uuid import UUID
 
 from langsmith import traceable
@@ -78,7 +79,7 @@ def handle_message(channel: Channel, external_id: str, phone: str, text: str) ->
     if message is None:
         if action == "resend":
             log.info("duplicate %s: resending saved reply", external_id)
-            _send(channel, phone, row)
+            send_saved_message(channel, phone, row)
             return Result.RESENT
         if action == "ignore":
             log.info("duplicate %s: already handled, ignored", external_id)
@@ -106,7 +107,7 @@ def handle_message(channel: Channel, external_id: str, phone: str, text: str) ->
         return Result.IN_PROGRESS
 
     # ---- Phase 4: send --------------------------------------------------
-    _send(channel, phone, reply)
+    send_saved_message(channel, phone, reply)
     return Result.PROCESSED
 
 
@@ -214,7 +215,9 @@ def _commit(
             )
         else:
             crud.clear_pending(conn, conversation_id)
-        reply = crud.insert_bot_reply(conn, conversation_id, message_id, reply_text, business_id, outcome.intent)
+        reply = crud.insert_bot_reply(
+            conn, conversation_id, message_id, reply_text, business_id, outcome.intent, outcome.attachment
+        )
         crud.finish_user_message(conn, message_id, "processed", business_id, outcome.intent)
     return reply
 
@@ -235,17 +238,33 @@ def _commit_failure(
 # ---------------------------------------------------------------------------
 
 
-@traceable(name="send", process_inputs=lambda i: {"reply_id": str(i["reply"]["id"]), "text": i["reply"]["text"]})
-def _send(channel: Channel, phone: str, reply: dict) -> bool:
+@traceable(
+    name="send",
+    process_inputs=lambda i: {
+        "message_id": str(i["message"]["id"]),
+        "text": i["message"]["text"],
+        "attachment": bool(i["message"].get("attachment_path")),
+    },
+)
+def send_saved_message(channel: Channel, phone: str, message: dict) -> bool:
+    """Deliver a saved bot message (reply or reminder) and record the result on its row.
+    A message with a file (PDF statement) is sent as a document with the text as caption."""
+    path = message.get("attachment_path")
+    if path and not Path(path).is_file():
+        log.warning("attachment missing for message %s, sending text only", message["id"])
+        path = None
     try:
-        provider_message_id = channel.send(phone, reply["text"])
+        if path:
+            provider_message_id = channel.send_document(phone, path, message["text"])
+        else:
+            provider_message_id = channel.send(phone, message["text"])
     except Exception as e:
-        log.warning("send failed for reply %s: %s", reply["id"], e)
+        log.warning("send failed for message %s: %s", message["id"], e)
         with transaction() as conn:
-            crud.record_send_failure(conn, reply["id"], repr(e))
+            crud.record_send_failure(conn, message["id"], repr(e))
         return False
     with transaction() as conn:
-        crud.record_send_success(conn, reply["id"], provider_message_id)
+        crud.record_send_success(conn, message["id"], provider_message_id)
     return True
 
 

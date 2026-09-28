@@ -107,3 +107,25 @@ class ListPartiesFields(_Fields):
 class DeleteEntryFields(_Fields):
     party_name: str | None = None
     amount: Any = None
+
+
+# ---------------------------------------------------------------------------
+# Statements + reminders
+# ---------------------------------------------------------------------------
+
+
+class StatementFields(_Fields):
+    party_name: str | None = None  # None = all parties
+    start_date: dt.date | None = None  # None = full khata
+    end_date: dt.date | None = None
+
+
+class SetReminderFields(_Fields):
+    text: str | None = None
+    date: dt.date | None = None
+    time: dt.time | None = None
+    party_name: str | None = None
+
+
+class CancelReminderFields(_Fields):
+    query: str | None = None

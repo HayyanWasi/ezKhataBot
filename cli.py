@@ -9,6 +9,7 @@ import uuid
 
 from app.channels.cli import CLIChannel
 from app.core.config import get_settings
+from app.core.scheduler import ReminderScheduler
 from app.core.database import transaction
 from app.core.phone import normalize_phone
 from app.db import crud
@@ -20,6 +21,7 @@ DEV_HELP = """dev commands:
   /repeat                resend the last message with the SAME id (duplicate test)
   /fail-next-send        next reply fails to send
   /crash-before-commit   next message stops after thinking, before saving
+  /run-reminders         send due reminders now (they are also sent automatically every 30 s)
   /dev                   show this list
   /exit                  quit
 bot commands: /help, /cancel"""
@@ -65,6 +67,7 @@ def main() -> None:
     onboard(phone)
     channel = CLIChannel()
     last: tuple[str, str, str] | None = None  # (external_id, phone, text)
+    ReminderScheduler({"cli": channel}).start()  # reminders print here when they are due
 
     print(f"\nChatting as {phone}. Type /dev for dev commands.\n")
     while True:
@@ -101,6 +104,11 @@ def main() -> None:
         if command == "/fail-next-send":
             channel.fail_next_send = True
             print("(next reply will fail to send)")
+            continue
+        if command == "/run-reminders":
+            from app.services.reminders import run_due_reminders
+
+            print(f"({run_due_reminders({'cli': channel})} reminder(s) sent)")
             continue
         if command == "/crash-before-commit":
             handler.DEV["crash_before_commit"] = True

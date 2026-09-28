@@ -22,6 +22,8 @@ TEXTS: dict[str, dict[str, str]] = {
             "• \"Gave 500 to Ali\" / \"Got 300 from Ali\"\n"
             "• \"Ali's balance\" / \"all balances\"\n"
             "• \"add supplier Rohaan\" / \"undo\"\n"
+            "• \"Ali's statement for September\" / \"all parties statement\"\n"
+            "• \"remind me tomorrow at 10 to pay Rohaan\" / \"my reminders\"\n"
             "• \"switch shop\" / \"talk in English\" / \"remember …\""
         ),
         "roman_ur": (
@@ -29,6 +31,8 @@ TEXTS: dict[str, dict[str, str]] = {
             "• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n"
             "• \"Ali ka hisaab\" / \"sab ka hisaab\"\n"
             "• \"Rohaan supplier add karo\" / \"undo\"\n"
+            "• \"Ali ka September ka statement\" / \"sab ka statement\"\n"
+            "• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n"
             "• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\""
         ),
         "ur": (
@@ -36,6 +40,8 @@ TEXTS: dict[str, dict[str, str]] = {
             "• \"علی کو 500 دیے\" / \"علی سے 300 ملے\"\n"
             "• \"علی کا حساب\" / \"سب کا حساب\"\n"
             "• \"روحان سپلائر شامل کرو\" / \"undo\"\n"
+            "• \"علی کا ستمبر کا اسٹیٹمنٹ\" / \"سب کا اسٹیٹمنٹ\"\n"
+            "• \"کل 10 بجے یاد دلانا روحان کو پیمنٹ کرنی ہے\" / \"میری یاد دہانیاں\"\n"
             "• \"دکان بدلو\" / \"انگریزی میں بات کرو\" / \"یاد رکھنا …\""
         ),
     },
@@ -264,6 +270,70 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "Delete karne ko koi entry nahi mili.",
         "ur": "ڈیلیٹ کرنے کو کوئی انٹری نہیں ملی۔",
     },
+    # ---- Statements -------------------------------------------------------
+    "statement_ready": {
+        "en": "📄 {name}'s statement ({period})",
+        "roman_ur": "📄 {name} ka statement ({period})",
+        "ur": "📄 {name} کا اسٹیٹمنٹ ({period})",
+    },
+    "statement_all_ready": {
+        "en": "📄 All parties statement ({period})\nTotal you will get: {get}\nTotal you will give: {give}",
+        "roman_ur": "📄 Sab parties ka statement ({period})\nKul lene hain: {get}\nKul dene hain: {give}",
+        "ur": "📄 سب پارٹیوں کا اسٹیٹمنٹ ({period})\nکل لینے ہیں: {get}\nکل دینے ہیں: {give}",
+    },
+    "period_full": {"en": "full khata", "roman_ur": "poora khata", "ur": "پورا کھاتہ"},
+    # ---- Reminders --------------------------------------------------------
+    "reminder_set": {
+        "en": "⏰ I'll remind you on {when}: {text}",
+        "roman_ur": "⏰ {when} yaad dilaunga: {text}",
+        "ur": "⏰ {when} یاد دلاؤں گا: {text}",
+    },
+    "reminder_fire": {
+        "en": "⏰ Reminder: {text}",
+        "roman_ur": "⏰ Yaad dihani: {text}",
+        "ur": "⏰ یاد دہانی: {text}",
+    },
+    "reminders_list": {
+        "en": "Your reminders:\n{items}",
+        "roman_ur": "Aapki reminders:\n{items}",
+        "ur": "آپ کی یاد دہانیاں:\n{items}",
+    },
+    "no_reminders": {
+        "en": "No reminders set.",
+        "roman_ur": "Koi reminder set nahi hai.",
+        "ur": "کوئی یاد دہانی نہیں ہے۔",
+    },
+    "reminder_cancelled": {
+        "en": "✅ Reminder cancelled: {text}",
+        "roman_ur": "✅ Reminder cancel ho gayi: {text}",
+        "ur": "✅ یاد دہانی منسوخ: {text}",
+    },
+    "reminder_not_found": {
+        "en": "No reminder matches that.",
+        "roman_ur": "Aisi koi reminder nahi mili.",
+        "ur": "ایسی کوئی یاد دہانی نہیں ملی۔",
+    },
+    "choose_reminder": {
+        "en": "Which reminder?\n{options}",
+        "roman_ur": "Kaun si reminder?\n{options}",
+        "ur": "کون سی یاد دہانی؟\n{options}",
+    },
+    "ask_reminder_what": {
+        "en": "What should I remind you about?",
+        "roman_ur": "Kya yaad dilaun?",
+        "ur": "کیا یاد دلاؤں؟",
+    },
+    "ask_reminder_when": {
+        "en": "When should I remind you? (e.g. tomorrow 10 am)",
+        "roman_ur": "Kab yaad dilaun? (jaise: kal 10 baje)",
+        "ur": "کب یاد دلاؤں؟ (جیسے: کل 10 بجے)",
+    },
+    "past_time": {
+        "en": "That time has already passed. Please give a future time.",
+        "roman_ur": "Yeh waqt guzar chuka hai. Aage ka waqt batayein.",
+        "ur": "یہ وقت گزر چکا ہے۔ آگے کا وقت بتائیں۔",
+    },
+    "word_and": {"en": "and", "roman_ur": "aur", "ur": "اور"},
     "answer_yes_no": {
         "en": "Please reply yes or no.",
         "roman_ur": "Haan ya nahi likhein.",
