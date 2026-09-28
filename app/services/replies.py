@@ -383,6 +383,11 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "⚠️ Sheet ka total {written} hai, entries ka jor {sum}. Ek baar check kar lein.",
         "ur": "⚠️ شیٹ کا ٹوٹل {written} ہے، انٹریوں کا جوڑ {sum}۔ ایک بار چیک کر لیں۔",
     },
+    "image_bill_mismatch": {
+        "en": "⚠️ The bill total is {total}, but its items add up to {sum}. Please check the photo once.",
+        "roman_ur": "⚠️ Bill ka total {total} hai, lekin items ka jor {sum} hai. Ek baar photo check kar lein.",
+        "ur": "⚠️ بل کا ٹوٹل {total} ہے، لیکن آئٹمز کا جوڑ {sum} ہے۔ ایک بار تصویر چیک کر لیں۔",
+    },
     "image_confirm": {"en": "Save them? yes/no", "roman_ur": "Save karun? haan/nahi", "ur": "محفوظ کروں؟ ہاں/نہیں"},
     "image_new_names": {
         "en": "New names: {names}\n1) All customers\n2) All suppliers\n3) Skip their entries",
