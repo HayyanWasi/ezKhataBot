@@ -32,7 +32,7 @@ from app.schemas.khata import (
 )
 from app.services.amounts import confirmed_amount, format_rs, parse_amount_answer, parse_amounts
 from app.services.answers import parse_number, parse_yes_no, pick
-from app.services.registry import Context, Outcome, intent, pending_resolver
+from app.services.registry import Context, Outcome, chain, intent, pending_resolver
 from app.services.replies import numbered, t
 from app.tools import party as tools
 
@@ -114,12 +114,13 @@ def _find(ctx: Context, name: str, party_type: str | None = None) -> list[dict]:
 # ---------------------------------------------------------------------------
 
 
-def _new_draft(mode: str, **values) -> dict:
+def new_draft(mode: str, **values) -> dict:
     """mode: 'entry' (diye/liye), 'opening' (new party with old balance), 'add' (new party only).
     Everything in a draft is JSON-safe: it is stored in the pending question."""
     draft = {
         "mode": mode, "party_name": None, "party_type": None, "account_id": None, "new_type": None,
         "force_new": False, "phone": None, "direction": None, "amount": None, "date": None, "note": None,
+        "queue": [],  # more drafts to go through after this one (rows from a photo)
     }
     draft.update(values)
     return draft
@@ -160,7 +161,11 @@ def next_step(ctx: Context, draft: dict) -> Outcome:
             party_type = _type_label(language, draft["new_type"])
             return Outcome(_DRAFT_INTENT[mode], t("party_exists", language, name=same[0]["name"], type=party_type))
 
-    return _save(ctx, draft)
+    saved = _save(ctx, draft)
+    if draft.get("queue"):  # save this one, then ask about the next draft in the same reply
+        following = dict(draft["queue"][0], queue=draft["queue"][1:])
+        return chain(saved, next_step(ctx, following))
+    return saved
 
 
 def _save(ctx: Context, draft: dict) -> Outcome:
@@ -233,7 +238,7 @@ def party_entry(ctx: Context, fields: PartyEntryFields) -> Outcome:
     if entry_date > _today(ctx):
         return Outcome("party_entry", t("future_date", ctx.language))
     amount = confirmed_amount(ctx.text, fields.amount)  # must be written in the message
-    draft = _new_draft(
+    draft = new_draft(
         "entry",
         party_name=fields.party_name,
         party_type=fields.party_type,
@@ -273,7 +278,7 @@ def add_party(ctx: Context, fields: AddPartyFields) -> Outcome:
     has_opening = fields.opening_amount is not None or fields.opening_direction is not None
     amount = confirmed_amount(ctx.text, fields.opening_amount) if has_opening else None
     direction = {"will_get": "gave", "will_give": "got"}.get(fields.opening_direction or "")
-    draft = _new_draft(
+    draft = new_draft(
         "opening" if has_opening else "add",
         party_name=fields.name,
         party_type=fields.type,

@@ -129,3 +129,58 @@ class SetReminderFields(_Fields):
 
 class CancelReminderFields(_Fields):
     query: str | None = None
+
+
+# ---------------------------------------------------------------------------
+# Image entries (OCR text -> rows). Amounts stay raw: code checks each one
+# against the OCR text before anything is saved.
+# ---------------------------------------------------------------------------
+
+RowCategory = Literal["party_entry", "expense", "cash_in", "cash_out", "bank", "sale", "other"]
+
+
+class ExtractedRow(_Fields):
+    category: RowCategory = "other"
+    party_name: str | None = None
+    direction: Literal["gave", "got"] | None = None
+    amount: Any = None
+    date: dt.date | None = None
+    note: str | None = None
+
+    @field_validator("category", mode="before")
+    @classmethod
+    def _unknown_category(cls, v: Any) -> Any:
+        allowed = {"party_entry", "expense", "cash_in", "cash_out", "bank", "sale", "other"}
+        return v if v in allowed else "other"
+
+    @field_validator("direction", mode="before")
+    @classmethod
+    def _unknown_direction(cls, v: Any) -> Any:
+        return v if v in ("gave", "got") else None
+
+    @field_validator("date", mode="before")
+    @classmethod
+    def _bad_date(cls, v: Any) -> Any:
+        """An unreadable date becomes None (the row then uses today and shows it)."""
+        if isinstance(v, str):
+            try:
+                return dt.date.fromisoformat(v.strip())
+            except ValueError:
+                return None
+        return v
+
+
+class ImageExtraction(BaseModel):
+    kind: Literal["register", "bill", "payment", "other"] = "other"
+    written_total: Any = None  # a total written on the sheet, if any (checked against the rows)
+    rows: list[ExtractedRow] = Field(default_factory=list)
+
+    @field_validator("kind", mode="before")
+    @classmethod
+    def _unknown_kind(cls, v: Any) -> Any:
+        return v if v in ("register", "bill", "payment", "other") else "other"
+
+    @field_validator("rows", mode="before")
+    @classmethod
+    def _none_rows(cls, v: Any) -> Any:
+        return v or []

@@ -7,7 +7,9 @@ handle_message() runs four phases:
   4. send   - deliver the saved reply; delivery tracked separately
 """
 
+import hashlib
 import logging
+import shutil
 from datetime import datetime, timedelta, timezone
 from enum import StrEnum
 from pathlib import Path
@@ -51,13 +53,30 @@ def _trace_message_inputs(inputs: dict) -> dict:
         "external_id": inputs["external_id"],
         "phone": "***" + inputs["phone"][-4:],
         "text": inputs["text"],
+        "image": bool(inputs.get("image_path")),
     }
 
 
+def _store_upload(image_path: str, phone: str, external_id: str) -> str:
+    """Copy a received photo into storage/uploads. The name comes from the message id,
+    so a duplicate delivery of the same message writes the same file."""
+    source = Path(image_path)
+    name = hashlib.sha1(f"{phone}:{external_id}".encode()).hexdigest()[:20] + (source.suffix.lower() or ".jpg")
+    folder = get_settings().storage_dir / "uploads"
+    folder.mkdir(parents=True, exist_ok=True)
+    target = folder / name
+    shutil.copyfile(source, target)
+    return str(target)
+
+
 @traceable(name="handle_message", run_type="chain", process_inputs=_trace_message_inputs)
-def handle_message(channel: Channel, external_id: str, phone: str, text: str) -> Result:
-    text = text.strip()
+def handle_message(
+    channel: Channel, external_id: str, phone: str, text: str, image_path: str | None = None
+) -> Result:
+    """`image_path`: a photo the user sent (a local file); its caption, if any, is `text`."""
+    text = text.strip() or ("[image]" if image_path else "")
     settings = get_settings()
+    stored_image = _store_upload(image_path, phone, external_id) if image_path else None
 
     # ---- Phase 1: claim -------------------------------------------------
     with transaction() as conn:
@@ -66,7 +85,7 @@ def handle_message(channel: Channel, external_id: str, phone: str, text: str) ->
             conversation = message = None
         else:
             conversation = crud.get_or_create_conversation(conn, user["id"], channel.name)
-            message = crud.claim_user_message(conn, conversation["id"], external_id, text)
+            message = crud.claim_user_message(conn, conversation["id"], external_id, text, stored_image)
             if message is None:
                 action, row = _check_duplicate(
                     conn, conversation["id"], external_id, settings.processing_lease_seconds
@@ -161,7 +180,9 @@ def _think(user: dict, conversation_id: UUID, message: dict) -> tuple[Outcome, U
         language = detect_language(text, default=fallback)
     # The agent doesn't need the phone; leaving it out keeps it out of LangSmith traces
     agent_user = {k: v for k, v in user.items() if k != "phone"}
-    ctx = Context(agent_user, conversation, None, businesses, language, text, message["id"])
+    ctx = Context(
+        agent_user, conversation, None, businesses, language, text, message["id"], message.get("attachment_path")
+    )
 
     if not businesses:
         return Outcome("no_business", t("no_business", language)), None

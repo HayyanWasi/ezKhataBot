@@ -6,6 +6,7 @@
 import argparse
 import logging
 import uuid
+from pathlib import Path
 
 from app.channels.cli import CLIChannel
 from app.core.config import get_settings
@@ -18,6 +19,7 @@ from app.services import handler
 DEV_HELP = """dev commands:
   /as <phone>            chat as another number (unknown numbers are not onboarded)
   /add-business <name>   create another shop owned by you
+  /image <path> [text]   send a photo (register page, bill, payment screenshot), with an optional caption
   /repeat                resend the last message with the SAME id (duplicate test)
   /fail-next-send        next reply fails to send
   /crash-before-commit   next message stops after thinking, before saving
@@ -66,7 +68,7 @@ def main() -> None:
     phone = normalize_phone(args.phone) if args.phone else ask_phone()
     onboard(phone)
     channel = CLIChannel()
-    last: tuple[str, str, str] | None = None  # (external_id, phone, text)
+    last: tuple[str, str, str, str | None] | None = None  # (external_id, phone, text, image_path)
     ReminderScheduler({"cli": channel}).start()  # reminders print here when they are due
 
     print(f"\nChatting as {phone}. Type /dev for dev commands.\n")
@@ -118,13 +120,20 @@ def main() -> None:
             if last is None:
                 print("(nothing to repeat)")
                 continue
-            external_id, phone_used, text = last
+            external_id, phone_used, text, image = last
         else:
+            image = None
+            if command == "/image":
+                path, _, caption = arg.strip().strip('"').partition(" ")
+                if not path or not Path(path).is_file():
+                    print("(usage: /image <path to photo> [caption])")
+                    continue
+                image, text = path, caption
             external_id, phone_used = uuid.uuid4().hex, phone
-            last = (external_id, phone_used, text)
+            last = (external_id, phone_used, text, image)
 
         try:
-            result = handler.handle_message(channel, external_id, phone_used, text)
+            result = handler.handle_message(channel, external_id, phone_used, text, image_path=image)
         except handler.SimulatedCrash as e:
             print(f"({e}: message left as 'received', nothing saved)")
             continue

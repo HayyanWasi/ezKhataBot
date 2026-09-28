@@ -166,6 +166,7 @@ def record_entry(
     message_id: Id,
     user_id: Id,
     opening: bool = False,
+    source_line: int = 0,  # position of the row when one message saves several (a photo)
 ) -> UUID:
     """One transaction + one entry on the party. Returns the transaction id."""
     if amount <= 0:
@@ -178,11 +179,11 @@ def record_entry(
     transaction_id = conn.execute(
         """
         insert into business_transactions
-            (business_id, transaction_date, transaction_type, source_message_id, created_by)
-        values (%s, %s, %s, %s, %s)
+            (business_id, transaction_date, transaction_type, source_message_id, source_line, created_by)
+        values (%s, %s, %s, %s, %s, %s)
         returning id
         """,
-        (business_id, entry_date, transaction_type, message_id, user_id),
+        (business_id, entry_date, transaction_type, message_id, source_line, user_id),
     ).fetchone()["id"]
 
     # The select makes sure the account belongs to this business

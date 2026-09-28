@@ -26,6 +26,7 @@ class Context:
     language: str  # reply language
     text: str  # the user's message
     message_id: UUID | None = None  # the user message being handled (source of money entries)
+    image_path: str | None = None  # a photo the user sent (read with OCR)
 
     def business_by_id(self, business_id: str | UUID) -> dict | None:
         return next((b for b in self.businesses if str(b["id"]) == str(business_id)), None)
@@ -48,6 +49,24 @@ class Outcome:
     active_business_id: UUID | None = None
     replay_text: str | None = None  # re-run this message after the outcome (used after choosing a shop)
     attachment: str | None = None  # file sent with the reply (PDF statement)
+
+
+def chain(first: Outcome, second: Outcome) -> Outcome:
+    """Do `first`, then `second`, in the same commit: replies are joined and
+    `second`'s question (if any) becomes the pending one."""
+
+    def commit(conn: Connection) -> str:
+        a = first.commit(conn) if first.commit else first.reply
+        b = second.commit(conn) if second.commit else second.reply
+        return "\n\n".join(x for x in (a, b) if x)
+
+    return Outcome(
+        second.intent,
+        commit=commit,
+        pending=second.pending,
+        active_business_id=first.active_business_id or second.active_business_id,
+        attachment=second.attachment or first.attachment,
+    )
 
 
 Handler = Callable[[Context, BaseModel | None], Outcome]
