@@ -227,7 +227,13 @@ class ExtractedRow(_Fields):
 class ImageExtraction(BaseModel):
     kind: Literal["register", "bill", "payment", "other"] = "other"
     written_total: Any = None  # a total written on the sheet, if any (checked against the rows)
+    item_amounts: list[Any] = Field(default_factory=list)  # a bill's line amounts (code adds them up)
     rows: list[ExtractedRow] = Field(default_factory=list)
+
+    @field_validator("item_amounts", mode="before")
+    @classmethod
+    def _none_items(cls, v: Any) -> Any:
+        return v if isinstance(v, list) else []
 
     @field_validator("kind", mode="before")
     @classmethod

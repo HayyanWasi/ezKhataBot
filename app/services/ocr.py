@@ -121,6 +121,26 @@ a khata register page, a bill, a payment screenshot, or a handwritten list, in U
 - Return only the text, with no explanation. If there is no text, return nothing."""
 
 
+def _post_gemini(model: str, body: dict) -> httpx.Response | None:
+    """One model; a "busy" answer (503) gets one more try after a short wait. None = no answer (timeout)."""
+    response = None
+    for attempt in range(2):
+        try:
+            response = httpx.post(
+                GEMINI_URL.format(model=model),
+                headers={"x-goog-api-key": get_settings().gemini_api_key},
+                json=body,
+                timeout=45,
+            )
+        except httpx.HTTPError as e:
+            log.warning("gemini %s: %s", model, type(e).__name__)
+            return None
+        if response.status_code not in (500, 503) or attempt == 1:
+            return response
+        time.sleep(3)
+    return response
+
+
 def _read_gemini(image: str) -> OcrResult:
     settings = get_settings()
     body = {
@@ -130,19 +150,16 @@ def _read_gemini(image: str) -> OcrResult:
         ]}],
         "generationConfig": {"temperature": 0},
     }
-    for attempt in range(2):  # one retry: Gemini sometimes answers 503 "busy"
-        try:
-            response = httpx.post(
-                GEMINI_URL.format(model=settings.gemini_model),
-                headers={"x-goog-api-key": settings.gemini_api_key},
-                json=body,
-                timeout=60,
-            )
-        except httpx.HTTPError as e:
-            raise OCRError("failed", type(e).__name__) from e
-        if response.status_code not in (500, 503) or attempt == 1:
+    # The free tier allows ~20 photos a day PER MODEL and is often "busy" (503). Each model in
+    # GEMINI_MODELS has its own quota, so when one is full or busy the next one is tried.
+    response = None
+    for model in settings.gemini_model_list:
+        response = _post_gemini(model, body)
+        if response is not None and response.status_code not in (404, 429, 500, 503):
             break
-        time.sleep(2)
+        log.warning("gemini %s: %s, trying the next model", model, response.status_code if response else "timeout")
+    if response is None:
+        raise OCRError("failed", "every Gemini model timed out")
 
     data = response.json() if response.content else {}
     if response.status_code != 200:

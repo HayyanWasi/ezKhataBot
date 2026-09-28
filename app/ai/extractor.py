@@ -17,6 +17,7 @@ or a mixed sheet with several kinds of rows. OCR text can be messy: words split,
 Return ONLY one JSON object:
 {"kind": "register" | "bill" | "payment" | "other",
  "written_total": number | null,
+ "item_amounts": [number, ...],
  "rows": [{"category": "...", "party_name": string | null, "direction": "gave" | "got" | null,
            "amount": number | null, "date": "YYYY-MM-DD" | null, "note": string | null,
            "bank_name": string | null}]}
@@ -37,9 +38,12 @@ direction (party_entry only), always from the SHOP's side:
 - A register with two amount columns (diye / liye, gave / got, debit / credit, jama / banam, دیے / لیے) decides the
   direction by the COLUMN the amount is in. Use the LAYOUT: compare the amount's horizontal position with the
   heading positions. If the column cannot be told, use null. Never default to "gave".
+- A printed shop pad / receipt / cash memo with a business name and at least one item line with an amount is a
+  "bill", even if it also says things like "For Publicity only", "Name of Quality" or has adverts on it.
 - A supplier bill / invoice is goods the shop GOT from that supplier: return exactly ONE row for the whole bill:
   category "party_entry", party_name = the business name printed at the top, direction "got",
-  amount = the grand total. Do NOT list the item lines.
+  amount = the grand total (if no total is written and there is one item line, its amount). Do NOT list the
+  item lines as rows. A pen stroke or tick after a number (e.g. "22572/-1") is not a digit.
 - A payment screenshot is one row: "received from X" = got, "sent to X" / "paid to X" = gave.
 - If the direction really cannot be told, use null. Never guess.
 
@@ -52,6 +56,8 @@ Rules:
   If a row has no readable amount, use null.
 - date: use the "Today" line to complete partial dates ("12/9" or "12 Sep" -> this year). null if the row has no date.
 - written_total: a grand total written on the sheet, if there is one; otherwise null. Totals are NOT rows.
+- item_amounts (bills only, else []): the amount written at the end of EACH item line (the line total, not the
+  rate), in order, exactly as written, including extra lines like "+40". Do not add them up.
 - note: the item or reason if written (e.g. "cheeni", "bijli bill"), else null. For an expense row, note is the
   short expense word as written (e.g. "bijli", "kiraya", "chai", "salary"), without the amount.
 - At most 20 rows. If the photo has no bookkeeping rows, return "rows": [].

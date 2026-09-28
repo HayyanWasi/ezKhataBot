@@ -55,7 +55,8 @@ class Settings(BaseSettings):
     # Image entries: OCR reads the photo's text. Gemini (free tier, reads handwriting best) is used
     # when its key is set, else Google Cloud Vision. No key at all = feature off.
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-2.5-flash"
+    # comma-separated, tried in order: each model has its own free daily quota (~20 photos)
+    gemini_models: str = "gemini-2.5-flash,gemini-flash-latest,gemini-flash-lite-latest"
     google_vision_api_key: str = ""
     ocr_max_rows: int = 20
     ocr_max_image_mb: int = 10
@@ -65,6 +66,10 @@ class Settings(BaseSettings):
         """Main key first, then the fallbacks."""
         fallbacks = [k.strip() for k in self.llm_fallback_api_keys.split(",") if k.strip()]
         return [self.llm_api_key, *fallbacks]
+
+    @property
+    def gemini_model_list(self) -> list[str]:
+        return [m.strip() for m in self.gemini_models.split(",") if m.strip()]
 
     @property
     def llm_endpoints(self) -> list[tuple[str, str, str]]:

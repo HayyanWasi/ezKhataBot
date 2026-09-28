@@ -76,7 +76,9 @@ def read_image(ctx: Context) -> Outcome:
     if later:
         lines.append(t("image_section_later", language))
         lines += [f"• {_later_line(language, r, source)}" for r in later]
-    warning = _total_warning(language, extraction.written_total, rows, source)
+    warning = _total_warning(language, extraction.written_total, rows, source) or _bill_warning(
+        language, extraction, rows, source
+    )
     if warning:
         lines.append(warning)
 
@@ -110,6 +112,20 @@ def _total_warning(language: str, written_total, rows: list[ExtractedRow], sourc
     if total == written:
         return None
     return t("image_total_mismatch", language, written=format_rs(written), sum=format_rs(total))
+
+
+def _bill_warning(language: str, extraction, rows: list[ExtractedRow], source: str) -> str | None:
+    """A bill is saved as its total: if its item lines don't add up to it, a number was probably misread."""
+    if extraction.kind != "bill" or len(rows) != 1 or not extraction.item_amounts:
+        return None
+    total = confirmed_amount(source, rows[0].amount)
+    items = [confirmed_amount(source, a) for a in extraction.item_amounts]
+    if total is None or None in items:
+        return None
+    items_sum = sum(items, Decimal(0))
+    if items_sum == total:
+        return None
+    return t("image_bill_mismatch", language, total=format_rs(total), sum=format_rs(items_sum))
 
 
 def _row_date(ctx: Context, row: ExtractedRow) -> str:
