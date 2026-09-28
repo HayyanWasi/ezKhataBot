@@ -52,7 +52,10 @@ class Settings(BaseSettings):
     reminder_day_times: str = "10:00,18:00"
     scheduler_interval_seconds: int = 30
 
-    # Image entries: Google Cloud Vision OCR (empty key = feature off)
+    # Image entries: OCR reads the photo's text. Gemini (free tier, reads handwriting best) is used
+    # when its key is set, else Google Cloud Vision. No key at all = feature off.
+    gemini_api_key: str = ""
+    gemini_model: str = "gemini-2.5-flash"
     google_vision_api_key: str = ""
     ocr_max_rows: int = 20
     ocr_max_image_mb: int = 10

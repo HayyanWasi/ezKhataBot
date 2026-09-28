@@ -210,8 +210,17 @@ def list_categories(conn: Connection, business_id: Id) -> list[dict]:
 
 
 def category_for_word(conn: Connection, business_id: Id, word: str) -> dict | None:
-    """The category this word was put in before, or a category with that exact name."""
-    word = word.strip().lower()
+    """The category this word was put in before, or a category with that name. For a phrase
+    ("bijli bill") each of its words is tried too, so a remembered "bijli" still matches."""
+    phrase = word.strip().lower()
+    for candidate in dict.fromkeys([phrase, *phrase.split()]):
+        found = _category_for(conn, business_id, candidate)
+        if found:
+            return found
+    return None
+
+
+def _category_for(conn: Connection, business_id: Id, word: str) -> dict | None:
     return conn.execute(
         """
         select c.id, c.name from expense_categories c
