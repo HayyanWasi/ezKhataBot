@@ -1,12 +1,20 @@
-"""OCR: read the text in a photo with Google Cloud Vision.
+"""OCR: read the text in a photo.
 
-Only the image goes to Google; nothing from the database. The API key comes
-from settings (GOOGLE_VISION_API_KEY) and is never logged.
+Two providers, picked by which key is set (settings):
+  - Gemini (GEMINI_API_KEY): a vision AI that copies the page's text, keeping
+    table columns; best with messy handwriting. Used when its key is set.
+  - Google Cloud Vision (GOOGLE_VISION_API_KEY): classic OCR; we rebuild the
+    columns from word positions (_layout).
+
+Only the image goes to Google; nothing from the database. Keys are never logged.
+Either way the text then goes to our extractor, every amount is checked
+against this text, and the user confirms before anything is saved.
 """
 
 import base64
 import io
 import logging
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -84,20 +92,84 @@ def _layout(annotation: dict, width: int = 100) -> str:
 
 
 def read_text(path: str | Path) -> OcrResult:
-    """All text in the image, in reading order and as a position layout (both '' if none)."""
+    """All text in the image, in reading order and as a column layout (both '' if none)."""
     settings = get_settings()
-    if not settings.google_vision_api_key:
-        raise OCRError("off", "GOOGLE_VISION_API_KEY is not set")
+    if not (settings.gemini_api_key or settings.google_vision_api_key):
+        raise OCRError("off", "no OCR key is set")
     path = Path(path)
     if not path.is_file():
         raise OCRError("bad_image", "file not found")
     if path.stat().st_size > settings.ocr_max_image_mb * 1024 * 1024:
         raise OCRError("too_big")
+    image = _prepare(path)
+    return _read_gemini(image) if settings.gemini_api_key else _read_vision(image)
 
+
+# ---------------------------------------------------------------------------
+# Gemini
+# ---------------------------------------------------------------------------
+
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+
+GEMINI_INSTRUCTION = """Copy ALL the text in this photo exactly as written. It is from a small shop in Pakistan:
+a khata register page, a bill, a payment screenshot, or a handwritten list, in Urdu, English or both.
+- Keep each line of the page on its own line, in the same order.
+- For tables, keep the columns: separate the cells of a row with " | ", and keep an empty cell empty
+  (so a number stays under its heading).
+- Keep Urdu in Urdu script and English as English. Copy numbers exactly; do not convert, add or total anything.
+- If a word or number cannot be read, write [?] for it. Never guess or correct anything.
+- Return only the text, with no explanation. If there is no text, return nothing."""
+
+
+def _read_gemini(image: str) -> OcrResult:
+    settings = get_settings()
+    body = {
+        "contents": [{"parts": [
+            {"inline_data": {"mime_type": "image/jpeg", "data": image}},
+            {"text": GEMINI_INSTRUCTION},
+        ]}],
+        "generationConfig": {"temperature": 0},
+    }
+    for attempt in range(2):  # one retry: Gemini sometimes answers 503 "busy"
+        try:
+            response = httpx.post(
+                GEMINI_URL.format(model=settings.gemini_model),
+                headers={"x-goog-api-key": settings.gemini_api_key},
+                json=body,
+                timeout=60,
+            )
+        except httpx.HTTPError as e:
+            raise OCRError("failed", type(e).__name__) from e
+        if response.status_code not in (500, 503) or attempt == 1:
+            break
+        time.sleep(2)
+
+    data = response.json() if response.content else {}
+    if response.status_code != 200:
+        error = data.get("error", {})
+        log.warning("gemini API %s %s", response.status_code, error.get("status"))
+        reason = "off" if response.status_code in (401, 403) else "failed"
+        raise OCRError(reason, f"{response.status_code} {error.get('status', '')}")
+
+    candidates = data.get("candidates") or []
+    parts = (candidates[0].get("content") or {}).get("parts", []) if candidates else []
+    text = "".join(p.get("text", "") for p in parts).strip()
+    if not candidates:  # blocked or empty answer
+        raise OCRError("failed", str(data.get("promptFeedback", ""))[:100])
+    return OcrResult(text=text, layout="")  # the text already keeps the columns (" | "): no separate layout
+
+
+# ---------------------------------------------------------------------------
+# Google Cloud Vision
+# ---------------------------------------------------------------------------
+
+
+def _read_vision(image: str) -> OcrResult:
+    settings = get_settings()
     body = {
         "requests": [
             {
-                "image": {"content": _prepare(path)},
+                "image": {"content": image},
                 "features": [{"type": "DOCUMENT_TEXT_DETECTION"}],
                 "imageContext": {"languageHints": ["ur", "en"]},
             }
