@@ -276,3 +276,79 @@ def all_parties_pdf(business: dict, parties: list[dict], start: date | None, end
         bold_last=True,
     )
     return _save(pdf, business["id"], "all-parties", start, end)
+
+
+# ---------------------------------------------------------------------------
+# Stock book
+# ---------------------------------------------------------------------------
+
+
+def _qty(value: Decimal) -> str:
+    """150 / 2.5 / -3 (no trailing zeros)."""
+    value = Decimal(value)
+    if value == value.to_integral():
+        return f"{value:,.0f}"
+    return f"{value.normalize():f}"
+
+
+_STOCK_TITLES = {"list": "Stock List", "rates": "Rate List", "low": "Low Stock", "value": "Stock Value"}
+
+
+def stock_pdf(business: dict, kind: str, items: list[dict]) -> str:
+    """The stock list / rate list / low stock / stock value (kind), as of today. Returns the file path."""
+    title = _STOCK_TITLES[kind]
+    pdf = _Sheet(title)
+    _header(pdf, business["name"], title, [f"As of {date.today():%d %b %Y}", _generated()])
+
+    def price(value: Decimal | None) -> str:
+        return _money(value) or "0" if value is not None else "-"
+
+    if kind == "rates":
+        headings, widths = ["Item", "Unit", "Sale price", "Purchase price"], (80, 30, 36, 36)
+        rows = [[i["name"], i["unit"], price(i["sale_price"]), price(i["purchase_price"])] for i in items]
+    elif kind == "value":
+        total = Decimal(0)
+        rows = []
+        for i in items:
+            value = i["qty"] * i["purchase_price"] if i["purchase_price"] is not None and i["qty"] > 0 else Decimal(0)
+            total += value
+            rows.append([i["name"], f"{_qty(i['qty'])} {i['unit']}", price(i["purchase_price"]), _money(value) or "0"])
+        rows.append(["Total", "", "", _money(total) or "0"])
+        headings, widths = ["Item", "Qty", "Purchase price", "Value"], (76, 36, 34, 36)
+    elif kind == "low":
+        headings, widths = ["Item", "Qty", "Alert at"], (100, 41, 41)
+        rows = [[i["name"], f"{_qty(i['qty'])} {i['unit']}", _qty(i["low_stock_level"])] for i in items]
+    else:
+        headings, widths = ["Item", "Category", "Qty", "Sale price"], (70, 44, 34, 34)
+        rows = [[i["name"], i["category"] or "", f"{_qty(i['qty'])} {i['unit']}", price(i["sale_price"])]
+                for i in items]
+    align = ("LEFT",) + ("RIGHT",) * (len(headings) - 1) if kind != "list" else ("LEFT", "LEFT", "RIGHT", "RIGHT")
+    _table(pdf, headings, widths, align, rows, bold_last=kind == "value")
+    return _save(pdf, business["id"], title, None, date.today())
+
+
+def stock_moves_pdf(business: dict, kind: str, rows: list[dict], start: date, end: date) -> str:
+    """Stock IN (kind 'in') or OUT ('out') lines for a period. Returns the file path."""
+    title = "Stock IN Report" if kind == "in" else "Stock OUT Report"
+    pdf = _Sheet(title)
+    _header(pdf, business["name"], title, [_period(start, end), _generated()])
+
+    total = Decimal(0)
+    table = []
+    for r in rows:
+        qty = abs(r["qty"])
+        amount = qty * r["rate"] if r["rate"] is not None else None
+        total += amount or 0
+        detail = " — ".join(x for x in (r["party"], r["notes"]) if x)
+        table.append([f"{r['transaction_date']:%d %b %Y}", r["name"], f"{_qty(qty)} {r['unit']}",
+                      _money(r["rate"]) if r["rate"] is not None else "-", _money(amount) if amount else "-", detail])
+    table.append(["", "Total", "", "", _money(total) or "0", f"{len(rows)} entries"])
+    _table(
+        pdf,
+        ["Date", "Item", "Qty", "Rate", "Amount", "Details"],
+        (24, 44, 26, 22, 26, 40),
+        ("LEFT", "LEFT", "RIGHT", "RIGHT", "RIGHT", "LEFT"),
+        table,
+        bold_last=True,
+    )
+    return _save(pdf, business["id"], title, start, end)

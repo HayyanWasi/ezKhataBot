@@ -137,3 +137,44 @@
 {"text": "bijli bill ka proof dikhao", "intent": "entry_photo", "language": "roman_ur"}
 {"text": "5000", "pending": "Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)", "intent": "pending_answer", "answers_pending": true}
 {"text": "Bills", "pending": "\"bijli\" kis category mein daalun?\n1) Bijli (nayi)\nYa naya naam likhein.", "intent": "pending_answer", "answers_pending": true, "fields": {"answer": "Bills"}}
+{"text": "socks add karo 30 ki bechta hun 20 ki aati hai 100 pcs", "intent": "add_item", "language": "roman_ur", "fields": {"name": "socks", "sale_price": 30, "purchase_price": 20, "qty": 100}}
+{"text": "naya item cheeni kg mein 150 rupay", "intent": "add_item", "language": "roman_ur", "fields": {"unit": "kg"}}
+{"text": "add item Surf Excel packet sale price 250", "intent": "add_item", "language": "en", "fields": {"sale_price": 250}}
+{"text": "item daalo: doodh litre, 220 ka bechte hain", "intent": "add_item", "language": "roman_ur"}
+{"text": "نیا آئٹم چینی کلو 150", "intent": "add_item", "language": "ur"}
+{"text": "50 socks aae", "intent": "stock_in", "language": "roman_ur"}
+{"text": "Bilal se 50 socks 20 wale udhaar liye", "intent": "stock_in", "language": "roman_ur", "fields": {"supplier_name": "Bilal"}}
+{"text": "10 kg cheeni 150 ke cash mein li", "intent": "stock_in", "language": "roman_ur"}
+{"text": "Bilal se 100 belt liye 150 wale, 5000 cash diye baqi udhaar", "intent": "stock_in", "language": "roman_ur", "fields": {"supplier_name": "Bilal", "paid_amount": 5000}}
+{"text": "maal aaya 20 carton biscuit", "intent": "stock_in", "language": "roman_ur"}
+{"text": "stock in 12 darjan ande", "intent": "stock_in", "language": "roman_ur"}
+{"text": "Rohaan wholesale se 5 bori chawal aayi 8000 ki bori JazzCash se payment", "intent": "stock_in", "language": "roman_ur", "fields": {"supplier_name": "Rohaan wholesale"}}
+{"text": "got 30 pcs of shampoo today", "intent": "stock_in", "language": "en"}
+{"text": "آج 20 پیکٹ سرف آئے", "intent": "stock_in", "language": "ur"}
+{"text": "godown mein 40 kg daal rakhi", "intent": "stock_in", "language": "roman_ur"}
+{"text": "5 socks kharab ho gae", "intent": "stock_out", "language": "roman_ur"}
+{"text": "2 packet surf muft diye", "intent": "stock_out", "language": "roman_ur"}
+{"text": "stock out 3 kg cheeni", "intent": "stock_out", "language": "roman_ur"}
+{"text": "4 ande toot gaye", "intent": "stock_out", "language": "roman_ur"}
+{"text": "10 belt supplier ko wapas kiye", "intent": "stock_out", "language": "roman_ur"}
+{"text": "3 کلو چینی خراب ہو گئی", "intent": "stock_out", "language": "ur"}
+{"text": "stock dikhao", "intent": "stock_report", "language": "roman_ur", "fields": {"kind": "list"}}
+{"text": "rate list bhejo", "intent": "stock_report", "language": "roman_ur", "fields": {"kind": "rates"}}
+{"text": "kaunsa maal kam hai", "intent": "stock_report", "language": "roman_ur", "fields": {"kind": "low"}}
+{"text": "stock ki value kitni hai", "intent": "stock_report", "language": "roman_ur", "fields": {"kind": "value"}}
+{"text": "September ka stock in report", "intent": "stock_report", "language": "roman_ur", "fields": {"kind": "in"}}
+{"text": "socks ka stock out report PDF", "intent": "stock_report", "language": "roman_ur", "fields": {"kind": "out", "pdf": true}}
+{"text": "socks kitne hain", "intent": "stock_report", "language": "roman_ur", "fields": {"kind": "item", "item": "socks"}}
+{"text": "cheeni ka stock batao", "intent": "stock_report", "language": "roman_ur", "fields": {"kind": "item"}}
+{"text": "how much rice is left", "intent": "stock_report", "language": "en", "fields": {"kind": "item"}}
+{"text": "اسٹاک دکھاؤ", "intent": "stock_report", "language": "ur"}
+{"text": "socks ka rate 35 karo", "intent": "edit_item", "language": "roman_ur", "fields": {"item": "socks", "sale_price": 35}}
+{"text": "cheeni ki khareed 140 ho gayi", "intent": "edit_item", "language": "roman_ur", "fields": {"purchase_price": 140}}
+{"text": "socks ka alert 10 pe lagao", "intent": "edit_item", "language": "roman_ur", "fields": {"low_stock_level": 10}}
+{"text": "socks delete karo", "intent": "delete_item", "language": "roman_ur", "fields": {"item": "socks"}}
+{"text": "socks ki photo bhejo", "intent": "item_photo", "language": "roman_ur", "fields": {"item": "socks"}}
+{"text": "socks wali entry 50 nahi 40 thi", "intent": "edit_entry", "language": "roman_ur"}
+{"text": "cheeni ki 10 kg wali entry delete karo", "intent": "delete_entry", "language": "roman_ur", "fields": {"amount": 10}}
+{"text": "Bilal se 5000 ka maal liya", "intent": "party_entry", "language": "roman_ur", "fields": {"amount": 5000}}
+{"text": "aaj 20000 ki sale hui", "intent": "cash_entry", "language": "roman_ur", "fields": {"amount": 20000}}
+{"text": "Ali ko 2 packet surf udhaar diye 500 ke", "intent": "party_entry", "language": "roman_ur", "fields": {"amount": 500}}

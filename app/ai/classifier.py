@@ -8,6 +8,7 @@ import re
 from datetime import datetime
 
 from app.ai.llm import AIError, call_structured
+from app.core.config import get_settings
 from app.ai.prompts import build_system_prompt, build_user_prompt
 from app.schemas.khata import ClassifierOutput
 from app.services.registry import IntentSpec
@@ -30,7 +31,8 @@ def classify(
         ("system", build_system_prompt(intents)),
         ("user", build_user_prompt(text, history, pending_question, memories, now)),
     ]
-    result = call_structured(ClassifierOutput, messages, "classify_llm")
+    cap = get_settings().llm_classify_max_tokens
+    result = call_structured(ClassifierOutput, messages, "classify_llm", max_tokens=cap)
 
     # Script is certain, the model's guess is not: Urdu script <=> "ur"
     if _URDU_SCRIPT.search(text):

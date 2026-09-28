@@ -244,7 +244,9 @@ def _save(ctx: Context, draft: dict) -> Outcome:
     'paid_via: "cash" when it clearly says real money was paid or paid back (wapas/wapis, payment, ada, '
     'cash, nakad, "paise wapas"); "bank" when a bank or wallet is named (JazzCash, Easypaisa, Meezan, '
     '"account mein bheje"); null for udhaar, goods (maal/saman) or when it is not clear. '
-    "Salary or wages paid to a worker is NOT a party entry (use cash_entry).",
+    "Salary or wages paid to a worker is NOT a party entry (use cash_entry). "
+    "A message that lists ITEMS with quantities (\"100 belt\", \"10 kg cheeni\") coming in or going back is "
+    "stock_in / stock_out, even when a party is named.",
     fields=PartyEntryFields,
     fields_hint=(
         '{"party_name": string | null (as written, e.g. "Ali"), '

@@ -24,6 +24,7 @@ from pydantic import ValidationError
 import app.handlers.foundation  # noqa: F401, I001  registers foundation intents (listed first to the AI)
 import app.handlers.party  # noqa: F401  registers party khata intents
 import app.handlers.cash  # noqa: F401  registers cash book intents
+import app.handlers.stock  # noqa: F401  registers stock book intents
 import app.handlers.entries  # noqa: F401  registers undo / delete / edit / photo intents
 import app.handlers.reminders  # noqa: F401  registers reminder intents
 import app.handlers.statements  # noqa: F401  registers the statement intent
@@ -33,6 +34,7 @@ from app.core.database import transaction
 from app.db import crud
 from app.handlers.foundation import ask_choose_business, help_
 from app.handlers.images import read_image
+from app.handlers.stock import stock_photo
 from app.schemas.khata import ClassifierOutput, PendingAction, PendingAnswerFields
 from app.services.answers import is_trivial_answer
 from app.services.registry import INTENTS, PENDING_RESOLVERS, Context, Outcome, chain
@@ -69,6 +71,9 @@ def check_rules(state: AgentState) -> AgentState:
     if ctx.image_path:  # a photo: read it (OCR), no classifier call
         if ctx.business is None:
             return {}  # after_rules asks which shop; the photo is kept for the replay
+        item_photo = stock_photo(ctx)  # an item's barcode / picture (a barcode lookup is open to staff)
+        if item_photo:
+            return {"outcome": item_photo}
         if ctx.business["role"] != "owner":  # photos write money
             return {"outcome": Outcome("read_image", t("owner_only", ctx.language))}
         return {"outcome": read_image(ctx)}

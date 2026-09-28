@@ -39,9 +39,10 @@ def record_transaction(
     category_id: Id | None = None,
     source_line: int = 0,  # position of the row when one message saves several (a photo)
     edited_from: Id | None = None,
+    allow_no_legs: bool = False,  # a stock-only event (app/tools/stock.py) moves no money
 ) -> UUID:
     """One transaction with its legs. Returns the transaction id."""
-    if not legs or any(amount == 0 for _, amount in legs):
+    if (not legs and not allow_no_legs) or any(amount == 0 for _, amount in legs):
         raise ValueError("every leg needs a non-zero amount")
 
     transaction_id = conn.execute(
@@ -94,16 +95,32 @@ def edit_transaction(
     note: str | None,
     message_id: Id,
     user_id: Id,
+    qty: Decimal | None = None,  # a stock entry with one item: its new quantity
 ) -> UUID | None:
-    """Soft-delete the old transaction and save a corrected copy that points to it.
-    None if the old one was already deleted."""
+    """Soft-delete the old transaction and save a corrected copy that points to it (with its stock
+    moves, if any). None if the old one was already deleted."""
     if not delete_transaction(conn, business_id, entry["transaction_id"], user_id):
         return None
     legs = [
         (leg["account_id"], (amount if leg["amount"] > 0 else -amount) if amount is not None else leg["amount"])
         for leg in entry["legs"]
     ]
-    return record_transaction(
+    moves = [dict(m) for m in entry.get("moves", [])]
+    if qty is not None and len(moves) == 1:
+        move = moves[0]
+        old_qty = abs(move["qty"])
+        move["qty"] = qty if move["qty"] > 0 else -qty
+        if amount is None and legs and move["rate"]:
+            # A purchase: the money follows the quantity. The udhaar (party) leg takes the difference;
+            # with no udhaar, the one money leg is the new total.
+            difference = (qty - old_qty) * move["rate"]
+            party = next((i for i, leg in enumerate(entry["legs"]) if leg["type"] in ("customer", "supplier")), None)
+            index = party if party is not None else 0
+            account_id, signed = legs[index]
+            signed = signed - difference if signed < 0 else signed + difference
+            legs = [leg for i, leg in enumerate(legs) if i != index] + ([(account_id, signed)] if signed else [])
+
+    transaction_id = record_transaction(
         conn,
         business_id=business_id,
         type=entry["transaction_type"],
@@ -114,7 +131,14 @@ def edit_transaction(
         user_id=user_id,
         category_id=entry["category_id"],
         edited_from=entry["transaction_id"],
+        allow_no_legs=bool(moves),
     )
+    for move in moves:
+        conn.execute(
+            "insert into stock_moves (transaction_id, item_id, qty, rate, line) values (%s, %s, %s, %s, %s)",
+            (transaction_id, move["item_id"], move["qty"], move["rate"], move["line"]),
+        )
+    return transaction_id
 
 
 # ---------------------------------------------------------------------------
@@ -291,11 +315,14 @@ def find_entry(
           and ((%(described)s and not %(only_own)s) or t.created_by = %(user_id)s)
           and (%(account_id)s::uuid is null or exists (
                 select 1 from khata_entries k where k.transaction_id = t.id and k.account_id = %(account_id)s))
-          and (%(amount)s::numeric is null or exists (
-                select 1 from khata_entries k where k.transaction_id = t.id and abs(k.amount) = %(amount)s))
+          and (%(amount)s::numeric is null
+               or exists (select 1 from khata_entries k where k.transaction_id = t.id and abs(k.amount) = %(amount)s)
+               or exists (select 1 from stock_moves s where s.transaction_id = t.id and abs(s.qty) = %(amount)s))
           and (%(item)s::text is null or position(%(item)s in lower(coalesce(c.name, ''))) > 0
                or exists (select 1 from khata_entries k where k.transaction_id = t.id
-                          and position(%(item)s in lower(coalesce(k.notes, ''))) > 0))
+                          and position(%(item)s in lower(coalesce(k.notes, ''))) > 0)
+               or exists (select 1 from stock_moves s join items i on i.id = s.item_id
+                          where s.transaction_id = t.id and position(%(item)s in lower(i.name)) > 0))
           and (not %(with_photo)s or m.attachment_path is not null)
         order by t.created_at desc
         limit 1
@@ -314,7 +341,21 @@ def find_entry(
         """,
         (row["transaction_id"],),
     ).fetchall()
-    return {**row, "legs": legs, "notes": legs[0]["notes"] if legs else None}
+    return {**row, "legs": legs, "moves": entry_moves(conn, row["transaction_id"]),
+            "notes": legs[0]["notes"] if legs else None}
+
+
+def entry_moves(conn: Connection, transaction_id: Id) -> list[dict]:
+    """The stock lines of a transaction (none for money-only entries)."""
+    return conn.execute(
+        """
+        select s.item_id, s.qty, s.rate, s.line, i.name, i.unit
+        from stock_moves s join items i on i.id = s.item_id
+        where s.transaction_id = %s
+        order by s.line
+        """,
+        (transaction_id,),
+    ).fetchall()
 
 
 # ---------------------------------------------------------------------------
