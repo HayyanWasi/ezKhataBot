@@ -4,7 +4,7 @@ so new features only need to register their intents.
 The AI only sees the message, recent chat and saved notes. It never sees the
 database, SQL, ids or balances; it only picks an intent and fills its fields."""
 
-from datetime import date
+from datetime import datetime
 
 from app.services.registry import IntentSpec
 
@@ -30,8 +30,13 @@ Rules:
   is a new request, not an answer.
 - Amounts: only numbers the user actually wrote. Convert "5 hazar" -> 5000, "5k" -> 5000, "1.5 lakh" -> 150000.
   Never add, subtract or guess amounts. null if no amount is written.
-- Dates: use the "Today" line to turn words like "kal" (yesterday), "parson", "15 tareekh" into YYYY-MM-DD.
-  null when no day is mentioned.
+- Dates: use the "Today" line to turn words like "kal", "parson", "15 tareekh" into YYYY-MM-DD.
+  For entries "kal" means yesterday; for reminders "kal" means tomorrow. null when no day is mentioned.
+  A month ("September ka") means its first and last day.
+- Times: 24h "HH:MM". Vague times: subah = 09:00, dopahar = 13:00, shaam = 18:00, raat = 21:00.
+  "2 minute baad" / "1 ghante baad" -> today's date and the exact time from the Today line.
+- If the pending question asks WHEN (e.g. "Kab yaad dilaun?"), answer as "YYYY-MM-DD HH:MM", or "YYYY-MM-DD"
+  when only a day is given, or "HH:MM" when only a time is given.
 
 Intents:
 {intents}
@@ -55,9 +60,9 @@ def build_user_prompt(
     history: list[dict],
     pending_question: str | None,
     memories: list[str],
-    today: date,
+    now: datetime,
 ) -> str:
-    parts = [f"Today: {today.isoformat()} ({today:%A}), Pakistan time"]
+    parts = [f"Today: {now:%Y-%m-%d} ({now:%A}), time now {now:%H:%M}, Pakistan time"]
     if history:
         convo = "\n".join(f"{m['role']}: {m['text']}" for m in history)
         parts.append(f"Recent conversation (oldest first):\n{convo}")

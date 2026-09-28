@@ -8,7 +8,7 @@ Uses LangChain's ChatOpenAI, which works with any OpenAI-compatible API
 import logging
 import re
 import time
-from datetime import date
+from datetime import datetime
 from functools import lru_cache
 
 from langchain_core.runnables import Runnable
@@ -52,11 +52,11 @@ def classify(
     history: list[dict],
     pending_question: str | None,
     memories: list[str],
-    today: date,
+    now: datetime,
 ) -> ClassifierOutput:
     messages = [
         ("system", build_system_prompt(intents)),
-        ("user", build_user_prompt(text, history, pending_question, memories, today)),
+        ("user", build_user_prompt(text, history, pending_question, memories, now)),
     ]
     settings = get_settings()
     keys = settings.llm_api_keys  # main key first, then fallbacks

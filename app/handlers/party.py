@@ -12,6 +12,7 @@ draft is kept in the pending question, so answers ("500", "1", "2") fill it
 in without calling the AI again.
 """
 
+from collections.abc import Callable
 from datetime import date
 from decimal import Decimal
 
@@ -81,9 +82,14 @@ def _ask(ctx: Context, kind: str, expects: str, draft: dict, question: str) -> O
     return Outcome(_DRAFT_INTENT[draft["mode"]], question, pending=pending)
 
 
-def _ask_choose_party(ctx: Context, name: str, matches: list[dict], purpose: str, data: dict) -> Outcome:
+# What happens after the user picks a party, per purpose: (intent name, fn(ctx, party, data) -> Outcome).
+# Other features (statements, reminders) register their own purposes here.
+PARTY_CHOICE_HANDLERS: dict[str, tuple[str, Callable[[Context, dict, dict], Outcome]]] = {}
+
+
+def ask_choose_party(ctx: Context, name: str, matches: list[dict], purpose: str, data: dict) -> Outcome:
     """Several parties match a name: ask which one (entries may also pick 'new party')."""
-    options = [{"id": str(p["id"]), "name": p["name"], "type": p["type"]} for p in matches]
+    options = [{"id": str(p["id"]), "name": p["name"], "type": p["type"], "phone": p.get("phone")} for p in matches]
     labels = [_party_label(ctx.language, p) for p in options]
     if purpose == "entry":
         labels.append(t("new_party_option", ctx.language))
@@ -93,10 +99,9 @@ def _ask_choose_party(ctx: Context, name: str, matches: list[dict], purpose: str
         expects="choice",
         data={"purpose": purpose, "name": name, "options": options, **data},
     )
-    intent_name = {"entry": "party_entry", "balance": "party_balance", "phone": "set_party_phone"}.get(
-        purpose, "delete_entry"
-    )
+    intent_name = "party_entry" if purpose == "entry" else PARTY_CHOICE_HANDLERS[purpose][0]
     return Outcome(intent_name, t("choose_party", ctx.language, name=name, options=numbered(labels)), pending=pending)
+
 
 
 def _find(ctx: Context, name: str, party_type: str | None = None) -> list[dict]:
@@ -141,7 +146,7 @@ def next_step(ctx: Context, draft: dict) -> Outcome:
             if len(matches) == 1:
                 draft["account_id"], draft["party_name"] = str(matches[0]["id"]), matches[0]["name"]
             elif matches:
-                return _ask_choose_party(ctx, name, matches, "entry", {"draft": draft})
+                return ask_choose_party(ctx, name, matches, "entry", {"draft": draft})
 
     if draft["account_id"] is None:
         # A new party: its type is asked unless the user said it while adding
@@ -298,7 +303,7 @@ def set_party_phone(ctx: Context, fields: SetPartyPhoneFields) -> Outcome:
     if not matches:
         return Outcome("set_party_phone", t("party_not_found", ctx.language, name=fields.party_name))
     if len(matches) > 1:
-        return _ask_choose_party(ctx, fields.party_name, matches, "phone", {"phone": phone})
+        return ask_choose_party(ctx, fields.party_name, matches, "phone", {"phone": phone})
     return _save_phone(ctx, matches[0], phone)
 
 
@@ -327,7 +332,7 @@ def party_balance(ctx: Context, fields: PartyBalanceFields) -> Outcome:
     if not matches:
         return Outcome("party_balance", t("party_not_found", ctx.language, name=fields.party_name))
     if len(matches) > 1:
-        return _ask_choose_party(ctx, fields.party_name, matches, "balance", {})
+        return ask_choose_party(ctx, fields.party_name, matches, "balance", {})
     return _show_balance(ctx, matches[0])
 
 
@@ -394,7 +399,7 @@ def delete_entry(ctx: Context, fields: DeleteEntryFields) -> Outcome:
     if not matches:
         return Outcome("delete_entry", t("party_not_found", ctx.language, name=fields.party_name))
     if len(matches) > 1:
-        return _ask_choose_party(
+        return ask_choose_party(
             ctx, fields.party_name, matches, "delete", {"amount": str(amount) if amount else None}
         )
     return _ask_delete(ctx, matches[0]["id"], amount)
@@ -503,12 +508,17 @@ def resolve_choose_party(ctx: Context, pending: PendingAction, answer: str) -> O
         draft = dict(data["draft"])
         draft["account_id"], draft["party_name"] = chosen["id"], chosen["name"]
         return next_step(ctx, draft)
-    if purpose == "balance":
-        return _show_balance(ctx, chosen)
-    if purpose == "phone":
-        return _save_phone(ctx, chosen, data["phone"])
-    amount = Decimal(data["amount"]) if data.get("amount") else None
-    return _ask_delete(ctx, chosen["id"], amount)
+    _, handle = PARTY_CHOICE_HANDLERS[purpose]
+    return handle(ctx, chosen, data)
+
+
+PARTY_CHOICE_HANDLERS.update({
+    "balance": ("party_balance", lambda ctx, party, data: _show_balance(ctx, party)),
+    "phone": ("set_party_phone", lambda ctx, party, data: _save_phone(ctx, party, data["phone"])),
+    "delete": ("delete_entry", lambda ctx, party, data: _ask_delete(
+        ctx, party["id"], Decimal(data["amount"]) if data.get("amount") else None
+    )),
+})
 
 
 @pending_resolver("confirm_delete")

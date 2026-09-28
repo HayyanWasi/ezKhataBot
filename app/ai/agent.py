@@ -23,8 +23,10 @@ from pydantic import ValidationError
 
 import app.handlers.foundation  # noqa: F401  registers foundation intents
 import app.handlers.party  # noqa: F401  registers party khata intents
+import app.handlers.reminders  # noqa: F401  registers reminder intents
+import app.handlers.statements  # noqa: F401  registers the statement intent
 from app.ai.classifier import AIError, classify
-from app.core.dates import today
+from app.core.dates import now
 from app.core.database import transaction
 from app.db import crud
 from app.handlers.foundation import ask_choose_business, help_
@@ -77,7 +79,7 @@ def classify_message(state: AgentState) -> AgentState:
             history=state.get("history", []),
             pending_question=pending_question,
             memories=_memory_texts(ctx),
-            today=today(ctx.business["timezone"] if ctx.business else None),
+            now=now(ctx.business["timezone"] if ctx.business else None),
         )
 
     try:

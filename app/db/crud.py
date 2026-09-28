@@ -181,14 +181,17 @@ def insert_bot_reply(
     text: str,
     business_id: UUID | None,
     intent: str | None,
+    attachment_path: str | None = None,
 ) -> Row:
+    """A bot message to send. reply_to_id is None for messages the bot starts (reminders)."""
     return conn.execute(
         """
-        insert into messages (conversation_id, role, text, reply_to_id, business_id, intent, delivery_status)
-        values (%s, 'bot', %s, %s, %s, %s, 'pending')
+        insert into messages
+            (conversation_id, role, text, reply_to_id, business_id, intent, attachment_path, delivery_status)
+        values (%s, 'bot', %s, %s, %s, %s, %s, 'pending')
         returning *
         """,
-        (conversation_id, text, reply_to_id, business_id, intent),
+        (conversation_id, text, reply_to_id, business_id, intent, attachment_path),
     ).fetchone()
 
 

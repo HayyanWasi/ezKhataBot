@@ -39,6 +39,13 @@ class Settings(BaseSettings):
     # treated as a crashed attempt and may be processed again
     processing_lease_seconds: int = 60
 
+    # Files (PDF statements). Local disk for now; cloud storage on the server later.
+    storage_dir: Path = ROOT_DIR / "storage"
+
+    # Reminders: a reminder for a day (no time) is sent at these times
+    reminder_day_times: str = "10:00,18:00"
+    scheduler_interval_seconds: int = 30
+
     @property
     def llm_api_keys(self) -> list[str]:
         """Main key first, then the fallbacks."""

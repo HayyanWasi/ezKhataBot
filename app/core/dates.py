@@ -6,8 +6,12 @@ from zoneinfo import ZoneInfo
 DEFAULT_TZ = "Asia/Karachi"
 
 
+def now(timezone: str | None = None) -> datetime:
+    return datetime.now(ZoneInfo(timezone or DEFAULT_TZ))
+
+
 def today(timezone: str | None = None) -> date:
-    return datetime.now(ZoneInfo(timezone or DEFAULT_TZ)).date()
+    return now(timezone).date()
 
 
 def short_date(d: date) -> str:

@@ -47,6 +47,7 @@ class Outcome:
     pending: PendingAction | None = None
     active_business_id: UUID | None = None
     replay_text: str | None = None  # re-run this message after the outcome (used after choosing a shop)
+    attachment: str | None = None  # file sent with the reply (PDF statement)
 
 
 Handler = Callable[[Context, BaseModel | None], Outcome]
