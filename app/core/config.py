@@ -31,6 +31,7 @@ class Settings(BaseSettings):
     llm_reasoning_effort: str = "low"  # empty = don't send (for providers that reject it)
     llm_timeout_seconds: float = 20
     llm_max_tokens: int = 2500  # answer cap; without it providers reserve the whole context per call
+    llm_classify_max_tokens: int = 1200  # the classifier's JSON is short; Groq counts prompt + cap per minute
 
     # Second provider, tried after every key above is rate limited (empty = off)
     openrouter_base_url: str = "https://openrouter.ai/api/v1"

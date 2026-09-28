@@ -125,6 +125,7 @@ class EditEntryFields(_Fields):
     new_amount: Any = None
     new_date: dt.date | None = None
     new_note: str | None = None
+    new_qty: Any = None  # a stock entry's corrected quantity ("50 nahi 40 socks thay" -> 40)
 
 
 # ---------------------------------------------------------------------------
@@ -160,6 +161,92 @@ class MoneyReportFields(_Fields):
     start_date: dt.date | None = None
     end_date: dt.date | None = None
     pdf: bool | None = None
+
+
+# ---------------------------------------------------------------------------
+# Stock book. Quantities and rates stay raw: code checks them against the text.
+# ---------------------------------------------------------------------------
+
+
+class StockLine(_Fields):
+    name: str | None = None  # the item as written ("socks", "jurab", "cheeni")
+    qty: Any = None
+    unit: str | None = None
+    rate: Any = None  # price per unit, if said ("20 wale", "20 ke hisaab se")
+
+
+def _lines(v: Any) -> Any:
+    if isinstance(v, dict):
+        return [v]
+    return [x for x in v if isinstance(x, dict)] if isinstance(v, list) else []
+
+
+class AddItemFields(_Fields):
+    name: str = Field(min_length=1)
+    unit: str | None = None
+    category: str | None = None  # the AI's guess of a short shop category ("Kapre", "Grocery")
+    sale_price: Any = None
+    purchase_price: Any = None
+    qty: Any = None  # stock the shop has now
+    low_stock_level: Any = None
+    barcode: str | None = None
+
+
+class StockInFields(_Fields):
+    items: list[StockLine] = Field(default_factory=list)
+    supplier_name: str | None = None
+    paid_via: Literal["udhaar", "cash", "bank", "none"] | None = None
+    paid_amount: Any = None  # paid now when the rest is udhaar ("500 cash diye baqi udhaar")
+    bank_name: str | None = None
+    date: dt.date | None = None
+
+    @field_validator("items", mode="before")
+    @classmethod
+    def _items(cls, v: Any) -> Any:
+        return _lines(v)
+
+    @field_validator("paid_via", mode="before")
+    @classmethod
+    def _unknown_paid_via(cls, v: Any) -> Any:
+        return v if v in ("udhaar", "cash", "bank", "none") else None
+
+
+class StockOutFields(_Fields):
+    items: list[StockLine] = Field(default_factory=list)
+    reason: str | None = None  # kharab, muft, istemal ...
+    date: dt.date | None = None
+
+    @field_validator("items", mode="before")
+    @classmethod
+    def _items(cls, v: Any) -> Any:
+        return _lines(v)
+
+
+class StockReportFields(_Fields):
+    kind: Literal["list", "rates", "low", "value", "in", "out", "item"] = "list"
+    item: str | None = None
+    start_date: dt.date | None = None
+    end_date: dt.date | None = None
+    pdf: bool | None = None
+
+    @field_validator("kind", mode="before")
+    @classmethod
+    def _unknown_kind(cls, v: Any) -> Any:
+        return v if v in ("list", "rates", "low", "value", "in", "out", "item") else "list"
+
+
+class EditItemFields(_Fields):
+    item: str = Field(min_length=1)
+    new_name: str | None = None
+    unit: str | None = None
+    category: str | None = None
+    sale_price: Any = None
+    purchase_price: Any = None
+    low_stock_level: Any = None
+
+
+class ItemFields(_Fields):
+    item: str = Field(min_length=1)
 
 
 # ---------------------------------------------------------------------------

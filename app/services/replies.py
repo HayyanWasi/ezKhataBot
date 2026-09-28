@@ -24,6 +24,7 @@ TEXTS: dict[str, dict[str, str]] = {
             "• \"tea 200\" / \"3000 came in\" / \"today's sale 20000\"\n"
             "• \"Ali paid back 1000\" / \"deposited 10000 in JazzCash\"\n"
             "• \"today's cash\" / \"September cash book PDF\"\n"
+            "• \"add item socks, sell 30, 100 pcs\" / \"50 socks from Bilal on credit\" / \"stock list\"\n"
             "• \"add supplier Rohaan\" / \"undo\" / \"Ali's entry was 600, not 500\"\n"
             "• \"Ali's statement for September\" / \"all parties statement\"\n"
             "• \"remind me tomorrow at 10 to pay Rohaan\" / \"my reminders\"\n"
@@ -36,6 +37,7 @@ TEXTS: dict[str, dict[str, str]] = {
             "• \"chai 200\" / \"3000 aaye\" / \"aaj 20000 ki sale hui\"\n"
             "• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n"
             "• \"aaj ka cash\" / \"September ki cash book PDF\"\n"
+            "• \"socks add karo 30 ki bechta hun 100 pcs\" / \"Bilal se 50 socks udhaar aae\" / \"stock dikhao\"\n"
             "• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n"
             "• \"Ali ka September ka statement\" / \"sab ka statement\"\n"
             "• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n"
@@ -47,6 +49,7 @@ TEXTS: dict[str, dict[str, str]] = {
             "• \"علی کا حساب\" / \"سب کا حساب\"\n"
             "• \"چائے 200\" / \"3000 آئے\" / \"آج 20000 کی سیل ہوئی\"\n"
             "• \"علی نے 1000 واپس دیے\" / \"آج کا کیش\"\n"
+            "• \"جرابیں شامل کرو، 30 کی بیچتا ہوں\" / \"50 جرابیں آئیں\" / \"اسٹاک دکھاؤ\"\n"
             "• \"روحان سپلائر شامل کرو\" / \"undo\"\n"
             "• \"علی کا ستمبر کا اسٹیٹمنٹ\" / \"سب کا اسٹیٹمنٹ\"\n"
             "• \"کل 10 بجے یاد دلانا روحان کو پیمنٹ کرنی ہے\" / \"میری یاد دہانیاں\"\n"
@@ -559,6 +562,246 @@ TEXTS: dict[str, dict[str, str]] = {
         "en": "No photo found for that entry.",
         "roman_ur": "Is entry ki koi photo nahi mili.",
         "ur": "اس انٹری کی کوئی تصویر نہیں ملی۔",
+    },
+    # ------------------------------------------------------------------ stock
+    "barcode_unreadable": {
+        "en": "Couldn't read the barcode. Send a clear, close photo with the whole barcode in it.",
+        "roman_ur": "Barcode saaf nahi parha gaya. Poora barcode frame mein le kar qareeb se saaf photo bhejein.",
+        "ur": "بارکوڈ صاف نہیں پڑھا گیا۔ پورا بارکوڈ فریم میں لے کر قریب سے صاف تصویر بھیجیں۔",
+    },
+    "ask_barcode_item": {
+        "en": "🔖 {code}\nWhich item is this barcode for? Write its name.",
+        "roman_ur": "🔖 {code}\nYeh barcode kis item ka hai? Naam likhein.",
+        "ur": "🔖 {code}\nیہ بارکوڈ کس آئٹم کا ہے؟ نام لکھیں۔",
+    },
+    "barcode_saved": {
+        "en": "🔖 Barcode {code} saved on *{name}*",
+        "roman_ur": "🔖 Barcode {code} *{name}* pe save ho gaya",
+        "ur": "🔖 بارکوڈ {code} *{name}* پر محفوظ ہو گیا",
+    },
+    "barcode_taken": {
+        "en": "Barcode {code} is already on *{name}*.",
+        "roman_ur": "Barcode {code} pehle se *{name}* pe hai.",
+        "ur": "بارکوڈ {code} پہلے سے *{name}* پر ہے۔",
+    },
+    "item_photo_saved": {
+        "en": "📷 Photo saved for *{name}*",
+        "roman_ur": "📷 *{name}* ki photo save ho gayi",
+        "ur": "📷 *{name}* کی تصویر محفوظ ہو گئی",
+    },
+    "stock_change_below_zero": {
+        "en": "❌ Can't: *{name}* would go below 0 (only {qty} {unit} in stock now). Nothing changed.",
+        "roman_ur": "❌ Nahi ho sakta: *{name}* ka stock 0 se neeche chala jaega (abhi {qty} {unit} hain). Kuch nahi badla.",
+        "ur": "❌ نہیں ہو سکتا: *{name}* کا اسٹاک 0 سے نیچے چلا جائے گا (ابھی {qty} {unit} ہیں)۔ کچھ نہیں بدلا۔",
+    },
+    "edit_qty_one_item": {
+        "en": "This entry has several items. Delete it (\"undo\") and send it again.",
+        "roman_ur": "Is entry mein kai items hain. Isay delete (\"undo\") kar ke dobara bhejein.",
+        "ur": "اس انٹری میں کئی آئٹم ہیں۔ اسے ڈیلیٹ (\"undo\") کر کے دوبارہ بھیجیں۔",
+    },
+    "item_added": {
+        "en": "✅ Item added: *{name}*{category}",
+        "roman_ur": "✅ Item add ho gaya: *{name}*{category}",
+        "ur": "✅ آئٹم شامل ہو گیا: *{name}*{category}",
+    },
+    "item_category_hint": {
+        "en": "(To change the category, write e.g. \"socks category Kapre karo\")",
+        "roman_ur": "(Category badalni ho tou likhein, jaise: \"socks ki category Kapre karo\")",
+        "ur": "(کیٹیگری بدلنی ہو تو لکھیں، جیسے: \"جرابوں کی کیٹیگری کپڑے کرو\")",
+    },
+    "item_exists": {
+        "en": "*{name}* is already in your stock ({qty} {unit}).",
+        "roman_ur": "*{name}* pehle se stock mein hai ({qty} {unit}).",
+        "ur": "*{name}* پہلے سے اسٹاک میں ہے ({qty} {unit})۔",
+    },
+    "item_exists_short": {
+        "en": "Another item is already called *{name}*.",
+        "roman_ur": "*{name}* naam ka item pehle se hai.",
+        "ur": "*{name}* نام کا آئٹم پہلے سے ہے۔",
+    },
+    "stock_qty": {"en": "Stock: {qty} {unit}", "roman_ur": "Stock: {qty} {unit}", "ur": "اسٹاک: {qty} {unit}"},
+    "sale_price": {"en": "Sale {amount}", "roman_ur": "Sale {amount}", "ur": "فروخت {amount}"},
+    "purchase_price": {"en": "Purchase {amount}", "roman_ur": "Khareed {amount}", "ur": "خرید {amount}"},
+    "ask_unit": {
+        "en": "What is the unit of *{name}*?\n{options}\nOr write it (e.g. bori, gaz)",
+        "roman_ur": "*{name}* ka unit kya hai?\n{options}\nYa khud likhein (jaise bori, gaz)",
+        "ur": "*{name}* کی اکائی کیا ہے؟\n{options}\nیا خود لکھیں (جیسے بوری، گز)",
+    },
+    "ask_unit_new": {
+        "en": "*{name}* is a new item. What is its unit?\n{options}\nOr write it (e.g. bori, gaz)",
+        "roman_ur": "*{name}* naya item hai. Iska unit kya hai?\n{options}\nYa khud likhein (jaise bori, gaz)",
+        "ur": "*{name}* نیا آئٹم ہے۔ اس کی اکائی کیا ہے؟\n{options}\nیا خود لکھیں (جیسے بوری، گز)",
+    },
+    "choose_item": {
+        "en": "Which item do you mean by *{word}*?\n{options}",
+        "roman_ur": "*{word}* se kaunsa item?\n{options}",
+        "ur": "*{word}* سے کون سا آئٹم؟\n{options}",
+    },
+    "new_item_option": {"en": "A new item", "roman_ur": "Naya item", "ur": "نیا آئٹم"},
+    "ask_same_item": {
+        "en": "Do you mean *{name}* by *{word}*? (yes/no)",
+        "roman_ur": "*{word}* se matlab *{name}* hai? (haan/nahi)",
+        "ur": "*{word}* سے مراد *{name}* ہے؟ (ہاں/نہیں)",
+    },
+    "item_not_found": {
+        "en": "No item called *{name}* in your stock. Send \"stock list\" to see your items.",
+        "roman_ur": "*{name}* naam ka koi item stock mein nahi. Items dekhne ke liye \"stock dikhao\" likhein.",
+        "ur": "*{name}* نام کا کوئی آئٹم اسٹاک میں نہیں۔ آئٹم دیکھنے کے لیے \"اسٹاک دکھاؤ\" لکھیں۔",
+    },
+    "stock_which_items": {
+        "en": "Which items, and how many? e.g. \"50 socks aae\"",
+        "roman_ur": "Kaunse items aur kitne? Jaise: \"50 socks aae\"",
+        "ur": "کون سے آئٹم اور کتنے؟ جیسے: \"50 جرابیں آئیں\"",
+    },
+    "ask_stock_qty": {
+        "en": "How many {unit} of *{name}*?",
+        "roman_ur": "*{name}* kitne {unit}?",
+        "ur": "*{name}* کتنے {unit}؟",
+    },
+    "ask_stock_pay": {
+        "en": "{items}: how was it paid?\n1) Udhaar (credit)\n2) Cash\n3) Online (bank)\n4) Stock only, no money",
+        "roman_ur": "{items}: paise kaise diye?\n1) Udhaar\n2) Cash\n3) Online (bank)\n4) Sirf stock, paison ka hisaab nahi",
+        "ur": "{items}: پیسے کیسے دیے؟\n1) ادھار\n2) کیش\n3) آن لائن (بینک)\n4) صرف اسٹاک، پیسوں کا حساب نہیں",
+    },
+    "ask_stock_supplier": {
+        "en": "From which supplier? Write the name.",
+        "roman_ur": "Kis supplier se? Naam likhein.",
+        "ur": "کس سپلائر سے؟ نام لکھیں۔",
+    },
+    "confirm_new_supplier": {
+        "en": "*{name}* is a new supplier. Add? (yes/no)",
+        "roman_ur": "*{name}* naya supplier hai. Add karun? (haan/nahi)",
+        "ur": "*{name}* نیا سپلائر ہے۔ شامل کروں؟ (ہاں/نہیں)",
+    },
+    "ask_stock_rate": {
+        "en": "Purchase rate of *{name}*? (price of 1 {unit})",
+        "roman_ur": "*{name}* ka rate? (1 {unit} ki khareed qeemat)",
+        "ur": "*{name}* کا ریٹ؟ (1 {unit} کی خرید قیمت)",
+    },
+    "stock_owner_only_money": {
+        "en": "Only the owner can add stock on udhaar or through a bank. You can add it with cash, or as stock only.",
+        "roman_ur": "Udhaar ya bank se stock sirf malik add kar sakta hai. Aap cash ya \"sirf stock\" se add kar sakte hain.",
+        "ur": "ادھار یا بینک سے اسٹاک صرف مالک شامل کر سکتا ہے۔ آپ کیش یا \"صرف اسٹاک\" سے شامل کر سکتے ہیں۔",
+    },
+    "stock_short": {
+        "en": "❌ Only {qty} {unit} of *{name}* in stock. Nothing saved.",
+        "roman_ur": "❌ *{name}* sirf {qty} {unit} hain. Kuch save nahi hua.",
+        "ur": "❌ *{name}* صرف {qty} {unit} ہیں۔ کچھ محفوظ نہیں ہوا۔",
+    },
+    "stock_in_saved": {
+        "en": "✅ Stock in ({date})",
+        "roman_ur": "✅ Stock aa gaya ({date})",
+        "ur": "✅ اسٹاک آ گیا ({date})",
+    },
+    "stock_out_saved": {
+        "en": "✅ Stock out ({date})",
+        "roman_ur": "✅ Stock kam kar diya ({date})",
+        "ur": "✅ اسٹاک کم کر دیا ({date})",
+    },
+    "stock_total": {"en": "💰 Total: {amount}", "roman_ur": "💰 Kul: {amount}", "ur": "💰 کل: {amount}"},
+    "low_stock_warning": {
+        "en": "⚠️ Low stock: *{name}* only {qty} {unit} left",
+        "roman_ur": "⚠️ *{name}* sirf {qty} {unit} reh gae",
+        "ur": "⚠️ *{name}* صرف {qty} {unit} رہ گئے",
+    },
+    "low_stock_owner": {
+        "en": "⚠️ {business}: low stock after {by}'s entry: {items}",
+        "roman_ur": "⚠️ {business}: {by} ki entry ke baad stock kam: {items}",
+        "ur": "⚠️ {business}: {by} کی انٹری کے بعد اسٹاک کم: {items}",
+    },
+    "no_items": {
+        "en": "No items in stock yet. Add one like: \"socks add karo, 30 ki bechta hun, 100 pcs\"",
+        "roman_ur": "Abhi stock mein koi item nahi. Aise add karein: \"socks add karo, 30 ki bechta hun, 100 pcs\"",
+        "ur": "ابھی اسٹاک میں کوئی آئٹم نہیں۔ ایسے شامل کریں: \"جرابیں شامل کرو، 30 کی بیچتا ہوں، 100 عدد\"",
+    },
+    "no_low_stock": {
+        "en": "No item is low 👍 (Set an alert like: \"socks ka alert 10 pe lagao\")",
+        "roman_ur": "Koi item kam nahi 👍 (Alert aise lagayein: \"socks ka alert 10 pe lagao\")",
+        "ur": "کوئی آئٹم کم نہیں 👍 (الرٹ ایسے لگائیں: \"جرابوں کا الرٹ 10 پر لگاؤ\")",
+    },
+    "stock_report_list": {"en": "📦 *Stock* ({n} items)", "roman_ur": "📦 *Stock* ({n} items)", "ur": "📦 *اسٹاک* ({n} آئٹم)"},
+    "stock_report_rates": {"en": "🏷️ *Rate list*", "roman_ur": "🏷️ *Rate list*", "ur": "🏷️ *ریٹ لسٹ*"},
+    "stock_report_low": {"en": "⚠️ *Low stock* ({n})", "roman_ur": "⚠️ *Kam stock* ({n})", "ur": "⚠️ *کم اسٹاک* ({n})"},
+    "stock_report_value": {"en": "💰 *Stock value*", "roman_ur": "💰 *Stock ki value*", "ur": "💰 *اسٹاک کی مالیت*"},
+    "rate_line": {
+        "en": "{name} — sale {sale} · purchase {purchase}",
+        "roman_ur": "{name} — sale {sale} · khareed {purchase}",
+        "ur": "{name} — فروخت {sale} · خرید {purchase}",
+    },
+    "value_line_no_price": {
+        "en": "{name} — {qty} (no purchase price)",
+        "roman_ur": "{name} — {qty} (khareed qeemat nahi)",
+        "ur": "{name} — {qty} (خرید قیمت نہیں)",
+    },
+    "low_line": {
+        "en": "{name} — {qty} (alert at {level})",
+        "roman_ur": "{name} — {qty} (alert {level} pe)",
+        "ur": "{name} — {qty} (الرٹ {level} پر)",
+    },
+    "low_level_line": {
+        "en": "⚠️ Alert at {level} {unit}",
+        "roman_ur": "⚠️ Alert {level} {unit} pe",
+        "ur": "⚠️ الرٹ {level} {unit} پر",
+    },
+    "stock_value_total": {"en": "💰 Value: {amount}", "roman_ur": "💰 Value: {amount}", "ur": "💰 مالیت: {amount}"},
+    "report_more": {
+        "en": "… and {n} more. Send \"stock PDF\" for the full list.",
+        "roman_ur": "… aur {n} items. Poori list ke liye \"stock PDF bhejo\" likhein.",
+        "ur": "… اور {n} آئٹم۔ پوری لسٹ کے لیے \"اسٹاک PDF بھیجو\" لکھیں۔",
+    },
+    "stock_in_report": {
+        "en": "📥 *Stock in*{name} · {period}\n{n} entries · {amount}",
+        "roman_ur": "📥 *Stock in*{name} · {period}\n{n} entries · {amount}",
+        "ur": "📥 *اسٹاک اِن*{name} · {period}\n{n} انٹریاں · {amount}",
+    },
+    "stock_out_report": {
+        "en": "📤 *Stock out*{name} · {period}\n{n} entries · {amount}",
+        "roman_ur": "📤 *Stock out*{name} · {period}\n{n} entries · {amount}",
+        "ur": "📤 *اسٹاک آؤٹ*{name} · {period}\n{n} انٹریاں · {amount}",
+    },
+    "report_total_qty": {"en": "Total: {qty} {unit}", "roman_ur": "Kul: {qty} {unit}", "ur": "کل: {qty} {unit}"},
+    "no_stock_moves": {
+        "en": "No stock entries for {period}.",
+        "roman_ur": "{period} mein koi stock entry nahi.",
+        "ur": "{period} میں کوئی اسٹاک انٹری نہیں۔",
+    },
+    "move_stock_opening": {"en": "Opening", "roman_ur": "Shuru ka stock", "ur": "ابتدائی اسٹاک"},
+    "move_stock_in": {"en": "Stock in", "roman_ur": "Stock aaya", "ur": "اسٹاک آیا"},
+    "move_purchase": {"en": "Bought", "roman_ur": "Khareeda", "ur": "خریدا"},
+    "move_stock_out": {"en": "Stock out", "roman_ur": "Stock kam", "ur": "اسٹاک کم"},
+    "move_sale": {"en": "Sold", "roman_ur": "Becha", "ur": "بیچا"},
+    "entry_stock_opening": {"en": "Opening stock", "roman_ur": "Shuru ka stock", "ur": "ابتدائی اسٹاک"},
+    "entry_stock_in": {"en": "Stock in", "roman_ur": "Stock in", "ur": "اسٹاک اِن"},
+    "entry_stock_out": {"en": "Stock out", "roman_ur": "Stock out", "ur": "اسٹاک آؤٹ"},
+    "entry_purchase": {"en": "Purchase", "roman_ur": "Khareed", "ur": "خرید"},
+    "edit_item_nothing": {
+        "en": "What should I change? e.g. \"socks ka rate 35 karo\"",
+        "roman_ur": "Kya badalna hai? Jaise: \"socks ka rate 35 karo\"",
+        "ur": "کیا بدلنا ہے؟ جیسے: \"جرابوں کا ریٹ 35 کرو\"",
+    },
+    "field_name": {"en": "Name", "roman_ur": "Naam", "ur": "نام"},
+    "field_unit": {"en": "Unit", "roman_ur": "Unit", "ur": "اکائی"},
+    "field_category": {"en": "Category", "roman_ur": "Category", "ur": "کیٹیگری"},
+    "field_sale": {"en": "Sale price", "roman_ur": "Sale rate", "ur": "فروخت قیمت"},
+    "field_purchase": {"en": "Purchase price", "roman_ur": "Khareed rate", "ur": "خرید قیمت"},
+    "field_alert": {"en": "Low stock alert", "roman_ur": "Low stock alert", "ur": "کم اسٹاک الرٹ"},
+    "confirm_edit_item": {
+        "en": "Change *{name}*?\n{changes}\n(yes/no)",
+        "roman_ur": "*{name}* mein yeh badlun?\n{changes}\n(haan/nahi)",
+        "ur": "*{name}* میں یہ بدلوں؟\n{changes}\n(ہاں/نہیں)",
+    },
+    "item_updated": {"en": "✏️ *{name}* updated", "roman_ur": "✏️ *{name}* update ho gaya", "ur": "✏️ *{name}* اپڈیٹ ہو گیا"},
+    "item_gone": {"en": "That item is no longer there.", "roman_ur": "Yeh item ab mojood nahi.", "ur": "یہ آئٹم اب موجود نہیں۔"},
+    "confirm_delete_item": {
+        "en": "Delete item *{name}* (stock {qty} {unit})? (yes/no)",
+        "roman_ur": "Item *{name}* delete karun? (stock {qty} {unit}) (haan/nahi)",
+        "ur": "آئٹم *{name}* ڈیلیٹ کروں؟ (اسٹاک {qty} {unit}) (ہاں/نہیں)",
+    },
+    "item_deleted": {"en": "🗑️ Item *{name}* deleted", "roman_ur": "🗑️ Item *{name}* delete ho gaya", "ur": "🗑️ آئٹم *{name}* ڈیلیٹ ہو گیا"},
+    "no_item_photo": {
+        "en": "*{name}* has no photo. Send a photo with the caption \"{name} ki photo\".",
+        "roman_ur": "*{name}* ki koi photo nahi. Photo ke saath likhein: \"{name} ki photo\"",
+        "ur": "*{name}* کی کوئی تصویر نہیں۔ تصویر کے ساتھ لکھیں: \"{name} کی تصویر\"",
     },
     "answer_yes_no": {
         "en": "Please reply yes or no.",

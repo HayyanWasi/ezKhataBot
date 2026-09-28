@@ -30,7 +30,7 @@ def _used_up(error: Exception) -> bool:
 
 
 @lru_cache
-def _model(schema: type[BaseModel], base_url: str, model_name: str, api_key: str) -> Runnable:
+def _model(schema: type[BaseModel], base_url: str, model_name: str, api_key: str, max_tokens: int) -> Runnable:
     s = get_settings()
     llm = ChatOpenAI(
         model=model_name,
@@ -39,21 +39,27 @@ def _model(schema: type[BaseModel], base_url: str, model_name: str, api_key: str
         temperature=0,
         timeout=s.llm_timeout_seconds,
         max_retries=0,  # retries and key fallback are handled below
-        max_tokens=s.llm_max_tokens,
+        max_tokens=max_tokens,
         reasoning_effort=s.llm_reasoning_effort or None,
     )
     # json_mode: the prompt describes the JSON; LangChain parses it into the schema
     return llm.with_structured_output(schema, method="json_mode")
 
 
-def call_structured[T: BaseModel](schema: type[T], messages: list[tuple[str, str]], run_name: str) -> T:
-    endpoints = get_settings().llm_endpoints  # Groq keys first, then OpenRouter keys
+def call_structured[T: BaseModel](
+    schema: type[T], messages: list[tuple[str, str]], run_name: str, max_tokens: int | None = None
+) -> T:
+    """max_tokens: the answer cap. Groq counts prompt + cap against its per-minute limit, so short
+    answers (the classifier) use a small cap; the default (settings) is for long ones (photo rows)."""
+    settings = get_settings()
+    endpoints = settings.llm_endpoints  # Groq keys first, then OpenRouter keys
+    cap = max_tokens or settings.llm_max_tokens
 
     last_error: Exception | None = None
     key_index, failures, attempt = 0, 0, 0
     while key_index < len(endpoints) and failures < 2:  # one retry on invalid output / API error
         attempt += 1
-        model = _model(schema, *endpoints[key_index])
+        model = _model(schema, *endpoints[key_index], cap)
         started = time.monotonic()
         try:
             result = model.invoke(messages, config={"run_name": run_name})
