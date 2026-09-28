@@ -28,7 +28,8 @@ def _period(language: str, start: date | None, end: date) -> str:
 @intent(
     "statement",
     "User asks for a statement / report / PDF / khata sheet of ONE party or of ALL parties, "
-    "optionally for a month or date range. For all parties use party_name null.",
+    "optionally for a month or date range. For all parties use party_name null. "
+    "Only for the party khata: a cash book / cash / bank report is money_report.",
     fields=StatementFields,
     fields_hint=(
         '{"party_name": string | null, "start_date": "YYYY-MM-DD" | null, "end_date": "YYYY-MM-DD" | null}  '

@@ -186,6 +186,66 @@ def party_statement_pdf(business: dict, party: dict, data: dict, start: date | N
     return _save(pdf, business["id"], party["name"], start, end)
 
 
+_CASH_LABELS = {
+    "cash_in": "Cash in", "cash_out": "Cash out", "sale": "Sale", "transfer": "Transfer",
+    "opening_balance": "Opening balance", "adjustment": "Adjustment", "gave": "Paid", "got": "Received",
+}
+
+
+def _plain(value: Decimal) -> str:
+    """Cash/bank balance cell: '1,200', '-300', '0'."""
+    return f"-{_money(value)}" if value < 0 else (_money(value) or "0")
+
+
+def cash_book_pdf(business: dict, account: dict, summary: dict, rows: list[dict], start: date, end: date) -> str:
+    """Cash (or one bank) for a period: opening, every entry, in / out, closing. Returns the file path."""
+    title = "Cash Book" if account["type"] == "cash" else f"{account['name']} Book"
+    pdf = _Sheet(title)
+    _header(pdf, business["name"], title, [_period(start, end), _generated()])
+
+    _summary(pdf, [
+        ("Opening", _plain(summary["opening"]), GREY),
+        ("Money in", format_rs(summary["money_in"]), GREEN),
+        ("Money out", format_rs(summary["money_out"]), RED),
+        ("Closing", _plain(summary["closing"]), (0, 0, 0)),
+    ])
+
+    table = [[f"{start:%d %b %Y}", "Opening balance", "", "", _plain(summary["opening"])]]
+    for r in rows:
+        if r["transaction_type"] == "opening_balance" and r["transaction_date"] >= start:
+            continue  # already counted in the opening row
+        name = r["category"] or r["other"]
+        note = r["notes"] if r["notes"] and r["notes"].lower() != (name or "").lower() else None
+        detail = " — ".join(x for x in (_CASH_LABELS.get(r["transaction_type"], ""), name, note) if x)
+        money_in = r["amount"] if r["amount"] > 0 else Decimal(0)
+        money_out = -r["amount"] if r["amount"] < 0 else Decimal(0)
+        table.append([f"{r['transaction_date']:%d %b %Y}", detail, _money(money_in), _money(money_out),
+                      _plain(r["balance"])])
+    table.append(["", "Total", _money(summary["money_in"]) or "0", _money(summary["money_out"]) or "0",
+                  _plain(summary["closing"])])
+    _table(
+        pdf,
+        ["Date", "Details", "In", "Out", "Balance"],
+        (26, 72, 28, 28, 28),
+        ("LEFT", "LEFT", "RIGHT", "RIGHT", "RIGHT"),
+        table,
+        bold_last=True,
+    )
+
+    if summary["categories"]:
+        pdf.ln(4)
+        pdf.set_font("Noto", "B", 10)
+        pdf.cell(0, 6, "Expenses by category", new_x="LMARGIN", new_y="NEXT")
+        _table(
+            pdf,
+            ["Category", "Total"],
+            (130, 52),
+            ("LEFT", "RIGHT"),
+            [[c["name"], _money(c["total"])] for c in summary["categories"]],
+        )
+    return _save(pdf, business["id"], title, start, end)
+
+
 def all_parties_pdf(business: dict, parties: list[dict], start: date | None, end: date) -> str:
     """Every party with opening, gave, got, closing. Returns the file path."""
     pdf = _Sheet("All Parties")

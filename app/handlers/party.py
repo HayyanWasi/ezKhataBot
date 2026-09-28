@@ -12,6 +12,7 @@ draft is kept in the pending question, so answers ("500", "1", "2") fill it
 in without calling the AI again.
 """
 
+import re
 from collections.abc import Callable
 from datetime import date
 from decimal import Decimal
@@ -23,7 +24,6 @@ from app.core.dates import short_date, today
 from app.core.phone import normalize_phone
 from app.schemas.khata import (
     AddPartyFields,
-    DeleteEntryFields,
     ListPartiesFields,
     PartyBalanceFields,
     PartyEntryFields,
@@ -31,13 +31,25 @@ from app.schemas.khata import (
     SetPartyPhoneFields,
 )
 from app.services.amounts import confirmed_amount, format_rs, parse_amount_answer, parse_amounts
-from app.services.answers import parse_number, parse_yes_no, pick
-from app.services.registry import Context, Outcome, chain, intent, pending_resolver
+from app.services.answers import parse_number, pick
+from app.handlers.money_steps import MONEY_KEYS, following_draft, money_account, money_line, money_step
+from app.services.registry import (
+    DRAFT_STEPS,
+    Context,
+    Outcome,
+    ask_draft,
+    chain,
+    continue_draft,
+    intent,
+    pending_resolver,
+)
 from app.services.replies import numbered, t
+from app.tools import money as money_tools
 from app.tools import party as tools
 
 # Outcome intent name for each kind of draft
 _DRAFT_INTENT = {"entry": "party_entry", "opening": "add_party", "add": "add_party"}
+
 
 
 # ---------------------------------------------------------------------------
@@ -77,9 +89,7 @@ def _party_label(language: str, party: dict) -> str:
     return f"{party['name']} ({_type_label(language, party['type'])})"
 
 
-def _ask(ctx: Context, kind: str, expects: str, draft: dict, question: str) -> Outcome:
-    pending = PendingAction(kind=kind, language=ctx.language, expects=expects, data={"draft": draft})
-    return Outcome(_DRAFT_INTENT[draft["mode"]], question, pending=pending)
+_ask = ask_draft
 
 
 # What happens after the user picks a party, per purpose: (intent name, fn(ctx, party, data) -> Outcome).
@@ -121,6 +131,8 @@ def new_draft(mode: str, **values) -> dict:
         "mode": mode, "party_name": None, "party_type": None, "account_id": None, "new_type": None,
         "force_new": False, "phone": None, "direction": None, "amount": None, "date": None, "note": None,
         "queue": [],  # more drafts to go through after this one (rows from a photo)
+        "source_message_id": None, "source_line": 0,  # a photo row: saved against the photo message
+        **MONEY_KEYS,  # paid in cash / a bank (see app/handlers/money_steps.py)
     }
     draft.update(values)
     return draft
@@ -161,10 +173,13 @@ def next_step(ctx: Context, draft: dict) -> Outcome:
             party_type = _type_label(language, draft["new_type"])
             return Outcome(_DRAFT_INTENT[mode], t("party_exists", language, name=same[0]["name"], type=party_type))
 
+    question = money_step(ctx, draft)  # paid in cash / a bank: which bank? opening cash?
+    if question:
+        return question
+
     saved = _save(ctx, draft)
     if draft.get("queue"):  # save this one, then ask about the next draft in the same reply
-        following = dict(draft["queue"][0], queue=draft["queue"][1:])
-        return chain(saved, next_step(ctx, following))
+        return chain(saved, continue_draft(ctx, following_draft(draft)))
     return saved
 
 
@@ -184,6 +199,7 @@ def _save(ctx: Context, draft: dict) -> Outcome:
             return lines[0]
 
         amount, entry_date = Decimal(draft["amount"]), date.fromisoformat(draft["date"])
+        paid = money_account(conn, ctx, draft, entry_date)  # None = khata only (udhaar)
         tools.record_entry(
             conn,
             business_id=business_id,
@@ -192,14 +208,20 @@ def _save(ctx: Context, draft: dict) -> Outcome:
             amount=amount,
             entry_date=entry_date,
             note=draft["note"],
-            message_id=ctx.message_id,
+            message_id=draft.get("source_message_id") or ctx.message_id,
             user_id=user_id,
             opening=mode == "opening",
+            source_line=draft.get("source_line", 0),
+            money_account_id=paid[0] if paid else None,
         )
         if mode == "entry":
             key = "entry_gave" if draft["direction"] == "gave" else "entry_got"
             lines.append(t(key, language, name=name, amount=format_rs(amount), date=short_date(entry_date)))
         lines.append(balance_line(language, name, tools.get_balance(conn, business_id, account_id)))
+        if paid:
+            money_id, money_name, money_type = paid
+            balance = money_tools.get_balance(conn, business_id, money_id)
+            lines.append(money_line(language, money_name, money_type, balance))
         return "\n".join(lines)
 
     return Outcome(_DRAFT_INTENT[mode], commit=commit)
@@ -218,17 +240,23 @@ def _save(ctx: Context, draft: dict) -> Outcome:
     '"Rohaan ko payment ki", "Ali ne 500 liye" (Ali took). '
     '"got" = the shop received money/goods from the party, e.g. "Ali se 300 mile", "Ali ne 300 diye" '
     '(Ali gave), "Rohaan se maal liya", "Ali ne paise wapis kiye". '
-    "Use null when the message does not say who gave to whom (e.g. \"Ali 500\").",
+    "Use null when the message does not say who gave to whom (e.g. \"Ali 500\"). "
+    'paid_via: "cash" when it clearly says real money was paid or paid back (wapas/wapis, payment, ada, '
+    'cash, nakad, "paise wapas"); "bank" when a bank or wallet is named (JazzCash, Easypaisa, Meezan, '
+    '"account mein bheje"); null for udhaar, goods (maal/saman) or when it is not clear. '
+    "Salary or wages paid to a worker is NOT a party entry (use cash_entry).",
     fields=PartyEntryFields,
     fields_hint=(
         '{"party_name": string | null (as written, e.g. "Ali"), '
         '"party_type": "customer" | "supplier" | null (only if the user says it), '
         '"direction": "gave" | "got" | null, "amount": number | null, '
-        '"date": "YYYY-MM-DD" | null, "note": string | null (item or reason, e.g. "cheeni")}'
+        '"date": "YYYY-MM-DD" | null, "note": string | null (item or reason, e.g. "cheeni"), '
+        '"paid_via": "cash" | "bank" | null, "bank_name": string | null}'
     ),
     examples=[
         "Ali ko 500 udhaar diye", "Ali se 300 mile", "Rohaan se 5000 ka maal liya kal",
-        "Ali ne 200 wapis kiye", "علی کو 500 دیے", "gave 200 to Bilal",
+        "Ali ne 200 wapis kiye", "Bilal ko 5000 payment ki", "Ali ne 1000 JazzCash pe bheje",
+        "علی کو 500 دیے", "gave 200 to Bilal",
     ],
     needs_business=True,
     owner_only=True,
@@ -246,8 +274,26 @@ def party_entry(ctx: Context, fields: PartyEntryFields) -> Outcome:
         amount=str(amount) if amount is not None else None,
         date=entry_date.isoformat(),
         note=fields.note,
+        via="bank" if fields.bank_name else paid_via(ctx.text, fields.paid_via),
+        bank_name=fields.bank_name,
     )
     return next_step(ctx, draft)
+
+
+# Words that mean real money was paid (not udhaar / goods). Code decides, so the same sentence
+# always gives the same result; the AI's paid_via is only used when none of these words is there.
+_PAYMENT_WORDS = {"payment", "wapas", "wapis", "wapsi", "lota", "lotaye", "lotae", "ada", "cash", "nakad",
+                  "naqad", "paid", "returned", "ادا", "واپس", "نقد", "کیش"}
+_CREDIT_WORDS = {"udhaar", "udhar", "udhari", "saman", "samaan", "maal", "credit", "ادھار", "سامان", "مال"}
+
+
+def paid_via(text: str, ai_value: str | None) -> str | None:
+    words = set(re.findall(r"\w+", text.lower()))
+    if words & _CREDIT_WORDS:
+        return None
+    if words & _PAYMENT_WORDS:
+        return "cash"
+    return ai_value
 
 
 @intent(
@@ -387,48 +433,6 @@ def list_parties(ctx: Context, fields: ListPartiesFields) -> Outcome:
     return Outcome("list_parties", reply)
 
 
-@intent(
-    "delete_entry",
-    "User wants to undo or delete a khata entry: the last one, or one described by party name and/or amount.",
-    fields=DeleteEntryFields,
-    fields_hint='{"party_name": string | null, "amount": number | null}',
-    examples=["undo", "galti ho gayi, entry hatao", "Ali ki 500 wali entry delete karo", "آخری انٹری ڈیلیٹ کرو"],
-    needs_business=True,
-    owner_only=True,
-)
-def delete_entry(ctx: Context, fields: DeleteEntryFields) -> Outcome:
-    amount = confirmed_amount(ctx.text, fields.amount)
-    if not fields.party_name:
-        return _ask_delete(ctx, None, amount)
-    matches = _find(ctx, fields.party_name)
-    if not matches:
-        return Outcome("delete_entry", t("party_not_found", ctx.language, name=fields.party_name))
-    if len(matches) > 1:
-        return ask_choose_party(
-            ctx, fields.party_name, matches, "delete", {"amount": str(amount) if amount else None}
-        )
-    return _ask_delete(ctx, matches[0]["id"], amount)
-
-
-def _ask_delete(ctx: Context, account_id, amount: Decimal | None) -> Outcome:
-    with transaction() as conn:
-        entry = tools.find_entry_to_delete(conn, _business_id(ctx), ctx.user["id"], account_id, amount)
-    if entry is None:
-        return Outcome("delete_entry", t("no_entry_to_delete", ctx.language))
-    pending = PendingAction(
-        kind="confirm_delete",
-        language=ctx.language,
-        expects="yes_no",
-        data={"transaction_id": str(entry["transaction_id"]), "account_id": str(entry["account_id"]),
-              "name": entry["name"]},
-    )
-    question = t(
-        "confirm_delete", ctx.language, name=entry["name"], amount=format_rs(entry["amount"]),
-        date=short_date(entry["transaction_date"]),
-    )
-    return Outcome("delete_entry", question, pending=pending)
-
-
 # ---------------------------------------------------------------------------
 # Answers to pending questions
 # ---------------------------------------------------------------------------
@@ -520,26 +524,8 @@ def resolve_choose_party(ctx: Context, pending: PendingAction, answer: str) -> O
 PARTY_CHOICE_HANDLERS.update({
     "balance": ("party_balance", lambda ctx, party, data: _show_balance(ctx, party)),
     "phone": ("set_party_phone", lambda ctx, party, data: _save_phone(ctx, party, data["phone"])),
-    "delete": ("delete_entry", lambda ctx, party, data: _ask_delete(
-        ctx, party["id"], Decimal(data["amount"]) if data.get("amount") else None
-    )),
 })
 
 
-@pending_resolver("confirm_delete")
-def resolve_confirm_delete(ctx: Context, pending: PendingAction, answer: str) -> Outcome:
-    yes = parse_yes_no(answer)
-    if yes is None:
-        return Outcome("delete_entry", t("answer_yes_no", ctx.language), pending=pending)
-    if not yes:
-        return Outcome("delete_entry", t("delete_kept", ctx.language))
-
-    data, business_id = pending.data, _business_id(ctx)
-
-    def commit(conn: Connection) -> str:
-        if not tools.delete_entry(conn, business_id, data["transaction_id"], ctx.user["id"]):
-            return t("no_entry_to_delete", ctx.language)
-        balance = tools.get_balance(conn, business_id, data["account_id"])
-        return t("entry_deleted", ctx.language) + "\n" + balance_line(ctx.language, data["name"], balance)
-
-    return Outcome("delete_entry", commit=commit)
+for _mode, _intent in _DRAFT_INTENT.items():
+    DRAFT_STEPS[_mode] = (_intent, next_step)

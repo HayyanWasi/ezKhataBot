@@ -21,8 +21,10 @@ from typing import TypedDict
 from langgraph.graph import END, START, StateGraph
 from pydantic import ValidationError
 
-import app.handlers.foundation  # noqa: F401  registers foundation intents
+import app.handlers.foundation  # noqa: F401, I001  registers foundation intents (listed first to the AI)
 import app.handlers.party  # noqa: F401  registers party khata intents
+import app.handlers.cash  # noqa: F401  registers cash book intents
+import app.handlers.entries  # noqa: F401  registers undo / delete / edit / photo intents
 import app.handlers.reminders  # noqa: F401  registers reminder intents
 import app.handlers.statements  # noqa: F401  registers the statement intent
 from app.ai.classifier import AIError, classify
@@ -94,7 +96,7 @@ def classify_message(state: AgentState) -> AgentState:
         # Money guard: an amount question is answered only by a plain amount ("500", "Rs 500"),
         # which check_rules already handles. Anything else (e.g. "Bilal ko 300 diye") is a new
         # request, so it is classified again without the question.
-        if pending and pending.expects == "amount" and result.answers_pending:
+        if pending and pending.expects in ("amount", "amount_or_skip") and result.answers_pending:
             result = call_ai(None)
     except AIError:
         return {"outcome": Outcome("unknown", t("not_understood", ctx.language))}

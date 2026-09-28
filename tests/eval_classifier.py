@@ -17,10 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-import app.handlers.foundation  # noqa: E402,F401  registers intents
-import app.handlers.party  # noqa: E402,F401
-import app.handlers.reminders  # noqa: E402,F401
-import app.handlers.statements  # noqa: E402,F401
+import app.ai.agent  # noqa: E402,F401  registers every intent, in the same order as the bot
 from app.ai import classifier  # noqa: E402
 from app.services.amounts import to_decimal  # noqa: E402
 from app.core.config import get_settings  # noqa: E402
@@ -85,8 +82,10 @@ def run(model: str, cases: list[dict]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", action="append", help="model id (repeatable); default from .env")
+    parser.add_argument("--from", dest="start", type=int, default=1, help="start at this phrase number (1-based)")
     args = parser.parse_args()
     cases = [json.loads(line) for line in PHRASES.read_text(encoding="utf-8").splitlines() if line.strip()]
+    cases = cases[args.start - 1:]  # e.g. --from 89 runs only the cash book phrases (saves the daily token limit)
     for model in args.model or [get_settings().llm_model]:
         run(model, cases)
 

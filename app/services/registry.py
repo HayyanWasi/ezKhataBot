@@ -71,6 +71,23 @@ def chain(first: Outcome, second: Outcome) -> Outcome:
 
 Handler = Callable[[Context, BaseModel | None], Outcome]
 Resolver = Callable[[Context, PendingAction, str], Outcome]
+DraftStep = Callable[[Context, dict], Outcome]
+
+# Entry drafts (party entry, cash entry, transfer) ask one missing thing at a time.
+# Each feature registers, per draft["mode"], its intent name and the function that takes
+# the draft one step further, so shared questions (which bank? opening cash?) and photo
+# follow-ups can continue any kind of draft.
+DRAFT_STEPS: dict[str, tuple[str, DraftStep]] = {}
+
+
+def continue_draft(ctx: Context, draft: dict) -> Outcome:
+    return DRAFT_STEPS[draft["mode"]][1](ctx, draft)
+
+
+def ask_draft(ctx: Context, kind: str, expects: str, draft: dict, question: str, **data) -> Outcome:
+    """Ask one question about a draft; the draft is kept in the pending question."""
+    pending = PendingAction(kind=kind, language=ctx.language, expects=expects, data={"draft": draft, **data})
+    return Outcome(DRAFT_STEPS[draft["mode"]][0], question, pending=pending)
 
 
 @dataclass

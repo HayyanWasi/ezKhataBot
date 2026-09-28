@@ -18,7 +18,8 @@ Return ONLY one JSON object:
 {"kind": "register" | "bill" | "payment" | "other",
  "written_total": number | null,
  "rows": [{"category": "...", "party_name": string | null, "direction": "gave" | "got" | null,
-           "amount": number | null, "date": "YYYY-MM-DD" | null, "note": string | null}]}
+           "amount": number | null, "date": "YYYY-MM-DD" | null, "note": string | null,
+           "bank_name": string | null}]}
 
 category, for EACH row on its own:
 - "party_entry": money or goods between the shop and a named customer or supplier (udhaar, payment, maal).
@@ -42,13 +43,17 @@ direction (party_entry only), always from the SHOP's side:
 - A payment screenshot is one row: "received from X" = got, "sent to X" / "paid to X" = gave.
 - If the direction really cannot be told, use null. Never guess.
 
+bank rows: direction "got" = money came INTO the shop's account, "gave" = money went OUT of it (null if unclear).
+bank_name: the bank or wallet written for that row (JazzCash, Easypaisa, Meezan, HBL ...), else null.
+
 Rules:
 - Copy names exactly as written (keep Urdu script in Urdu script). Do not translate or correct names.
 - amount: only a number that is written for that row ("5k" -> 5000, "5 hazar" -> 5000). Never add rows up, never invent.
   If a row has no readable amount, use null.
 - date: use the "Today" line to complete partial dates ("12/9" or "12 Sep" -> this year). null if the row has no date.
 - written_total: a grand total written on the sheet, if there is one; otherwise null. Totals are NOT rows.
-- note: the item or reason if written (e.g. "cheeni", "bijli bill"), else null.
+- note: the item or reason if written (e.g. "cheeni", "bijli bill"), else null. For an expense row, note is the
+  short expense word as written (e.g. "bijli", "kiraya", "chai", "salary"), without the amount.
 - At most 20 rows. If the photo has no bookkeeping rows, return "rows": [].
 """
 
