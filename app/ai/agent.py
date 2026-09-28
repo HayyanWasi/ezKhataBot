@@ -25,6 +25,7 @@ import app.handlers.foundation  # noqa: F401, I001  registers foundation intents
 import app.handlers.party  # noqa: F401  registers party khata intents
 import app.handlers.cash  # noqa: F401  registers cash book intents
 import app.handlers.stock  # noqa: F401  registers stock book intents
+import app.handlers.bills  # noqa: F401  registers bill intents
 import app.handlers.entries  # noqa: F401  registers undo / delete / edit / photo intents
 import app.handlers.reminders  # noqa: F401  registers reminder intents
 import app.handlers.statements  # noqa: F401  registers the statement intent

@@ -38,7 +38,7 @@ from app.schemas.khata import (
 )
 from app.services import barcode, pdf
 from app.services.amounts import confirmed_amount, format_rs, parse_amount_answer, parse_amounts
-from app.services.answers import parse_number, parse_yes_no, pick
+from app.services.answers import CASH_WORDS, ONLINE_WORDS, UDHAAR_WORDS, parse_number, parse_yes_no, pick
 from app.services.ocr import OCRError, read_text
 from app.services.registry import (
     DRAFT_STEPS,
@@ -46,6 +46,7 @@ from app.services.registry import (
     Outcome,
     ask_draft,
     chain,
+    continue_draft,
     intent,
     pending_resolver,
 )
@@ -138,8 +139,8 @@ ITEM_HANDLERS: dict[str, tuple[str, object]] = {}
 
 
 def _purpose_intent(purpose: str, data: dict) -> str:
-    if purpose == "line":  # a stock in / out draft
-        return _DRAFT_INTENT[data["draft"]["mode"]]
+    if purpose == "line":  # a stock in / out (or bill) draft
+        return DRAFT_STEPS[data["draft"]["mode"]][0]
     return ITEM_HANDLERS[purpose][0]
 
 
@@ -327,7 +328,7 @@ def new_stock_draft(mode: str, lines: list[StockLine], text: str, **values) -> d
         "mode": mode, "lines": [
             {"word": line.name, "qty": _str(_qty_of(text, line.qty)), "unit": normal_unit(line.unit),
              "rate": _str(confirmed_amount(text, line.rate)), "item_id": None, "name": None, "item_unit": None,
-             "purchase_price": None, "new": False}
+             "purchase_price": None, "sale_price": None, "new": False}
             for line in lines if line.name
         ],
         "supplier_name": None, "account_id": None, "new_supplier": False, "pay": None, "paid_amount": None,
@@ -489,15 +490,9 @@ def _save(ctx: Context, draft: dict) -> Outcome:
         after = tools.stock_of(conn, business_id, ids)
         reply = [t("stock_out_saved" if out else "stock_in_saved", language, date=short_date(entry_date))]
         items = {str(i["id"]): i for i in tools.list_items(conn, business_id) if str(i["id"]) in ids}
-        low, crossed = [], []
-        for line, (item_id, qty, _) in zip(lines, moves):
+        for item_id, qty, _ in moves:
             item = items[item_id]
             reply.append(f"📦 {item['name']}: {_signed_qty(qty)} → {fmt_qty(after[item_id])} {item['unit']}")
-            level = item["low_stock_level"]
-            if level is not None and after[item_id] <= level and item_id not in low:
-                low.append(item_id)
-                if before.get(item_id, Decimal(0)) > level:
-                    crossed.append(item_id)
         if legs:
             reply.append(t("stock_total", language, amount=format_rs(total)))
         if supplier_id is not None:
@@ -505,14 +500,23 @@ def _save(ctx: Context, draft: dict) -> Outcome:
             reply.append(balance_line(language, name, party_tools.get_balance(conn, business_id, supplier_id)))
         if money:
             reply.append(money_line(language, money[1], money[2], money_tools.get_balance(conn, business_id, money[0])))
-        warnings = [t("low_stock_warning", language, name=items[i]["name"], qty=fmt_qty(after[i]),
-                      unit=items[i]["unit"]) for i in low]
-        reply += warnings
-        if crossed and not _is_owner(ctx):
-            _tell_owner(conn, ctx, [items[i] for i in crossed], after)
+        reply += low_warnings(conn, ctx, items, before, after)
         return "\n".join(reply)
 
     return Outcome(_DRAFT_INTENT[mode], commit=commit)
+
+
+def low_warnings(conn: Connection, ctx: Context, items: dict[str, dict], before: dict[str, Decimal],
+                 after: dict[str, Decimal]) -> list[str]:
+    """Inside the commit: a warning for every item at or below its level. When staff took an item
+    across its level, the owner is told too."""
+    low = [i for i, item in items.items()
+           if item["low_stock_level"] is not None and after[i] <= item["low_stock_level"]]
+    crossed = [i for i in low if before.get(i, Decimal(0)) > items[i]["low_stock_level"]]
+    if crossed and not _is_owner(ctx):
+        _tell_owner(conn, ctx, [items[i] for i in crossed], after)
+    return [t("low_stock_warning", ctx.language, name=items[i]["name"], qty=fmt_qty(after[i]), unit=items[i]["unit"])
+            for i in low]
 
 
 def _tell_owner(conn: Connection, ctx: Context, items: list[dict], after: dict[str, Decimal]) -> None:
@@ -530,22 +534,16 @@ def _tell_owner(conn: Connection, ctx: Context, items: list[dict], after: dict[s
     )
 
 
-# Words that decide how stock was paid (code, not the AI, so the same sentence always gives the same result)
-_UDHAAR_WORDS = {"udhaar", "udhar", "udhari", "credit", "ادھار"}
-_CASH_WORDS = {"cash", "nakad", "naqad", "nakd", "نقد", "کیش"}
-_ONLINE_WORDS = {"online", "jazzcash", "easypaisa", "transfer", "آن لائن"}
-
-
 def _pay_from(text: str, fields: StockInFields) -> tuple[str | None, str | None]:
     """(pay, paid_amount): udhaar | cash | bank | none | None (ask). Words in the message decide; the AI's
     paid_via is only trusted for cash / bank, so "50 socks aae" (nothing said) is always asked."""
     words = set(re.findall(r"\w+", text.lower()))
     paid = confirmed_amount(text, fields.paid_amount)
-    if words & _UDHAAR_WORDS or (paid and fields.supplier_name):
+    if words & UDHAAR_WORDS or (paid and fields.supplier_name):
         return "udhaar", _str(paid)
-    if fields.bank_name or words & _ONLINE_WORDS:
+    if fields.bank_name or words & ONLINE_WORDS:
         return "bank", None
-    if words & _CASH_WORDS:
+    if words & CASH_WORDS:
         return "cash", None
     if {"sirf", "stock"} <= words or {"only", "stock"} <= words:
         return "none", None
@@ -620,7 +618,8 @@ def _line_item(ctx: Context, item_id: str | None, data: dict) -> Outcome:
             item = tools.get_item(conn, ctx.business["id"], item_id)
         line["item_id"], line["name"], line["item_unit"] = item_id, item["name"], item["unit"]
         line["purchase_price"] = _str(item["purchase_price"])
-    return next_step(ctx, draft)
+        line["sale_price"] = _str(item["sale_price"])
+    return continue_draft(ctx, draft)
 
 
 # ---------------------------------------------------------------------------
@@ -635,7 +634,7 @@ def _draft(pending: PendingAction) -> dict:
 
 
 def _retry(ctx: Context, pending: PendingAction, question: str) -> Outcome:
-    return Outcome(_DRAFT_INTENT[pending.data["draft"]["mode"]], question, pending=pending)
+    return Outcome(DRAFT_STEPS[pending.data["draft"]["mode"]][0], question, pending=pending)
 
 
 @pending_resolver("stock_unit")
@@ -670,7 +669,7 @@ def resolve_stock_qty(ctx: Context, pending: PendingAction, answer: str) -> Outc
     qty = _number_answer(answer)
     if qty is not None:
         draft["lines"][line]["qty"] = str(qty)
-    return next_step(ctx, draft)  # asks again if still missing
+    return continue_draft(ctx, draft)  # asks again if still missing
 
 
 @pending_resolver("stock_rate")
@@ -679,7 +678,7 @@ def resolve_stock_rate(ctx: Context, pending: PendingAction, answer: str) -> Out
     rate = _number_answer(answer)
     if rate is not None:
         draft["lines"][line]["rate"] = str(rate)
-    return next_step(ctx, draft)
+    return continue_draft(ctx, draft)
 
 
 _PAY_CHOICES = {1: "udhaar", 2: "cash", 3: "bank", 4: "none"}
@@ -691,11 +690,11 @@ def resolve_stock_pay(ctx: Context, pending: PendingAction, answer: str) -> Outc
     words = set(re.findall(r"\w+", answer.lower()))
     pay = _PAY_CHOICES.get(parse_number(answer) or 0)
     if pay is None:
-        if words & _UDHAAR_WORDS:
+        if words & UDHAAR_WORDS:
             pay = "udhaar"
-        elif words & _CASH_WORDS:
+        elif words & CASH_WORDS:
             pay = "cash"
-        elif words & (_ONLINE_WORDS | {"bank"}):
+        elif words & (ONLINE_WORDS | {"bank"}):
             pay = "bank"
         elif words & {"sirf", "stock", "none"}:
             pay = "none"
@@ -851,6 +850,7 @@ def _moves_reply(ctx: Context, kind: str, rows: list[dict], start: date, end: da
         f"{short_date(r['transaction_date'])} · {r['name']} {fmt_qty(abs(r['qty']))} {r['unit']}"
         + (f" × {format_rs(r['rate'])}" if r["rate"] is not None else "")
         + (f" · {r['party']}" if r["party"] else "")
+        + (f" · Bill #{r['bill_no']}" if r.get("bill_no") else "")
         for r in rows
     ]
     body = "\n".join(lines[-_TEXT_LIMIT:])

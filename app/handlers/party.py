@@ -245,8 +245,9 @@ def _save(ctx: Context, draft: dict) -> Outcome:
     'cash, nakad, "paise wapas"); "bank" when a bank or wallet is named (JazzCash, Easypaisa, Meezan, '
     '"account mein bheje"); null for udhaar, goods (maal/saman) or when it is not clear. '
     "Salary or wages paid to a worker is NOT a party entry (use cash_entry). "
-    "A message that lists ITEMS with quantities (\"100 belt\", \"10 kg cheeni\") coming in or going back is "
-    "stock_in / stock_out, even when a party is named.",
+    "A message that lists ITEMS with quantities (\"100 belt\", \"10 kg cheeni\") is NOT a party entry, even when "
+    "a party is named: items coming in = stock_in, going back = stock_out, SOLD to a customer (\"Ali ko 2 packet "
+    "surf udhaar diye\", \"customer ne 4 darjan ande liye\") = create_bill.",
     fields=PartyEntryFields,
     fields_hint=(
         '{"party_name": string | null (as written, e.g. "Ali"), '

@@ -29,6 +29,13 @@ def parse_yes_no(text: str) -> bool | None:
     return None
 
 
+# Words that decide how goods were paid for (stock in, bills). Code decides, not the AI,
+# so the same sentence always gives the same result.
+UDHAAR_WORDS = {"udhaar", "udhar", "udhari", "credit", "baqi", "baaki", "ادھار", "باقی"}
+CASH_WORDS = {"cash", "nakad", "naqad", "nakd", "نقد", "کیش"}
+ONLINE_WORDS = {"online", "jazzcash", "easypaisa", "transfer", "آن", "لائن"}
+
+
 _SKIP = {"skip", "chhor", "chhoro", "chor", "choro", "pata nahi", "pata nhi", "nahi pata", "nhi pata", "چھوڑو"}
 
 
@@ -40,6 +47,8 @@ def is_skip(text: str) -> bool:
 
 def is_trivial_answer(text: str, expects: str) -> bool:
     """True if the message can be answered by rules alone (no AI)."""
+    if expects == "free_text":
+        return bool(text.strip())
     if expects == "choice":
         return parse_number(text) is not None
     if expects == "yes_no":

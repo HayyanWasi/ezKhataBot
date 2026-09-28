@@ -15,6 +15,7 @@ from psycopg import Connection
 
 from app.core.database import transaction
 from app.core.dates import short_date, today
+from app.handlers import bills
 from app.handlers.money_steps import money_line
 from app.handlers.party import PARTY_CHOICE_HANDLERS, ask_choose_party, balance_line
 from app.schemas.khata import DeleteEntryFields, EditEntryFields, EntryPhotoFields, PendingAction
@@ -24,6 +25,7 @@ from app.services.registry import Context, Outcome, intent, pending_resolver
 from app.services.replies import t
 from app.tools import money as tools
 from app.tools import party as party_tools
+from app.tools import bills as bill_tools
 from app.tools import stock as stock_tools
 
 _PARTY_TYPES = ("customer", "supplier")
@@ -63,6 +65,11 @@ def _amount_text(entry: dict) -> str:
 
 def _qty(value: Decimal) -> str:
     return f"{value:,.0f}" if value == value.to_integral() else f"{value.normalize():f}"
+
+
+def _bill_no(ctx: Context, entry: dict) -> int:
+    with transaction() as conn:
+        return bill_tools.bill_for_transaction(conn, ctx.business["id"], entry["transaction_id"])["bill_no"]
 
 
 def _moves_data(entry: dict) -> list[dict]:
@@ -176,6 +183,8 @@ def _ask_delete(ctx: Context, party: dict | None, data: dict) -> Outcome:
         return Outcome("delete_entry", t("no_entry_to_delete", ctx.language))
     if _staff_blocked(ctx, entry):
         return Outcome("delete_entry", t("staff_own_cash_only", ctx.language))
+    if entry["transaction_type"] == "bill":  # undo / delete of a bill = cancel the bill
+        return bills.ask_cancel(ctx, _bill_no(ctx, entry))
     pending = PendingAction(
         kind="confirm_delete",
         language=ctx.language,
@@ -274,6 +283,8 @@ def _ask_edit(ctx: Context, party: dict | None, data: dict) -> Outcome:
         return Outcome("edit_entry", t("no_entry_found", language))
     if _staff_blocked(ctx, entry):
         return Outcome("edit_entry", t("staff_own_cash_only", language))
+    if entry["transaction_type"] == "bill":
+        return Outcome("edit_entry", t("bill_edit_cancel", language, no=_bill_no(ctx, entry)))
 
     data = _qty_or_amount(entry, data)
     if (data.get("new_qty") and len(entry["moves"]) != 1) or (data["new_amount"] and not entry["legs"]):

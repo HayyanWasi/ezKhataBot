@@ -28,6 +28,9 @@ Rules:
 - If a pending question exists but the latest message is a new request, answers_pending is false; classify it normally.
   A message that names a different person, or is a complete request on its own (e.g. "Bilal ko 300 diye"),
   is a new request, not an answer.
+- Goods written with a COUNT or weight ("2 packet surf", "50 socks", "4 darjan ande") are never party_entry or
+  cash_entry: sold / "bech diye" / a customer took them -> create_bill; came in / bought -> stock_in;
+  damaged, given free, returned -> stock_out.
 - Amounts: only numbers the user actually wrote. Convert "5 hazar" -> 5000, "5k" -> 5000, "1.5 lakh" -> 150000.
   Never add, subtract or guess amounts. null if no amount is written.
 - Dates: use the "Today" line to turn words like "kal", "parson", "15 tareekh" into YYYY-MM-DD.
@@ -56,6 +59,10 @@ def build_system_prompt(intents: dict[str, IntentSpec]) -> str:
     return SYSTEM_PROMPT.format(intents="\n".join(_describe(s) for s in intents.values()))
 
 
+def _short(text: str, limit: int = 300) -> str:
+    return text if len(text) <= limit else text[:limit].rstrip() + " …"
+
+
 def build_user_prompt(
     text: str,
     history: list[dict],
@@ -65,7 +72,8 @@ def build_user_prompt(
 ) -> str:
     parts = [f"Today: {now:%Y-%m-%d} ({now:%A}), time now {now:%H:%M}, Pakistan time"]
     if history:
-        convo = "\n".join(f"{m['role']}: {m['text']}" for m in history)
+        # Long replies (bills, reports) are cut: the AI only needs the gist, and Groq counts every token
+        convo = "\n".join(f"{m['role']}: {_short(m['text'])}" for m in history)
         parts.append(f"Recent conversation (oldest first):\n{convo}")
     if memories:
         parts.append("Saved notes:\n" + "\n".join(f"- {m}" for m in memories))

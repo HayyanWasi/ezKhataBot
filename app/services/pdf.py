@@ -339,7 +339,8 @@ def stock_moves_pdf(business: dict, kind: str, rows: list[dict], start: date, en
         qty = abs(r["qty"])
         amount = qty * r["rate"] if r["rate"] is not None else None
         total += amount or 0
-        detail = " — ".join(x for x in (r["party"], r["notes"]) if x)
+        bill = f"Bill #{r['bill_no']}" if r.get("bill_no") else None
+        detail = " — ".join(x for x in (bill, r["party"], r["notes"]) if x)
         table.append([f"{r['transaction_date']:%d %b %Y}", r["name"], f"{_qty(qty)} {r['unit']}",
                       _money(r["rate"]) if r["rate"] is not None else "-", _money(amount) if amount else "-", detail])
     table.append(["", "Total", "", "", _money(total) or "0", f"{len(rows)} entries"])
@@ -352,3 +353,97 @@ def stock_moves_pdf(business: dict, kind: str, rows: list[dict], start: date, en
         bold_last=True,
     )
     return _save(pdf, business["id"], title, start, end)
+
+
+# ---------------------------------------------------------------------------
+# Bills
+# ---------------------------------------------------------------------------
+
+
+def _pct_text(value: Decimal | None) -> str:
+    return f" ({_qty(value)}%)" if value is not None else ""
+
+
+def bill_pdf(shop: dict, bill: dict, path: str) -> str:
+    """One sale bill, laid out like DigiKhata's: shop, Bill To, items, totals. Written to `path`."""
+    pdf = _Sheet(f"Bill # {bill['bill_no']}")
+    pdf.set_font("Noto", "B", 15)
+    pdf.cell(0, 8, shop["name"], new_x="LMARGIN", new_y="NEXT")
+    pdf.set_font("Noto", "", 9.5)
+    pdf.set_text_color(*GREY)
+    for line in (shop.get("phone"), shop.get("address")):
+        if line:
+            pdf.multi_cell(0, 5, line, new_x="LMARGIN", new_y="NEXT")
+    pdf.ln(4)
+
+    pdf.set_text_color(0, 0, 0)
+    pdf.set_font("Noto", "B", 18)
+    pdf.cell(0, 10, "Bill", align="C", new_x="LMARGIN", new_y="NEXT")
+    if bill.get("cancelled"):
+        pdf.set_text_color(*RED)
+        pdf.set_font("Noto", "B", 12)
+        pdf.cell(0, 7, "CANCELLED", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.set_text_color(0, 0, 0)
+    pdf.ln(3)
+
+    half = pdf.epw / 2
+    pdf.set_font("Noto", "", 10)
+    pdf.cell(half, 6, "Bill To:")
+    pdf.cell(half, 6, f"Bill No. {bill['bill_no']}", align="R", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_font("Noto", "B", 11)
+    pdf.cell(half, 6, bill["customer_name"])
+    pdf.set_font("Noto", "", 10)
+    pdf.cell(half, 6, f"{bill['bill_date']:%d-%m-%Y}", align="R", new_x="LMARGIN", new_y="NEXT")
+    pdf.ln(4)
+
+    rows = [[str(n), line["name"], f"{_qty(line['qty'])} {line['unit']}", _money(line["rate"]) or "0",
+             _money(line["amount"]) or "0"] for n, line in enumerate(bill["lines"], 1)]
+    _table(pdf, ["#", "Name", "Qty", "Price", "Amount"], (10, 76, 32, 32, 32),
+           ("LEFT", "LEFT", "RIGHT", "RIGHT", "RIGHT"), rows)
+    pdf.ln(3)
+
+    totals = [("Total", format_rs(bill["subtotal"]), True)]
+    if bill["discount_amount"]:
+        totals.append((f"Discount{_pct_text(bill['discount_percent'])}", f"-{format_rs(bill['discount_amount'])}", False))
+    if bill["tax_amount"]:
+        totals.append((f"Tax{_pct_text(bill['tax_percent'])}", format_rs(bill["tax_amount"]), False))
+    if bill["discount_amount"] or bill["tax_amount"]:
+        totals.append(("Grand Total", format_rs(bill["total"]), True))
+    totals.append(("Received", format_rs(bill["paid_amount"]), False))
+    due = bill["total"] - bill["paid_amount"]
+    if due > 0:
+        totals.append(("Balance Due", format_rs(due), True))
+    for label, value, bold in totals:
+        pdf.set_font("Noto", "B" if bold else "", 10.5 if bold else 10)
+        pdf.cell(pdf.epw - 50, 7, label, align="R")
+        pdf.cell(50, 7, value, align="R", new_x="LMARGIN", new_y="NEXT")
+
+    pdf.ln(8)
+    pdf.set_font("Noto", "", 8)
+    pdf.set_text_color(*GREY)
+    pdf.cell(0, 5, "Thank you! · Made with EzKhata", align="C")
+    pdf.output(path)
+    return path
+
+
+def bills_list_pdf(shop: dict, business_id, bills: list[dict], cash_sales: Decimal, start: date, end: date) -> str:
+    """Bills in a period with the total sale. Returns the file path."""
+    pdf = _Sheet("Bills")
+    _header(pdf, shop["name"], "Bills", [_period(start, end), _generated()])
+    live = [b for b in bills if not b["cancelled"]]
+    bill_total = sum((b["total"] for b in live), Decimal(0))
+    due = sum((b["total"] - b["paid_amount"] for b in live), Decimal(0))
+    _summary(pdf, [
+        ("Total sale", format_rs(bill_total + cash_sales), GREEN),
+        ("Bills", f"{len(live)} · {format_rs(bill_total)}", (0, 0, 0)),
+        ("Cash sales", format_rs(cash_sales), GREY),
+        ("Balance due", format_rs(due), RED),
+    ])
+    rows = []
+    for b in bills:
+        status = "Cancelled" if b["cancelled"] else ("Paid" if b["paid_amount"] >= b["total"] else "Due")
+        rows.append([f"#{b['bill_no']}", f"{b['bill_date']:%d %b %Y}", b["customer_name"], _money(b["total"]) or "0",
+                     _money(b["paid_amount"]) or "0", status])
+    _table(pdf, ["Bill", "Date", "Customer", "Total", "Received", "Status"], (18, 28, 56, 28, 28, 24),
+           ("LEFT", "LEFT", "LEFT", "RIGHT", "RIGHT", "LEFT"), rows)
+    return _save(pdf, business_id, "bills", start, end)

@@ -248,7 +248,8 @@ def moves_report(
         select t.transaction_date, t.transaction_type, i.name, i.unit, s.qty, s.rate,
                (select a.name from khata_entries k join accounts a on a.id = k.account_id
                 where k.transaction_id = t.id and a.type in ('customer', 'supplier') limit 1) as party,
-               (select k.notes from khata_entries k where k.transaction_id = t.id limit 1) as notes
+               (select k.notes from khata_entries k where k.transaction_id = t.id limit 1) as notes,
+               (select b.bill_no from bills b where b.transaction_id = t.id) as bill_no
         from stock_moves s
         join business_transactions t on t.id = s.transaction_id
         join items i on i.id = s.item_id
@@ -271,7 +272,7 @@ def record_stock(
     conn: Connection,
     *,
     business_id: Id,
-    type: str,  # stock_opening | stock_in | purchase | stock_out
+    type: str,  # stock_opening | stock_in | purchase | stock_out | bill
     entry_date: date,
     moves: list[tuple[Id, Decimal, Decimal | None]],  # (item id, signed qty, rate per unit)
     legs: list[tuple[Id, Decimal]],  # money legs of a purchase (supplier / cash / bank), else []
