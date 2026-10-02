@@ -49,7 +49,7 @@ app = FastAPI(title="EzKhata", lifespan=lifespan, docs_url=None, redoc_url=None,
 app.include_router(webhooks.router)
 
 
-@app.get("/")
-@app.get("/health")
+@app.api_route("/", methods=["GET", "HEAD"])
+@app.api_route("/health", methods=["GET", "HEAD"])  # uptime monitors check with HEAD
 def health() -> dict:
     return {"ok": True}
