@@ -210,3 +210,5 @@
 {"text": "aaj kya kya hua", "intent": "recent_entries", "language": "roman_ur"}
 {"text": "last 5 entries dikhao", "intent": "recent_entries", "language": "roman_ur"}
 {"text": "ali kon hai?", "intent": "party_balance", "language": "roman_ur"}
+{"text": "Abbas se 500 lene hain laptop ke\nHayyan se 100 lene hain bill ke\nShahrukh ko 500 dene hain", "intent": "many_entries", "language": "roman_ur"}
+{"text": "Ali ko 300 diye, chai 50, Bilal se 1000 mile", "intent": "many_entries", "language": "roman_ur"}
