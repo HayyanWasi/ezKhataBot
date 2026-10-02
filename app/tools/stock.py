@@ -61,9 +61,9 @@ def get_item(conn: Connection, business_id: Id, item_id: Id) -> dict | None:
     ).fetchone()
 
 
-def find_item(conn: Connection, business_id: Id, word: str) -> list[dict]:
+def find_item(conn: Connection, business_id: Id, word: str, partial: bool = True) -> list[dict]:
     """Items the user may mean by `word`: a remembered word, the exact name, singular/plural,
-    a near spelling, or a name containing the word. [] = no match; one = sure; several = ask."""
+    a near spelling, or (partial) a name containing the word. [] = no match; one = sure; several = ask."""
     word = _normal(word)
     if not word:
         return []
@@ -92,7 +92,7 @@ def find_item(conn: Connection, business_id: Id, word: str) -> list[dict]:
     found = [item for item in items if names[item["id"]] in close]
     if found:
         return found
-    if len(word) >= 3:  # "cheeni" -> "Cheeni 1kg"
+    if partial and len(word) >= 3:  # "cheeni" -> "Cheeni 1kg"
         return [item for item in items if word in names[item["id"]] or _singular(word) in names[item["id"]]]
     return []
 

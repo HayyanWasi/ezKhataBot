@@ -307,10 +307,18 @@ def add_item(ctx: Context, fields: AddItemFields) -> Outcome:
         "name": _title(fields.name), "unit": normal_unit(fields.unit), "category": fields.category,
         "sale_price": _str(confirmed_amount(text, fields.sale_price)),
         "purchase_price": _str(confirmed_amount(text, fields.purchase_price)),
-        "qty": _str(_qty_of(text, fields.qty)), "low_stock_level": _str(_qty_of(text, fields.low_stock_level)),
+        "qty": _str(_qty_of(text, fields.qty) or _counted_qty(text)),
+        "low_stock_level": _str(_qty_of(text, fields.low_stock_level)),
     }
     draft = {"mode": "item_add", "item": item, "queue": []}
     return _add_step(ctx, draft)
+
+
+def _counted_qty(text: str) -> Decimal | None:
+    """A count like "5 pcs" or "10 kg" written in the message, when the AI left the quantity out (one only)."""
+    units = "|".join(re.escape(u) for aliases in _UNITS.values() for u in sorted(aliases, key=len, reverse=True))
+    found = re.findall(rf"(?<![\w.])(\d+(?:\.\d+)?)\s*(?:{units})(?![\w])", text, re.IGNORECASE)
+    return Decimal(found[0]) if len(found) == 1 else None
 
 
 def _str(value: Decimal | None) -> str | None:

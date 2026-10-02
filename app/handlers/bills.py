@@ -26,9 +26,9 @@ from app.core.config import get_settings
 from app.core.dates import short_date, today
 from app.core.database import transaction
 from app.handlers.money_steps import money_account, money_line, money_step
-from app.handlers.party import balance_line
+from app.handlers.party import balance_line, shop_goods
 from app.handlers.stock import _short_text, fmt_qty, low_warnings, new_stock_draft, with_item
-from app.schemas.khata import BillReportFields, CancelBillFields, CreateBillFields, PendingAction
+from app.schemas.khata import BillReportFields, CancelBillFields, CreateBillFields, PendingAction, StockLine
 from app.services import pdf
 from app.services.amounts import confirmed_amount, format_rs
 from app.services.answers import CASH_WORDS, ONLINE_WORDS, UDHAAR_WORDS, is_skip, parse_number, parse_yes_no, pick
@@ -323,7 +323,12 @@ def create_bill(ctx: Context, fields: CreateBillFields) -> Outcome:
     if entry_date > _today(ctx):
         return Outcome("create_bill", t("future_date", ctx.language))
     pay, paid = _pay_from(text, fields)
-    draft = new_stock_draft("bill", fields.items, text, date=entry_date.isoformat(), bank_name=fields.bank_name)
+    lines = fields.items
+    if not any(line.name for line in lines):  # the AI left the items out: the shop's items written with a count
+        goods = shop_goods(ctx, text)
+        lines = [StockLine(name=item["name"], qty=str(count)) for item, count in goods]
+        text += "".join(f" {count} {item['name']}" for item, count in goods)  # "aik sock": the count in digits
+    draft = new_stock_draft("bill", lines, text, date=entry_date.isoformat(), bank_name=fields.bank_name)
     draft.update({
         "customer_name": fields.customer_name, "account_id": None, "new_customer": False, "pay": pay,
         "paid_amount": paid,
