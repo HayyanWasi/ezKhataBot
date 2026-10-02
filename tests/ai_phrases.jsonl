@@ -177,4 +177,32 @@
 {"text": "cheeni ki 10 kg wali entry delete karo", "intent": "delete_entry", "language": "roman_ur", "fields": {"amount": 10}}
 {"text": "Bilal se 5000 ka maal liya", "intent": "party_entry", "language": "roman_ur", "fields": {"amount": 5000}}
 {"text": "aaj 20000 ki sale hui", "intent": "cash_entry", "language": "roman_ur", "fields": {"amount": 20000}}
-{"text": "Ali ko 2 packet surf udhaar diye 500 ke", "intent": "party_entry", "language": "roman_ur", "fields": {"amount": 500}}
+{"text": "Ali ko 2 packet surf udhaar diye 500 ke", "intent": "party_entry", "language": "roman_ur"}
+{"text": "Rohaan ka bill: 50 socks, 2 belt 250 wale, 10% discount, 1000 cash diye baqi udhaar", "intent": "create_bill", "language": "roman_ur", "fields": {"customer_name": "Rohaan", "discount_percent": 10, "paid_amount": 1000}}
+{"text": "2 socks aur 1 belt bech diye", "intent": "create_bill", "language": "roman_ur"}
+{"text": "counter sale 3 packet surf", "intent": "create_bill", "language": "en"}
+{"text": "Ahmed ka bill 5 socks udhaar", "intent": "create_bill", "language": "roman_ur", "fields": {"customer_name": "Ahmed", "paid_via": "udhaar"}}
+{"text": "Ali ko 5 kg cheeni ka bill banao", "intent": "create_bill", "language": "roman_ur", "fields": {"customer_name": "Ali"}}
+{"text": "bill banao 10 socks 100 discount tax 36 online", "intent": "create_bill", "language": "roman_ur", "fields": {"discount_amount": 100, "tax_amount": 36}}
+{"text": "make a bill for Sara: 3 shampoo and 2 soap", "intent": "create_bill", "language": "en", "fields": {"customer_name": "Sara"}}
+{"text": "customer ne 4 darjan ande liye cash", "intent": "create_bill", "language": "roman_ur"}
+{"text": "Kamran ko 20 kg aata becha 5% discount", "intent": "create_bill", "language": "roman_ur", "fields": {"customer_name": "Kamran", "discount_percent": 5}}
+{"text": "ایک کلو چینی اور دو صابن بیچے", "intent": "create_bill", "language": "ur"}
+{"text": "Bill 3 bhejo", "intent": "bill_report", "language": "roman_ur", "fields": {"bill_no": 3}}
+{"text": "bill no 12 dikhao", "intent": "bill_report", "language": "roman_ur", "fields": {"bill_no": 12}}
+{"text": "bills dikhao", "intent": "bill_report", "language": "roman_ur"}
+{"text": "is mahine ki sale kitni hui", "intent": "bill_report", "language": "roman_ur"}
+{"text": "Rohaan ke bills", "intent": "bill_report", "language": "roman_ur", "fields": {"customer_name": "Rohaan"}}
+{"text": "September ke bills PDF", "intent": "bill_report", "language": "roman_ur", "fields": {"pdf": true}}
+{"text": "show me today's sales", "intent": "bill_report", "language": "en"}
+{"text": "Bill 3 cancel karo", "intent": "cancel_bill", "language": "roman_ur", "fields": {"bill_no": 3}}
+{"text": "bill number 5 delete kar do", "intent": "cancel_bill", "language": "roman_ur", "fields": {"bill_no": 5}}
+{"text": "Bill 3 mein socks 40 karo", "intent": "cancel_bill", "language": "roman_ur", "fields": {"bill_no": 3}}
+{"text": "بل نمبر 4 کینسل کرو", "intent": "cancel_bill", "language": "ur", "fields": {"bill_no": 4}}
+{"text": "aaj 20000 ki sale hui", "intent": "cash_entry", "language": "roman_ur", "fields": {"amount": 20000}}
+{"text": "sale 15000 aaj ki", "intent": "cash_entry", "language": "roman_ur", "fields": {"amount": 15000}}
+{"text": "Ali ko 500 udhaar diye", "intent": "party_entry", "language": "roman_ur", "fields": {"amount": 500}}
+{"text": "50 socks aae", "intent": "stock_in", "language": "roman_ur"}
+{"text": "5 socks kharab ho gae", "intent": "stock_out", "language": "roman_ur"}
+{"text": "socks kitne hain", "intent": "stock_report", "language": "roman_ur"}
+{"text": "aaj ka hisaab", "intent": "money_report", "language": "roman_ur"}

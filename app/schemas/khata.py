@@ -29,7 +29,8 @@ class PendingAction(BaseModel):
     language: Language
     # amount_or_skip: an amount, or "skip" / "nahi" / "0" (e.g. opening cash)
     # choice_or_name: a list number, or a short name (a new category / bank), handled without the AI
-    expects: Literal["choice", "choice_or_name", "yes_no", "amount", "amount_or_skip", "text"] = "text"
+    # free_text: any answer is taken as it is, without the AI (e.g. the shop's address)
+    expects: Literal["choice", "choice_or_name", "yes_no", "amount", "amount_or_skip", "text", "free_text"] = "text"
     data: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -247,6 +248,60 @@ class EditItemFields(_Fields):
 
 class ItemFields(_Fields):
     item: str = Field(min_length=1)
+
+
+# ---------------------------------------------------------------------------
+# Bills. Numbers stay raw: code checks every one against the text.
+# ---------------------------------------------------------------------------
+
+
+class CreateBillFields(_Fields):
+    customer_name: str | None = None  # None = walk-in (counter sale)
+    items: list[StockLine] = Field(default_factory=list)
+    discount_percent: Any = None
+    discount_amount: Any = None
+    tax_percent: Any = None
+    tax_amount: Any = None
+    paid_via: Literal["cash", "bank", "udhaar"] | None = None
+    paid_amount: Any = None  # paid now when the rest is udhaar ("1000 diye baqi udhaar")
+    bank_name: str | None = None
+    date: dt.date | None = None
+
+    @field_validator("items", mode="before")
+    @classmethod
+    def _items(cls, v: Any) -> Any:
+        return _lines(v)
+
+    @field_validator("paid_via", mode="before")
+    @classmethod
+    def _unknown_paid_via(cls, v: Any) -> Any:
+        return v if v in ("cash", "bank", "udhaar") else None
+
+
+class BillReportFields(_Fields):
+    kind: Literal["list", "one"] = "list"
+    bill_no: int | None = None
+    customer_name: str | None = None
+    start_date: dt.date | None = None
+    end_date: dt.date | None = None
+    pdf: bool | None = None
+
+    @field_validator("kind", mode="before")
+    @classmethod
+    def _unknown_kind(cls, v: Any) -> Any:
+        return v if v in ("list", "one") else "list"
+
+    @field_validator("bill_no", mode="before")
+    @classmethod
+    def _bad_no(cls, v: Any) -> Any:
+        try:
+            return int(str(v).strip().lstrip("#")) if v not in (None, "") else None
+        except ValueError:
+            return None
+
+
+class CancelBillFields(BillReportFields):
+    pass
 
 
 # ---------------------------------------------------------------------------

@@ -25,6 +25,7 @@ TEXTS: dict[str, dict[str, str]] = {
             "• \"Ali paid back 1000\" / \"deposited 10000 in JazzCash\"\n"
             "• \"today's cash\" / \"September cash book PDF\"\n"
             "• \"add item socks, sell 30, 100 pcs\" / \"50 socks from Bilal on credit\" / \"stock list\"\n"
+            "• \"bill for Rohaan: 50 socks, 10% discount\" / \"sold 2 socks\" / \"show bills\"\n"
             "• \"add supplier Rohaan\" / \"undo\" / \"Ali's entry was 600, not 500\"\n"
             "• \"Ali's statement for September\" / \"all parties statement\"\n"
             "• \"remind me tomorrow at 10 to pay Rohaan\" / \"my reminders\"\n"
@@ -38,6 +39,7 @@ TEXTS: dict[str, dict[str, str]] = {
             "• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n"
             "• \"aaj ka cash\" / \"September ki cash book PDF\"\n"
             "• \"socks add karo 30 ki bechta hun 100 pcs\" / \"Bilal se 50 socks udhaar aae\" / \"stock dikhao\"\n"
+            "• \"Rohaan ka bill: 50 socks, 10% discount, 1000 cash baqi udhaar\" / \"2 socks bech diye\" / \"bills dikhao\"\n"
             "• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n"
             "• \"Ali ka September ka statement\" / \"sab ka statement\"\n"
             "• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n"
@@ -50,6 +52,7 @@ TEXTS: dict[str, dict[str, str]] = {
             "• \"چائے 200\" / \"3000 آئے\" / \"آج 20000 کی سیل ہوئی\"\n"
             "• \"علی نے 1000 واپس دیے\" / \"آج کا کیش\"\n"
             "• \"جرابیں شامل کرو، 30 کی بیچتا ہوں\" / \"50 جرابیں آئیں\" / \"اسٹاک دکھاؤ\"\n"
+            "• \"روحان کا بل: 50 جرابیں، 10% ڈسکاؤنٹ\" / \"2 جرابیں بیچیں\" / \"بل دکھاؤ\"\n"
             "• \"روحان سپلائر شامل کرو\" / \"undo\"\n"
             "• \"علی کا ستمبر کا اسٹیٹمنٹ\" / \"سب کا اسٹیٹمنٹ\"\n"
             "• \"کل 10 بجے یاد دلانا روحان کو پیمنٹ کرنی ہے\" / \"میری یاد دہانیاں\"\n"
@@ -563,6 +566,98 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "Is entry ki koi photo nahi mili.",
         "ur": "اس انٹری کی کوئی تصویر نہیں ملی۔",
     },
+    # ------------------------------------------------------------------ bills
+    "bill_which_items": {
+        "en": "Which items, and how many? e.g. \"Rohaan ka bill: 50 socks, 2 belt\"",
+        "roman_ur": "Bill mein kaunse items aur kitne? Jaise: \"Rohaan ka bill: 50 socks, 2 belt\"",
+        "ur": "بل میں کون سے آئٹم اور کتنے؟ جیسے: \"روحان کا بل: 50 جرابیں، 2 بیلٹ\"",
+    },
+    "ask_bill_rate": {
+        "en": "Sale rate of *{name}*? (price of 1 {unit})",
+        "roman_ur": "*{name}* ka bechne ka rate? (1 {unit} ki qeemat)",
+        "ur": "*{name}* کا فروخت ریٹ؟ (1 {unit} کی قیمت)",
+    },
+    "ask_bill_pay": {
+        "en": "Bill {total}: how was it paid?\n1) Cash\n2) Online (bank)\n3) Udhaar",
+        "roman_ur": "Bill {total}: paise kaise mile?\n1) Cash\n2) Online (bank)\n3) Udhaar",
+        "ur": "بل {total}: پیسے کیسے ملے؟\n1) کیش\n2) آن لائن (بینک)\n3) ادھار",
+    },
+    "ask_bill_customer": {
+        "en": "Udhaar needs a name: whose bill is it?",
+        "roman_ur": "Udhaar ke liye naam chahiye: kis customer ka bill hai?",
+        "ur": "ادھار کے لیے نام چاہیے: کس گاہک کا بل ہے؟",
+    },
+    "confirm_new_customer": {
+        "en": "*{name}* is a new customer. Add? (yes/no)",
+        "roman_ur": "*{name}* naya customer hai. Add karun? (haan/nahi)",
+        "ur": "*{name}* نیا گاہک ہے۔ شامل کروں؟ (ہاں/نہیں)",
+    },
+    "ask_shop_details": {
+        "en": "For your bills (asked once): write the shop's address and phone number. Or \"skip\".",
+        "roman_ur": "Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya \"skip\" likhein.",
+        "ur": "بل کے لیے (صرف ایک دفعہ): دکان کا پتہ اور فون نمبر لکھیں۔ یا \"skip\" لکھیں۔",
+    },
+    "bill_discount_too_big": {
+        "en": "The discount is more than the bill. Please send the bill again.",
+        "roman_ur": "Discount bill se zyada hai. Bill dobara bhejein.",
+        "ur": "ڈسکاؤنٹ بل سے زیادہ ہے۔ بل دوبارہ بھیجیں۔",
+    },
+    "bill_head": {
+        "en": "🧾 *Bill #{no}* · {name} · {date}",
+        "roman_ur": "🧾 *Bill #{no}* · {name} · {date}",
+        "ur": "🧾 *بل #{no}* · {name} · {date}",
+    },
+    "bill_cancelled_tag": {"en": "❌ CANCELLED", "roman_ur": "❌ CANCEL", "ur": "❌ منسوخ"},
+    "bill_subtotal": {"en": "Total: {amount}", "roman_ur": "Total: {amount}", "ur": "ٹوٹل: {amount}"},
+    "bill_discount": {
+        "en": "Discount{pct}: -{amount}", "roman_ur": "Discount{pct}: -{amount}", "ur": "ڈسکاؤنٹ{pct}: -{amount}",
+    },
+    "bill_tax": {"en": "Tax{pct}: +{amount}", "roman_ur": "Tax{pct}: +{amount}", "ur": "ٹیکس{pct}: +{amount}"},
+    "bill_total": {"en": "*Grand total: {amount}*", "roman_ur": "*Kul: {amount}*", "ur": "*کل: {amount}*"},
+    "bill_paid_full": {"en": "✅ Paid ({how})", "roman_ur": "✅ Poore paise mil gae ({how})", "ur": "✅ پورے پیسے مل گئے ({how})"},
+    "bill_paid_part": {
+        "en": "Received: {paid} · Due: {balance}",
+        "roman_ur": "Mila: {paid} · Baqi: {balance}",
+        "ur": "ملا: {paid} · باقی: {balance}",
+    },
+    "bill_online": {"en": "online", "roman_ur": "online", "ur": "آن لائن"},
+    "bills_head": {"en": "🧾 *Bills*{name} · {period}", "roman_ur": "🧾 *Bills*{name} · {period}", "ur": "🧾 *بل*{name} · {period}"},
+    "bills_total": {
+        "en": "Total sale: *{total}* ({n} bills: {bills})",
+        "roman_ur": "Kul sale: *{total}* ({n} bills: {bills})",
+        "ur": "کل سیل: *{total}* ({n} بل: {bills})",
+    },
+    "bills_cash_sales": {
+        "en": "+ cash sales without a bill: {amount}",
+        "roman_ur": "+ baghair bill ki cash sale: {amount}",
+        "ur": "+ بغیر بل کی کیش سیل: {amount}",
+    },
+    "bill_due": {"en": "due {amount}", "roman_ur": "baqi {amount}", "ur": "باقی {amount}"},
+    "no_bills": {"en": "No bills in this period.", "roman_ur": "Is dauran koi bill nahi.", "ur": "اس دوران کوئی بل نہیں۔"},
+    "bill_not_found": {"en": "No bill #{no}.", "roman_ur": "Bill #{no} nahi mila.", "ur": "بل #{no} نہیں ملا۔"},
+    "ask_bill_no": {
+        "en": "Which bill number? e.g. \"Bill 3 cancel karo\"",
+        "roman_ur": "Kaunsa bill number? Jaise: \"Bill 3 cancel karo\"",
+        "ur": "کون سا بل نمبر؟ جیسے: \"بل 3 کینسل کرو\"",
+    },
+    "bill_edit_cancel": {
+        "en": "A bill can't be changed. Cancel it (\"Bill {no} cancel karo\") and make it again.",
+        "roman_ur": "Bill badla nahi ja sakta. Isay cancel karein (\"Bill {no} cancel karo\") aur naya bill banayein.",
+        "ur": "بل بدلا نہیں جا سکتا۔ اسے کینسل کریں (\"بل {no} کینسل کرو\") اور نیا بل بنائیں۔",
+    },
+    "confirm_cancel_bill": {
+        "en": "Cancel Bill #{no} ({name}, {amount})? Stock, cash and khata will go back. (yes/no)",
+        "roman_ur": "Bill #{no} ({name}, {amount}) cancel karun? Stock, cash aur khata wapas ho jaenge. (haan/nahi)",
+        "ur": "بل #{no} ({name}، {amount}) کینسل کروں؟ اسٹاک، کیش اور کھاتہ واپس ہو جائیں گے۔ (ہاں/نہیں)",
+    },
+    "bill_cancelled": {"en": "❌ Bill #{no} cancelled", "roman_ur": "❌ Bill #{no} cancel ho gaya", "ur": "❌ بل #{no} کینسل ہو گیا"},
+    "bill_already_cancelled": {
+        "en": "Bill #{no} is already cancelled.",
+        "roman_ur": "Bill #{no} pehle se cancel hai.",
+        "ur": "بل #{no} پہلے سے کینسل ہے۔",
+    },
+    "move_bill": {"en": "Sold (bill)", "roman_ur": "Bill se bika", "ur": "بل سے بکا"},
+    "entry_bill": {"en": "Bill", "roman_ur": "Bill", "ur": "بل"},
     # ------------------------------------------------------------------ stock
     "barcode_unreadable": {
         "en": "Couldn't read the barcode. Send a clear, close photo with the whole barcode in it.",
@@ -835,6 +930,9 @@ _ROMAN_URDU_WORDS = {
     "kar", "nahi", "nhi", "haan", "han", "ji", "acha", "theek", "thik", "bhai", "paise",
     "udhaar", "udhar", "chahiye", "batao", "mujhe", "aap", "ap", "yaar", "yr", "salam",
     "madad", "dukaan", "dukan", "kitne", "kitna", "aur", "bhi", "abhi", "kal", "aaj", "tha",
+    "thi", "thay", "kitni", "dikhao", "bhejo", "banao", "lagao", "hatao", "bech", "becha", "beche", "diye",
+    "diya", "liye", "liya", "aae", "aaye", "gae", "gaye", "hui", "hua", "mila", "mile", "wale", "wali",
+    "baqi", "kharab", "muft", "sab", "hisaab", "mahine", "wapas", "wapis", "karna", "ho",
 }
 
 

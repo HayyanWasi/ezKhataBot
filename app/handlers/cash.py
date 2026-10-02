@@ -167,7 +167,8 @@ def _save(ctx: Context, draft: dict) -> Outcome:
     "category_word: the expense word as written (bijli, kiraya, chai, salary), else null. A bare word + amount "
     '("rickshaw 300", "nashta 150") is an expense: direction "out", category_word = the word. '
     "is_sale: true for a sale (sale hui, bikri, becha). bank_name: only if a bank/wallet is named. "
-    "Correcting an entry already saved (\"... wali entry ... thi\") is edit_entry, not a new cash_entry.",
+    "Correcting an entry already saved (\"... wali entry ... thi\") is edit_entry, not a new cash_entry. "
+    "Selling ITEMS with quantities (\"2 socks bech diye\") is create_bill.",
     fields=CashEntryFields,
     fields_hint=(
         '{"direction": "in" | "out" | null, "amount": number | null, "date": "YYYY-MM-DD" | null, '
@@ -332,7 +333,8 @@ def _period(start: date, end: date) -> str:
     "User asks about CASH or a BANK (not a party): cash in hand, money in / out, expenses, the cash book, "
     "for today, a day or a month, or as a PDF. \"aaj ka hisaab\" / \"aaj ka cash\" / \"kitna cash hai\" / "
     "\"September ke kharche\" / \"JazzCash ka hisaab\" / \"cash book PDF\". "
-    'account: "cash", a bank name, or null for cash and all banks. pdf: true if a PDF / sheet is asked for.',
+    'account: "cash", a bank name, or null for cash and all banks. pdf: true if a PDF / sheet is asked for. '
+    'Total SALES ("is mahine ki sale", "aaj ki sale kitni") are bill_report.',
     fields=MoneyReportFields,
     fields_hint=(
         '{"account": "cash" | string | null, "start_date": "YYYY-MM-DD" | null, "end_date": "YYYY-MM-DD" | null, '

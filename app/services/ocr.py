@@ -94,7 +94,7 @@ def _layout(annotation: dict, width: int = 100) -> str:
 def read_text(path: str | Path) -> OcrResult:
     """All text in the image, in reading order and as a column layout (both '' if none)."""
     settings = get_settings()
-    if not (settings.gemini_api_key or settings.google_vision_api_key):
+    if not (settings.gemini_api_keys or settings.google_vision_api_key):
         raise OCRError("off", "no OCR key is set")
     path = Path(path)
     if not path.is_file():
@@ -102,7 +102,7 @@ def read_text(path: str | Path) -> OcrResult:
     if path.stat().st_size > settings.ocr_max_image_mb * 1024 * 1024:
         raise OCRError("too_big")
     image = _prepare(path)
-    return _read_gemini(image) if settings.gemini_api_key else _read_vision(image)
+    return _read_gemini(image) if settings.gemini_api_keys else _read_vision(image)
 
 
 # ---------------------------------------------------------------------------
@@ -121,14 +121,14 @@ a khata register page, a bill, a payment screenshot, or a handwritten list, in U
 - Return only the text, with no explanation. If there is no text, return nothing."""
 
 
-def _post_gemini(model: str, body: dict) -> httpx.Response | None:
+def _post_gemini(model: str, body: dict, key: str) -> httpx.Response | None:
     """One model; a "busy" answer (503) gets one more try after a short wait. None = no answer (timeout)."""
     response = None
     for attempt in range(2):
         try:
             response = httpx.post(
                 GEMINI_URL.format(model=model),
-                headers={"x-goog-api-key": get_settings().gemini_api_key},
+                headers={"x-goog-api-key": key},
                 json=body,
                 timeout=45,
             )
@@ -150,14 +150,16 @@ def _read_gemini(image: str) -> OcrResult:
         ]}],
         "generationConfig": {"temperature": 0},
     }
-    # The free tier allows ~20 photos a day PER MODEL and is often "busy" (503). Each model in
-    # GEMINI_MODELS has its own quota, so when one is full or busy the next one is tried.
+    # The free tier allows ~20 photos a day PER MODEL PER KEY and is often "busy" (503). Each model in
+    # GEMINI_MODELS and each key has its own quota, so when one is full or busy the next one is tried.
     response = None
-    for model in settings.gemini_model_list:
-        response = _post_gemini(model, body)
+    tries = [(model, key) for model in settings.gemini_model_list for key in settings.gemini_api_keys]
+    for n, (model, key) in enumerate(tries, 1):
+        response = _post_gemini(model, body, key)
         if response is not None and response.status_code not in (404, 429, 500, 503):
             break
-        log.warning("gemini %s: %s, trying the next model", model, response.status_code if response else "timeout")
+        log.warning("gemini %s (key %d): %s, trying the next", model, (n - 1) % len(settings.gemini_api_keys) + 1,
+                    response.status_code if response else "timeout")
     if response is None:
         raise OCRError("failed", "every Gemini model timed out")
 

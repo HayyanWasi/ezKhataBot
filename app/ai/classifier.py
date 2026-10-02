@@ -11,6 +11,7 @@ from app.ai.llm import AIError, call_structured
 from app.core.config import get_settings
 from app.ai.prompts import build_system_prompt, build_user_prompt
 from app.schemas.khata import ClassifierOutput
+from app.services.replies import detect_language
 from app.services.registry import IntentSpec
 
 __all__ = ["AIError", "classify"]
@@ -39,4 +40,6 @@ def classify(
         result.language = "ur"
     elif result.language == "ur":
         result.language = "roman_ur"
+    elif result.language == "en" and detect_language(text, default="en") == "roman_ur":
+        result.language = "roman_ur"  # "50 socks aae": common Roman Urdu words decide, not the model's guess
     return result
