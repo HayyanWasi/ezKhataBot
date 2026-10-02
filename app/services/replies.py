@@ -361,6 +361,11 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "📷 {n} entries mili:",
         "ur": "📷 {n} انٹریاں ملیں:",
     },
+    "message_found": {
+        "en": "📝 Found {n} entries:",
+        "roman_ur": "📝 {n} entries mili:",
+        "ur": "📝 {n} انٹریاں ملیں:",
+    },
     "image_section_party": {"en": "Party khata:", "roman_ur": "Party khata:", "ur": "پارٹی کھاتہ:"},
     "image_section_later": {
         "en": "Can't be saved yet (Cash Book coming soon):",

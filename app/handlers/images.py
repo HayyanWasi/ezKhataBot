@@ -29,7 +29,7 @@ from app.services.amounts import confirmed_amount, format_rs, parse_amount_answe
 from app.services.answers import is_skip, parse_number, parse_yes_no
 from app.services.image_rows import ROW_SAVERS, RowSaver
 from app.services.ocr import OCRError, read_text
-from app.services.registry import Context, Outcome, chain, continue_draft, pending_resolver
+from app.services.registry import Context, Outcome, chain, continue_draft, intent, pending_resolver
 from app.services.replies import t
 from app.tools import money as money_tools
 from app.tools import party as party_tools
@@ -51,13 +51,21 @@ def read_image(ctx: Context) -> Outcome:
     if not ocr.text.strip():
         return Outcome("read_image", t("image_nothing_found", language))
 
+    return preview_rows(ctx, ocr.text, ocr.layout)
+
+
+def preview_rows(ctx: Context, text: str, layout: str | None = None, from_message: bool = False) -> Outcome:
+    """Rows in a photo's text (or in a typed message with several entries) -> preview + "haan/nahi"."""
+    language = ctx.language
     try:
-        extraction = extract_rows(ocr.text, now(ctx.business["timezone"]), ocr.layout)
+        extraction = extract_rows(text, now(ctx.business["timezone"]), layout, from_message=from_message)
     except AIError:
         return Outcome("read_image", t("ocr_failed", language))
 
-    source = f"{ocr.text}\n{ocr.layout}"  # amounts are checked against what the photo says
+    source = f"{text}\n{layout or ''}"  # amounts are checked against what the photo / message says
     rows = [r for r in extraction.rows if r.category != "other"][: get_settings().ocr_max_rows]
+    if from_message:
+        rows = [_owed_direction(r, text) for r in rows]
     items = [ROW_SAVERS[r.category].prepare(ctx, r, source) for r in rows if r.category in ROW_SAVERS]
     later = [r for r in rows if r.category not in ROW_SAVERS]
     if not items and not later:
@@ -66,7 +74,7 @@ def read_image(ctx: Context) -> Outcome:
     # Group rows by section (a heading per section); number them in that order
     order = list(dict.fromkeys(ROW_SAVERS[i["category"]].section for i in items))
     items = sorted(items, key=lambda i: order.index(ROW_SAVERS[i["category"]].section))
-    lines = [t("image_found", language, n=len(items) + len(later))]
+    lines = [t("message_found" if from_message else "image_found", language, n=len(items) + len(later))]
     for n, item in enumerate(items, 1):
         item["row"] = n  # saved as source_line: unique per row of this photo
         section = ROW_SAVERS[item["category"]].section
@@ -90,6 +98,36 @@ def read_image(ctx: Context) -> Outcome:
     data = {"items": items, "new_names": new_names, "photo_message_id": str(ctx.message_id)}
     pending = PendingAction(kind="confirm_image", language=language, expects="yes_no", data=data)
     return Outcome("read_image", "\n".join(lines), pending=pending)
+
+
+@intent(
+    "many_entries",
+    "The message lists TWO OR MORE separate entries at once (different people, expenses or amounts), usually one "
+    "per line, e.g. \"Abbas se 500 lene hain / Hayyan ko 100 diye / chai 50\". A message with one entry is never this.",
+    fields_hint="{}",
+    examples=["Ali ko 500 diye, Bilal se 300 mile, chai 100", "Abbas se 500 lene hain\nShahrukh ko 200 dene hain"],
+    needs_business=True,
+    owner_only=True,
+)
+def many_entries(ctx: Context, fields) -> Outcome:
+    return preview_rows(ctx, ctx.text, from_message=True)
+
+
+_WILL_GET = ("lene hain", "lene hai", "lena hai", "lene he", "lainay", "lene", "لینے")  # the party owes the shop
+_WILL_GIVE = ("dene hain", "dene hai", "dena hai", "dene he", "dainay", "dene", "دینے")  # the shop owes the party
+
+
+def _owed_direction(row: ExtractedRow, text: str) -> ExtractedRow:
+    """'Abbas se 500 lene hain' = the shop will get (gave); 'Shahrukh ko 500 dene hain' = the shop owes (got).
+    Decided from the row's own line in code: the AI mixes up 'se ... lene' with 'se liye'."""
+    if row.category != "party_entry" or not row.party_name:
+        return row
+    line = next((l.lower() for l in text.splitlines() if row.party_name.lower() in l.lower()), "")
+    if any(w in line for w in _WILL_GET):
+        return row.model_copy(update={"direction": "gave"})
+    if any(w in line for w in _WILL_GIVE):
+        return row.model_copy(update={"direction": "got"})
+    return row
 
 
 def _later_line(language: str, row: ExtractedRow, source: str) -> str:

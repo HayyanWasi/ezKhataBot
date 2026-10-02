@@ -10,7 +10,8 @@ from datetime import datetime
 from app.ai.llm import call_structured
 from app.schemas.khata import ImageExtraction
 
-SYSTEM_PROMPT = """You read text taken (by OCR) from a photo sent by a small shop in Pakistan, and list its bookkeeping rows.
+SYSTEM_PROMPT = """You read text taken (by OCR) from a photo sent by a small shop in Pakistan, or a chat message typed with
+several entries, and list its bookkeeping rows.
 The photo can be a khata register page, a supplier bill, a payment screenshot (JazzCash / Easypaisa / bank),
 or a mixed sheet with several kinds of rows. OCR text can be messy: words split, columns mixed, Urdu and English together.
 
@@ -45,6 +46,8 @@ direction (party_entry only), always from the SHOP's side:
   amount = the grand total (if no total is written and there is one item line, its amount). Do NOT list the
   item lines as rows. A pen stroke or tick after a number (e.g. "22572/-1") is not a digit.
 - A payment screenshot is one row: "received from X" = got, "sent to X" / "paid to X" = gave.
+- Owed amounts: "X se 500 lene hain" (the shop will get, X owes) = gave; "X ko 500 dene hain" (the shop must pay)
+  = got. "pehle ke" / "reh gaye thay" only says the amount is old; the direction rule is the same.
 - If the direction really cannot be told, use null. Never guess.
 
 bank rows: direction "got" = money came INTO the shop's account, "gave" = money went OUT of it (null if unclear).
@@ -64,9 +67,13 @@ Rules:
 """
 
 
-def extract_rows(ocr_text: str, now: datetime, layout: str | None = None) -> ImageExtraction:
-    """`ocr_text` is in reading order; `layout` (if given) keeps each word at its position on the page."""
-    user = f"Today: {now:%Y-%m-%d} ({now:%A}), Pakistan time\n\nTEXT (reading order):\n{ocr_text}"
+def extract_rows(
+    ocr_text: str, now: datetime, layout: str | None = None, from_message: bool = False
+) -> ImageExtraction:
+    """`ocr_text` is in reading order; `layout` (if given) keeps each word at its position on the page.
+    from_message: the text is a WhatsApp message the shopkeeper typed with several entries, not a photo."""
+    heading = 'MESSAGE typed by the shopkeeper (not a photo; kind "register")' if from_message else "TEXT (reading order)"
+    user = f"Today: {now:%Y-%m-%d} ({now:%A}), Pakistan time\n\n{heading}:\n{ocr_text}"
     if layout:
         user += f"\n\nLAYOUT (words placed by position, for reading table columns):\n{layout}"
     return call_structured(ImageExtraction, [("system", SYSTEM_PROMPT), ("user", user)], "extract_image_rows")
