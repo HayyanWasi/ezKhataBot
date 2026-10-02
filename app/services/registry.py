@@ -49,6 +49,9 @@ class Outcome:
     active_business_id: UUID | None = None
     replay_text: str | None = None  # re-run this message after the outcome (used after choosing a shop)
     attachment: str | None = None  # file sent with the reply (PDF statement)
+    # More actions from the same message ({"intent", "fields"}), done after this one is saved
+    then: list[dict] = field(default_factory=list)
+    continued: bool = False  # answers the pending question: the message's queued actions carry on
 
 
 def chain(first: Outcome, second: Outcome) -> Outcome:

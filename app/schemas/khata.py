@@ -8,6 +8,18 @@ from pydantic import BaseModel, Field, field_validator
 Language = Literal["en", "ur", "roman_ur"]
 
 
+class NextAction(BaseModel):
+    """One more thing the same message asks for, done after the first one is saved."""
+
+    intent: str
+    fields: dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("fields", mode="before")
+    @classmethod
+    def _none_to_empty(cls, v: Any) -> Any:
+        return v or {}
+
+
 class ClassifierOutput(BaseModel):
     """What the LLM returns for one user message."""
 
@@ -15,11 +27,17 @@ class ClassifierOutput(BaseModel):
     language: Language = "roman_ur"
     answers_pending: bool = False
     fields: dict[str, Any] = Field(default_factory=dict)
+    then: list[NextAction] = Field(default_factory=list)  # more actions in the same message, in order
 
     @field_validator("fields", mode="before")
     @classmethod
     def _none_to_empty(cls, v: Any) -> Any:
         return v or {}
+
+    @field_validator("then", mode="before")
+    @classmethod
+    def _actions(cls, v: Any) -> Any:
+        return [a for a in v if isinstance(a, dict) and a.get("intent")][:2] if isinstance(v, list) else []
 
 
 class PendingAction(BaseModel):
@@ -32,6 +50,8 @@ class PendingAction(BaseModel):
     # free_text: any answer is taken as it is, without the AI (e.g. the shop's address)
     expects: Literal["choice", "choice_or_name", "yes_no", "amount", "amount_or_skip", "text", "free_text"] = "text"
     data: dict[str, Any] = Field(default_factory=dict)
+    # More actions from the same message, done once this flow is finished (see app/services/handler.py)
+    queue: list[dict[str, Any]] = Field(default_factory=list)
 
 
 # ---------------------------------------------------------------------------

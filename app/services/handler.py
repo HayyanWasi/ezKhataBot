@@ -71,9 +71,19 @@ def _store_upload(image_path: str, phone: str, external_id: str) -> str:
 
 @traceable(name="handle_message", run_type="chain", process_inputs=_trace_message_inputs)
 def handle_message(
-    channel: Channel, external_id: str, phone: str, text: str, image_path: str | None = None
+    channel: Channel,
+    external_id: str,
+    phone: str,
+    text: str,
+    image_path: str | None = None,
+    queued: list[dict] | None = None,
 ) -> Result:
-    """`image_path`: a photo the user sent (a local file); its caption, if any, is `text`."""
+    """`image_path`: a photo the user sent (a local file); its caption, if any, is `text`.
+
+    One message can ask for several actions ("washing machine add karo 3, Sameer ne 1 udhaar li").
+    Each runs as its own step, after the one before is saved: it is stored as its own user message
+    (external id "<message>><intent>", same text), so it has its own reply and entries. `queued`:
+    the actions still to do, the first one being this step's (run without the AI)."""
     text = text.strip() or ("[image]" if image_path else "")
     settings = get_settings()
     stored_image = _store_upload(image_path, phone, external_id) if image_path else None
@@ -111,7 +121,7 @@ def handle_message(
 
     # ---- Phase 2 + 3: think, commit -------------------------------------
     try:
-        outcome, business_id = _think(user, conversation["id"], message)
+        outcome, business_id = _think(user, conversation["id"], message, queued)
         if DEV["crash_before_commit"]:
             DEV["crash_before_commit"] = False
             raise SimulatedCrash("simulated crash before commit")
@@ -127,6 +137,11 @@ def handle_message(
 
     # ---- Phase 4: send --------------------------------------------------
     send_saved_message(channel, phone, reply)
+
+    # ---- More actions from the same message: the next one, unless a question waits first
+    if reply.get("intent") is not None and not outcome.pending and outcome.then:
+        next_id = f"{message['external_id']}>{outcome.then[0]['intent']}"
+        handle_message(channel, next_id, phone, message["text"], queued=outcome.then)
     return Result.PROCESSED
 
 
@@ -153,7 +168,9 @@ def _check_duplicate(
 # ---------------------------------------------------------------------------
 
 
-def _think(user: dict, conversation_id: UUID, message: dict) -> tuple[Outcome, UUID | None]:
+def _think(
+    user: dict, conversation_id: UUID, message: dict, queued: list[dict] | None = None
+) -> tuple[Outcome, UUID | None]:
     settings = get_settings()
     with transaction() as conn:
         conversation = crud.get_conversation(conn, conversation_id)
@@ -192,7 +209,13 @@ def _think(user: dict, conversation_id: UUID, message: dict) -> tuple[Outcome, U
     if ctx.business is None and len(businesses) == 1:
         ctx.business = businesses[0]
 
-    outcome = agent.decide(ctx, pending, history, preference)
+    if queued:  # a queued action from the same message: no AI call, any old question is dropped
+        outcome = agent.decide(ctx, None, history, preference, action=queued[0])
+        outcome.then = list(queued[1:])
+    else:
+        outcome = agent.decide(ctx, pending, history, preference)
+        if outcome.continued:  # the flow goes on: so do the actions its message queued
+            outcome.then = list(pending.queue) if pending else []
 
     # Save an auto-selected (only) business as the active one
     if (
@@ -227,6 +250,7 @@ def _commit(
         if outcome.active_business_id:
             crud.set_active_business(conn, conversation_id, outcome.active_business_id)
         if outcome.pending:
+            outcome.pending.queue = outcome.then  # the rest waits for this question's answer
             crud.set_pending(
                 conn,
                 conversation_id,
