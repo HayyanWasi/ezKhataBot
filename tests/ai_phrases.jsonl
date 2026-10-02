@@ -206,3 +206,7 @@
 {"text": "5 socks kharab ho gae", "intent": "stock_out", "language": "roman_ur"}
 {"text": "socks kitne hain", "intent": "stock_report", "language": "roman_ur"}
 {"text": "aaj ka hisaab", "intent": "money_report", "language": "roman_ur"}
+{"text": "humara akhri customer kon tha", "intent": "recent_entries", "language": "roman_ur"}
+{"text": "aaj kya kya hua", "intent": "recent_entries", "language": "roman_ur"}
+{"text": "last 5 entries dikhao", "intent": "recent_entries", "language": "roman_ur"}
+{"text": "ali kon hai?", "intent": "party_balance", "language": "roman_ur"}

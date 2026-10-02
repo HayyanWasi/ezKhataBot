@@ -330,8 +330,10 @@ def find_entry(
         {"business_id": business_id, "described": described, "only_own": only_own, "user_id": user_id,
          "account_id": account_id, "amount": amount, "item": item, "with_photo": with_photo},
     ).fetchone()
-    if row is None:
-        return None
+    return _with_legs(conn, row) if row else None
+
+
+def _with_legs(conn: Connection, row: dict) -> dict:
     legs = conn.execute(
         """
         select k.account_id, k.amount, k.notes, a.name, a.type
@@ -343,6 +345,31 @@ def find_entry(
     ).fetchall()
     return {**row, "legs": legs, "moves": entry_moves(conn, row["transaction_id"]),
             "notes": legs[0]["notes"] if legs else None}
+
+
+def recent_entries(
+    conn: Connection, business_id: Id, *, limit: int = 5, on: date | None = None, customers_only: bool = False
+) -> list[dict]:
+    """The latest live transactions, newest first, each with its legs, stock lines and bill (if any).
+    customers_only: only bills and entries with a customer."""
+    rows = conn.execute(
+        """
+        select t.id as transaction_id, t.transaction_date, t.transaction_type, t.created_by,
+               t.category_id, c.name as category, b.bill_no, b.customer_name as bill_customer
+        from business_transactions t
+        left join expense_categories c on c.id = t.category_id
+        left join bills b on b.transaction_id = t.id
+        where t.business_id = %(business_id)s and t.deleted_at is null
+          and (%(on)s::date is null or t.transaction_date = %(on)s)
+          and (not %(customers_only)s or b.id is not null or exists (
+                select 1 from khata_entries k join accounts a on a.id = k.account_id
+                where k.transaction_id = t.id and a.type = 'customer'))
+        order by t.created_at desc
+        limit %(limit)s
+        """,
+        {"business_id": business_id, "on": on, "customers_only": customers_only, "limit": limit},
+    ).fetchall()
+    return [_with_legs(conn, row) for row in rows]
 
 
 def entry_moves(conn: Connection, transaction_id: Id) -> list[dict]:

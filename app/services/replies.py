@@ -248,6 +248,8 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "Aage ki tareekh ki entry nahi ho sakti.",
         "ur": "آنے والی تاریخ کی انٹری نہیں ہو سکتی۔",
     },
+    "recent_head": {"en": "🕘 *Latest entries*", "roman_ur": "🕘 *Haaliya entries*", "ur": "🕘 *حالیہ انٹریاں*"},
+    "recent_none": {"en": "No entries yet.", "roman_ur": "Abhi koi entry nahi.", "ur": "ابھی کوئی انٹری نہیں۔"},
     "verb_gave": {"en": "gave", "roman_ur": "diye", "ur": "دیے"},
     "verb_got": {"en": "got", "roman_ur": "liye", "ur": "لیے"},
     "verb_opening": {"en": "old bal.", "roman_ur": "pehle ka", "ur": "پہلے کا"},

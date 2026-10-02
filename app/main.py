@@ -5,6 +5,7 @@
 Run ONE process only (no --workers): the reminder scheduler lives inside it."""
 
 import logging
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -16,6 +17,7 @@ from app.core.scheduler import ReminderScheduler
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s: %(message)s")
 logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("ezkhata").setLevel(os.getenv("EZKHATA_LOG_LEVEL", "INFO").upper())
 
 
 class _HideSecret(logging.Filter):

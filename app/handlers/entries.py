@@ -18,7 +18,7 @@ from app.core.dates import short_date, today
 from app.handlers import bills
 from app.handlers.money_steps import money_line
 from app.handlers.party import PARTY_CHOICE_HANDLERS, ask_choose_party, balance_line
-from app.schemas.khata import DeleteEntryFields, EditEntryFields, EntryPhotoFields, PendingAction
+from app.schemas.khata import DeleteEntryFields, EditEntryFields, EntryPhotoFields, PendingAction, RecentEntriesFields
 from app.services.amounts import confirmed_amount, format_rs
 from app.services.answers import parse_yes_no
 from app.services.registry import Context, Outcome, intent, pending_resolver
@@ -421,3 +421,45 @@ PARTY_CHOICE_HANDLERS.update({
     "edit": ("edit_entry", _ask_edit),
     "photo": ("entry_photo", _send_photo),
 })
+
+
+# ---------------------------------------------------------------------------
+# Latest entries ("akhri customer kon tha", "aaj kya kya hua")
+# ---------------------------------------------------------------------------
+
+
+@intent(
+    "recent_entries",
+    "User asks what happened lately: the last / latest entries, sales or customers, or everything on one day. "
+    "\"akhri customer kon tha\" -> customers_only true, limit 1. \"aaj kya kya hua\" -> date today. "
+    "Not for one named party's khata (party_balance) or the bill list (bill_report).",
+    fields=RecentEntriesFields,
+    fields_hint='{"limit": number | null, "date": "YYYY-MM-DD" | null, "customers_only": true | false | null}',
+    examples=["humara akhri customer kon tha", "last 5 entries dikhao", "aaj kya kya hua", "abhi kya entry ki thi"],
+    needs_business=True,
+)
+def recent_entries(ctx: Context, fields: RecentEntriesFields) -> Outcome:
+    limit = min(max(fields.limit or 5, 1), 15)
+    with transaction() as conn:
+        entries = tools.recent_entries(conn, ctx.business["id"], limit=limit, on=fields.date,
+                                       customers_only=bool(fields.customers_only))
+    if not entries:
+        return Outcome("recent_entries", t("recent_none", ctx.language))
+    lines = [t("recent_head", ctx.language)] + [_recent_line(ctx.language, e) for e in entries]
+    return Outcome("recent_entries", "\n".join(lines))
+
+
+def _recent_line(language: str, entry: dict) -> str:
+    when = short_date(entry["transaction_date"])
+    items = ", ".join(f"{m['name']} {_qty(abs(m['qty']))}" for m in entry["moves"])
+    if entry.get("bill_no"):
+        total = sum((leg["amount"] for leg in entry["legs"]), Decimal(0))
+        text = f"{t('entry_bill', language)} #{entry['bill_no']} · {entry['bill_customer']} · {format_rs(total)}"
+        return f"• {when} · {text}" + (f" ({items})" if items else "")
+    party = next((leg for leg in entry["legs"] if leg["type"] in _PARTY_TYPES), None)
+    if party:
+        verb = t("verb_opening" if entry["transaction_type"] == "opening_balance" else
+                 "verb_gave" if party["amount"] > 0 else "verb_got", language)
+        text = f"{party['name']} · {verb} {format_rs(abs(party['amount']))}"
+        return f"• {when} · {text}" + (f" ({items})" if items else "")
+    return f"• {when} · {_label(language, entry)} · {_amount_text(entry)}"

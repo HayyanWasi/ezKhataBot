@@ -63,10 +63,12 @@ def _phone(key: dict, data: dict) -> str | None:
 def parse(data: dict) -> Incoming | None:
     """One Evolution `messages.upsert` item -> what the bot needs, or None to skip it."""
     key = data.get("key") or {}
+    log.debug("upsert key=%s keys=%s message=%s", key, sorted(data), sorted(data.get("message") or {}))
     if key.get("fromMe") or not key.get("id"):
         return None
     phone = _phone(key, data)
     if phone is None:
+        log.info("no phone number in %s, skipped", key.get("remoteJid"))
         return None
     sent_at = int(data.get("messageTimestamp") or 0)
     if sent_at and time.time() - sent_at > get_settings().message_max_age_seconds:
