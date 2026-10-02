@@ -2,18 +2,19 @@
 
     uv run python -m app.jobs.send_reminders
 
-Locally the CLI does the same thing every 30 s in a background thread.
+The CLI and the server (app/main.py) already do this every 30 s in a background thread,
+so this job is only for a setup without them.
 """
 
 import logging
 
 from app.channels.cli import CLIChannel
+from app.channels.whatsapp import WhatsAppChannel
 from app.services.reminders import run_due_reminders
 
 
 def channels() -> dict:
-    # The WhatsApp channel is added here on WhatsApp day
-    return {"cli": CLIChannel()}
+    return {"cli": CLIChannel(), "whatsapp": WhatsAppChannel()}
 
 
 def main() -> None:

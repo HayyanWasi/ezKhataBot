@@ -6,6 +6,11 @@ Replies are never written by the LLM, so names and amounts are always exact.
 import re
 
 TEXTS: dict[str, dict[str, str]] = {
+    "text_or_photo_only": {
+        "en": "For now please send text or a photo.",
+        "roman_ur": "Abhi sirf text ya photo bhejein.",
+        "ur": "ابھی صرف ٹیکسٹ یا تصویر بھیجیں۔",
+    },
     "not_registered": {
         "en": "This number isn't registered with EzKhata. Please contact the EzKhata team.",
         "roman_ur": "Yeh number EzKhata par register nahi hai. EzKhata team se rabta karein.",
