@@ -519,13 +519,16 @@ def low_warnings(conn: Connection, ctx: Context, items: dict[str, dict], before:
                  after: dict[str, Decimal]) -> list[str]:
     """Inside the commit: a warning for every item at or below its level. When staff took an item
     across its level, the owner is told too."""
+    out = [i for i in items if after[i] <= 0]  # always warned, with or without a level
     low = [i for i, item in items.items()
-           if item["low_stock_level"] is not None and after[i] <= item["low_stock_level"]]
-    crossed = [i for i in low if before.get(i, Decimal(0)) > items[i]["low_stock_level"]]
+           if i not in out and item["low_stock_level"] is not None and after[i] <= item["low_stock_level"]]
+    level = {i: items[i]["low_stock_level"] if items[i]["low_stock_level"] is not None else Decimal(0) for i in items}
+    crossed = [i for i in out + low if before.get(i, Decimal(0)) > level[i]]
     if crossed and not _is_owner(ctx):
         _tell_owner(conn, ctx, [items[i] for i in crossed], after)
-    return [t("low_stock_warning", ctx.language, name=items[i]["name"], qty=fmt_qty(after[i]), unit=items[i]["unit"])
-            for i in low]
+    return ([t("out_of_stock_warning", ctx.language, name=items[i]["name"]) for i in out]
+            + [t("low_stock_warning", ctx.language, name=items[i]["name"], qty=fmt_qty(after[i]),
+                 unit=items[i]["unit"]) for i in low])
 
 
 def _tell_owner(conn: Connection, ctx: Context, items: list[dict], after: dict[str, Decimal]) -> None:

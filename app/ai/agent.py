@@ -15,6 +15,7 @@ commits the Outcome in one transaction afterwards.
 """
 
 import logging
+import re
 from dataclasses import replace
 from typing import TypedDict
 
@@ -130,12 +131,27 @@ def resolve_pending(state: AgentState) -> AgentState:
     return {"outcome": outcome}
 
 
+# Words that mean a day or time is written; without one, an entry is for today
+_DATE_HINT = re.compile(
+    r"\b(kal|kl|parso|parson|parsun|aaj|aj|today|yesterday|tomorrow|tareekh|tarikh|tarik|date|"
+    r"jan\w*|feb\w*|mar\w*|apr\w*|may|jun\w*|jul\w*|aug\w*|sep\w*|oct\w*|nov\w*|dec\w*|"
+    r"pichl\w*|pichh\w*|guzr\w*|last|pehle|hafte|week|mahine|month|din|raat|subah|shaam|dopahar|"
+    r"baje|baad|minute|ghant\w*|monday|tuesday|wednesday|thursday|friday|saturday|sunday|"
+    r"somwar|peer|mangal|budh|jumerat|jumma|hafta|itwar|\d{1,2}(st|nd|rd|th))\b"
+    r"|\d{1,2}\s*[/.-]\s*\d{1,2}|کل|آج|پرسوں|تاریخ",
+    re.IGNORECASE,
+)
+
+
 def run_intent(state: AgentState) -> AgentState:
     """A new request: validate the AI's fields and run the intent's handler."""
     ctx, result = state["ctx"], state["classification"]
     spec = INTENTS.get(result.intent) or INTENTS["unknown"]
+    raw = dict(result.fields)
+    if raw.get("date") and not _DATE_HINT.search(ctx.text):
+        raw["date"] = None  # "Sameer ne 4 topi li": no day is written, so the AI's "4 Oct" is a guess
     try:
-        fields = spec.fields.model_validate(result.fields) if spec.fields else None
+        fields = spec.fields.model_validate(raw) if spec.fields else None
     except ValidationError as e:
         log.warning("invalid fields for %s: %s", spec.name, e)
         return {"outcome": INTENTS["unknown"].handler(ctx, None)}

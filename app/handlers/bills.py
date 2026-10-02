@@ -28,7 +28,9 @@ from app.core.database import transaction
 from app.handlers.money_steps import money_account, money_line, money_step
 from app.handlers.party import balance_line, shop_goods
 from app.handlers.stock import _short_text, fmt_qty, low_warnings, new_stock_draft, with_item
-from app.schemas.khata import BillReportFields, CancelBillFields, CreateBillFields, PendingAction, StockLine
+from app.schemas.khata import (
+    BillReportFields, CancelBillFields, CreateBillFields, PendingAction, ProfitFields, StockLine,
+)
 from app.services import pdf
 from app.services.amounts import confirmed_amount, format_rs
 from app.services.answers import CASH_WORDS, ONLINE_WORDS, UDHAAR_WORDS, is_skip, parse_number, parse_yes_no, pick
@@ -429,6 +431,59 @@ def resolve_shop_details(ctx: Context, pending: PendingAction, answer: str) -> O
 
 def _period(start: date, end: date) -> str:
     return short_date(start) if start == end else f"{short_date(start)} – {short_date(end)}"
+
+
+@intent(
+    "profit_report",
+    "User asks the shop's PROFIT / munafa / faida / kamai (or loss / nuqsaan) for a day or a period: "
+    "\"aaj kitna faida hua\", \"kal ka munafa\", \"15 tareekh ka faida\", \"is hafte ka faida\", "
+    "\"September ka munafa\". start_date / end_date: the period (one day: both the same; null = today).",
+    fields=ProfitFields,
+    fields_hint='{"start_date": "YYYY-MM-DD" | null, "end_date": "YYYY-MM-DD" | null}',
+    examples=["aaj hmein kitne ka faida howa?", "kal ka munafa batao", "is mahine ka profit", "5 tareekh ka faida"],
+    needs_business=True,
+    owner_only=True,
+)
+def profit_report(ctx: Context, fields: ProfitFields) -> Outcome:
+    """Profit = item sales - discounts - their purchase cost; net = that - expenses. All in code."""
+    language, business_id, day = ctx.language, ctx.business["id"], _today(ctx)
+    end = min(fields.end_date or fields.start_date or day, day)
+    start = min(fields.start_date or end, end)
+    with transaction() as conn:
+        items = tools.profit_items(conn, business_id, start, end)
+        discounts = tools.bill_discounts(conn, business_id, start, end)
+        expenses = tools.expenses_total(conn, business_id, start, end)
+        cash_sales = tools.cash_sales_total(conn, business_id, start, end)
+
+    period = _period(start, end)
+    if not items and not cash_sales:
+        reply = [t("profit_none", language, period=period)]
+        if expenses:
+            reply.append(t("profit_expenses_only", language, amount=format_rs(expenses)))
+        return Outcome("profit_report", "\n".join(reply))
+
+    known = [i for i in items if i["cost"] is not None]
+    missing = [i for i in items if i["cost"] is None]
+    sales = sum((i["sales"] for i in known), Decimal(0))
+    cost = sum((i["cost"] for i in known), Decimal(0))
+    gross = sales - discounts - cost
+    net = gross - expenses
+    reply = [t("profit_head", language, period=period)]
+    if known:
+        reply.append(t("profit_sales", language, amount=format_rs(sales)))
+        if discounts:
+            reply.append(t("profit_discount", language, amount=format_rs(discounts)))
+        reply.append(t("profit_cost", language, amount=format_rs(cost)))
+        reply.append(t("profit_gross" if gross >= 0 else "loss_gross", language, amount=format_rs(gross)))
+        if expenses:
+            reply.append(t("profit_expenses", language, amount=format_rs(expenses)))
+            reply.append(t("profit_net" if net >= 0 else "loss_net", language, amount=format_rs(net)))
+    if missing:
+        reply.append(t("profit_missing", language, names=", ".join(i["name"] for i in missing),
+                       amount=format_rs(sum((i["sales"] for i in missing), Decimal(0))), first=missing[0]["name"]))
+    if cash_sales:
+        reply.append(t("profit_cash_sales", language, amount=format_rs(cash_sales)))
+    return Outcome("profit_report", "\n".join(reply))
 
 
 @intent(

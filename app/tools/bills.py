@@ -124,6 +124,64 @@ def cash_sales_total(conn: Connection, business_id: Id, start: date, end: date) 
     return row["total"]
 
 
+def profit_items(conn: Connection, business_id: Id, start: date, end: date) -> list[dict]:
+    """Items sold on live bills in a period: qty, sales (qty x sale rate) and cost (qty x purchase price
+    at the time of the sale: the rate of the item's latest stock in before the bill, else today's
+    purchase price). cost is None when the purchase price is not known."""
+    return conn.execute(
+        """
+        select l.item_id, l.name, l.unit, sum(l.qty) as qty, sum(l.qty * l.rate) as sales,
+               case when bool_and(l.cost is not null) then sum(l.qty * l.cost) end as cost
+        from (
+            select m.item_id, i.name, i.unit, -m.qty as qty, m.rate,
+                   coalesce((
+                       select pm.rate from stock_moves pm
+                       join business_transactions pt on pt.id = pm.transaction_id
+                       where pm.item_id = m.item_id and pm.qty > 0 and pm.rate is not null
+                         and pt.deleted_at is null and pt.created_at <= t.created_at
+                       order by pt.created_at desc limit 1
+                   ), i.purchase_price) as cost
+            from stock_moves m
+            join business_transactions t on t.id = m.transaction_id
+            join items i on i.id = m.item_id
+            where t.business_id = %s and t.deleted_at is null and t.transaction_type = 'bill' and m.qty < 0
+              and t.transaction_date between %s and %s
+        ) l
+        group by l.item_id, l.name, l.unit
+        order by sales desc
+        """,
+        (business_id, start, end),
+    ).fetchall()
+
+
+def bill_discounts(conn: Connection, business_id: Id, start: date, end: date) -> Decimal:
+    row = conn.execute(
+        """
+        select coalesce(sum(b.discount_amount), 0) as total
+        from bills b join business_transactions t on t.id = b.transaction_id
+        where b.business_id = %s and t.deleted_at is null and t.transaction_date between %s and %s
+        """,
+        (business_id, start, end),
+    ).fetchone()
+    return row["total"]
+
+
+def expenses_total(conn: Connection, business_id: Id, start: date, end: date) -> Decimal:
+    """Shop costs (bijli, kiraya, chai ...) paid from cash or a bank in a period."""
+    row = conn.execute(
+        """
+        select coalesce(-sum(k.amount), 0) as total
+        from khata_entries k
+        join business_transactions t on t.id = k.transaction_id
+        join accounts a on a.id = k.account_id
+        where t.business_id = %s and t.deleted_at is null and t.category_id is not null
+          and a.type in ('cash', 'bank') and k.amount < 0 and t.transaction_date between %s and %s
+        """,
+        (business_id, start, end),
+    ).fetchone()
+    return row["total"]
+
+
 def set_shop_details(conn: Connection, business_id: Id, address: str | None, phone: str | None) -> None:
     conn.execute("update businesses set address = %s, phone = %s where id = %s", (address, phone, business_id))
 

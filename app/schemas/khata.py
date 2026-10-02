@@ -282,6 +282,11 @@ class ItemFields(_Fields):
 # ---------------------------------------------------------------------------
 
 
+class ProfitFields(_Fields):
+    start_date: dt.date | None = None  # null = today
+    end_date: dt.date | None = None
+
+
 class CreateBillFields(_Fields):
     customer_name: str | None = None  # None = walk-in (counter sale)
     items: list[StockLine] = Field(default_factory=list)
