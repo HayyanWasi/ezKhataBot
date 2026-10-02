@@ -262,9 +262,9 @@ TEXTS: dict[str, dict[str, str]] = {
         "ur": "✅ جی ہاں، {date} کو انٹری ہے: {text}",
     },
     "asked_entry_no": {
-        "en": "❌ No such entry: {text}\nTo save it, send it without the ?",
-        "roman_ur": "❌ Aisi koi entry nahi: {text}\nSave karni hai to ? ke baghair bhejein.",
-        "ur": "❌ ایسی کوئی انٹری نہیں: {text}\nمحفوظ کرنی ہے تو ؟ کے بغیر بھیجیں۔",
+        "en": "❌ No such entry: {text}\nTo save it, write it as a statement, not a question.",
+        "roman_ur": "❌ Aisi koi entry nahi: {text}\nSave karni hai to sawal ke bajaye seedha likhein.",
+        "ur": "❌ ایسی کوئی انٹری نہیں: {text}\nمحفوظ کرنی ہے تو سوال کے بجائے سیدھا لکھیں۔",
     },
     "asked_entry_no_party": {
         "en": "❌ No — {name} is not in your khata, so there is no entry.",
