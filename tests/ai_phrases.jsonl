@@ -215,3 +215,6 @@
 {"text": "aaj hmein kitne ka faida howa?", "intent": "profit_report", "language": "roman_ur"}
 {"text": "kal ka munafa batao", "intent": "profit_report", "language": "roman_ur"}
 {"text": "September ka profit", "intent": "profit_report", "language": "roman_ur"}
+{"text": "bilal ko employee add karo 03138176546", "intent": "add_employee", "language": "roman_ur"}
+{"text": "employees dikhao", "intent": "list_employees", "language": "roman_ur"}
+{"text": "Bilal ko employee se hatao", "intent": "remove_employee", "language": "roman_ur"}

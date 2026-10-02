@@ -30,6 +30,7 @@ import app.handlers.bills  # noqa: F401  registers bill intents
 import app.handlers.entries  # noqa: F401  registers undo / delete / edit / photo intents
 import app.handlers.reminders  # noqa: F401  registers reminder intents
 import app.handlers.statements  # noqa: F401  registers the statement intent
+import app.handlers.employees  # noqa: F401  registers the employee intents
 from app.ai.classifier import AIError, classify
 from app.core.dates import now
 from app.core.database import transaction

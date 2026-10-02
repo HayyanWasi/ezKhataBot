@@ -22,7 +22,7 @@ from psycopg import Connection
 
 from app.ai.items import guess_item
 from app.core.database import transaction
-from app.core.dates import now, short_date, today
+from app.core.dates import short_date, today
 from app.db import crud
 from app.handlers.money_steps import MONEY_KEYS, money_account, money_line, money_step
 from app.handlers.party import balance_line
@@ -54,7 +54,6 @@ from app.services.registry import (
 from app.services.replies import numbered, t
 from app.tools import money as money_tools
 from app.tools import party as party_tools
-from app.tools import reminders as reminder_tools
 from app.tools import stock as tools
 
 _DRAFT_INTENT = {"item_add": "add_item", "stock_in": "stock_in", "stock_out": "stock_out"}
@@ -538,12 +537,7 @@ def _tell_owner(conn: Connection, ctx: Context, items: list[dict], after: dict[s
     conversation = crud.get_or_create_conversation(conn, owner_id, ctx.conversation["channel"])
     text = t("low_stock_owner", language, business=ctx.business["name"], by=ctx.user.get("name") or "",
              items=", ".join(f"{i['name']} {fmt_qty(after[str(i['id'])])} {i['unit']}" for i in items))
-    moment = now(ctx.business["timezone"])
-    reminder_tools.create_reminder(
-        conn, business_id=ctx.business["id"], user_id=owner_id, conversation_id=conversation["id"],
-        language=language, text=text, account_id=None, remind_date=moment.date(), remind_time=None,
-        send_times=[moment], message_id=ctx.message_id,
-    )
+    crud.insert_bot_reply(conn, conversation["id"], None, text, ctx.business["id"], "notice")
 
 
 def _pay_from(text: str, fields: StockInFields) -> tuple[str | None, str | None]:

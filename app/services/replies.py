@@ -826,6 +826,64 @@ TEXTS: dict[str, dict[str, str]] = {
         "ur": "✅ اسٹاک کم کر دیا ({date})",
     },
     "stock_total": {"en": "💰 Total: {amount}", "roman_ur": "💰 Kul: {amount}", "ur": "💰 کل: {amount}"},
+    "employee_how": {
+        "en": "Write the employee's name and WhatsApp number, e.g. \"Bilal ko employee add karo 03001234567\"",
+        "roman_ur": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+        "ur": "ملازم کا نام اور واٹس ایپ نمبر لکھیں، جیسے: \"بلال کو ملازم ایڈ کرو 03001234567\"",
+    },
+    "employee_confirm_add": {
+        "en": "Add *{name}* ({number}) as an employee of *{shop}*? yes/no",
+        "roman_ur": "*{name}* ({number}) ko *{shop}* mein employee add karun? haan/nahi",
+        "ur": "*{name}* ({number}) کو *{shop}* میں ملازم شامل کروں؟ ہاں/نہیں",
+    },
+    "employee_added": {
+        "en": "✅ *{name}* ({number}) is now an employee. They can message the bot from that number.",
+        "roman_ur": "✅ *{name}* ({number}) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+        "ur": "✅ *{name}* ({number}) ملازم بن گئے۔ وہ اسی نمبر سے بوٹ کو میسج کر سکتے ہیں۔",
+    },
+    "employee_welcome": {
+        "en": "Assalam o Alaikum {name}! {owner} added you to *{shop}* on EzKhata. Send /help to see what you can do.",
+        "roman_ur": "Assalam o Alaikum {name}! {owner} ne aap ko *{shop}* mein EzKhata pe add kiya hai. "
+                    "Kya kya kar sakte hain, dekhne ke liye /help likhein.",
+        "ur": "السلام علیکم {name}! {owner} نے آپ کو *{shop}* میں ایزی کھاتہ پر شامل کیا ہے۔ /help لکھیں۔",
+    },
+    "employee_is_owner": {
+        "en": "That is the shop owner's own number.",
+        "roman_ur": "Yeh tou dukaan ke malik ka apna number hai.",
+        "ur": "یہ تو دکان کے مالک کا اپنا نمبر ہے۔",
+    },
+    "employee_exists": {
+        "en": "*{name}* is already an employee here.",
+        "roman_ur": "*{name}* pehle se yahan employee hain.",
+        "ur": "*{name}* پہلے سے یہاں ملازم ہیں۔",
+    },
+    "employees_none": {
+        "en": "No employees yet. Add one: \"Bilal ko employee add karo 03001234567\"",
+        "roman_ur": "Abhi koi employee nahi. Add karne ke liye: \"Bilal ko employee add karo 03001234567\"",
+        "ur": "ابھی کوئی ملازم نہیں۔",
+    },
+    "employees_list": {"en": "👥 *Employees* ({n})\n{items}", "roman_ur": "👥 *Employees* ({n})\n{items}",
+                       "ur": "👥 *ملازمین* ({n})\n{items}"},
+    "employee_not_found": {
+        "en": "No employee called {name}. Send \"employees dikhao\" for the list.",
+        "roman_ur": "{name} naam ka koi employee nahi. List ke liye \"employees dikhao\" likhein.",
+        "ur": "{name} نام کا کوئی ملازم نہیں۔",
+    },
+    "employee_which": {
+        "en": "Which one? Write the number:\n{items}",
+        "roman_ur": "Kaunsa? Number ke saath likhein:\n{items}",
+        "ur": "کون سا؟ نمبر کے ساتھ لکھیں:\n{items}",
+    },
+    "employee_confirm_remove": {
+        "en": "Remove *{name}* from *{shop}*? They will not be able to use the bot for it. yes/no",
+        "roman_ur": "*{name}* ko *{shop}* se hata dun? Woh is dukaan ke liye bot use nahi kar sakenge. haan/nahi",
+        "ur": "*{name}* کو *{shop}* سے ہٹا دوں؟ ہاں/نہیں",
+    },
+    "employee_removed": {
+        "en": "🗑️ *{name}* is no longer an employee.",
+        "roman_ur": "🗑️ *{name}* ab employee nahi rahe.",
+        "ur": "🗑️ *{name}* اب ملازم نہیں رہے۔",
+    },
     "profit_head": {"en": "📈 *Profit* · {period}", "roman_ur": "📈 *Faida* · {period}", "ur": "📈 *منافع* · {period}"},
     "profit_sales": {"en": "Item sales: {amount}", "roman_ur": "Bikri (items): {amount}", "ur": "فروخت (آئٹمز): {amount}"},
     "profit_discount": {"en": "Discounts: −{amount}", "roman_ur": "Discount: −{amount}", "ur": "ڈسکاؤنٹ: −{amount}"},
