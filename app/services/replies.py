@@ -826,6 +826,34 @@ TEXTS: dict[str, dict[str, str]] = {
         "ur": "✅ اسٹاک کم کر دیا ({date})",
     },
     "stock_total": {"en": "💰 Total: {amount}", "roman_ur": "💰 Kul: {amount}", "ur": "💰 کل: {amount}"},
+    "profit_head": {"en": "📈 *Profit* · {period}", "roman_ur": "📈 *Faida* · {period}", "ur": "📈 *منافع* · {period}"},
+    "profit_sales": {"en": "Item sales: {amount}", "roman_ur": "Bikri (items): {amount}", "ur": "فروخت (آئٹمز): {amount}"},
+    "profit_discount": {"en": "Discounts: −{amount}", "roman_ur": "Discount: −{amount}", "ur": "ڈسکاؤنٹ: −{amount}"},
+    "profit_cost": {"en": "Cost of goods: −{amount}", "roman_ur": "Maal ki laagat: −{amount}", "ur": "مال کی لاگت: −{amount}"},
+    "profit_gross": {"en": "*Profit: {amount}*", "roman_ur": "*Faida: {amount}*", "ur": "*منافع: {amount}*"},
+    "loss_gross": {"en": "*Loss: {amount}*", "roman_ur": "*Nuqsaan: {amount}*", "ur": "*نقصان: {amount}*"},
+    "profit_expenses": {"en": "Expenses: −{amount}", "roman_ur": "Kharche: −{amount}", "ur": "اخراجات: −{amount}"},
+    "profit_net": {"en": "*Net profit: {amount}*", "roman_ur": "*Asal faida: {amount}*", "ur": "*اصل منافع: {amount}*"},
+    "loss_net": {"en": "*Net loss: {amount}*", "roman_ur": "*Asal nuqsaan: {amount}*", "ur": "*اصل نقصان: {amount}*"},
+    "profit_missing": {
+        "en": "⚠️ Purchase price unknown for {names}, so their sales ({amount}) are not in the profit. "
+              "Write e.g. \"{first} ki khareed price 30 karo\"",
+        "roman_ur": "⚠️ {names} ki khareed price nahi pata, is liye in ki bikri ({amount}) faide mein shamil nahi. "
+                    "Likhein jaise: \"{first} ki khareed price 30 karo\"",
+        "ur": "⚠️ {names} کی خرید قیمت معلوم نہیں، اس لیے ان کی فروخت ({amount}) منافع میں شامل نہیں۔",
+    },
+    "profit_cash_sales": {
+        "en": "Also {amount} of sales without items (cost unknown, not in the profit)",
+        "roman_ur": "Is ke ilawa {amount} ki sale bina items ke (laagat pata nahi, faide mein shamil nahi)",
+        "ur": "اس کے علاوہ {amount} کی سیل بغیر آئٹمز کے (لاگت معلوم نہیں)",
+    },
+    "profit_none": {"en": "No sales on {period}.", "roman_ur": "{period} ko koi bikri nahi hui.", "ur": "{period} کو کوئی فروخت نہیں ہوئی۔"},
+    "profit_expenses_only": {"en": "Expenses: {amount}", "roman_ur": "Kharche: {amount}", "ur": "اخراجات: {amount}"},
+    "out_of_stock_warning": {
+        "en": "⚠️ *{name}* is out of stock",
+        "roman_ur": "⚠️ *{name}* khatam ho gaye (stock 0)",
+        "ur": "⚠️ *{name}* ختم ہو گئے (اسٹاک 0)",
+    },
     "low_stock_warning": {
         "en": "⚠️ Low stock: *{name}* only {qty} {unit} left",
         "roman_ur": "⚠️ *{name}* sirf {qty} {unit} reh gae",

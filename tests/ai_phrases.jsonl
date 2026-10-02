@@ -212,3 +212,6 @@
 {"text": "ali kon hai?", "intent": "party_balance", "language": "roman_ur"}
 {"text": "Abbas se 500 lene hain laptop ke\nHayyan se 100 lene hain bill ke\nShahrukh ko 500 dene hain", "intent": "many_entries", "language": "roman_ur"}
 {"text": "Ali ko 300 diye, chai 50, Bilal se 1000 mile", "intent": "many_entries", "language": "roman_ur"}
+{"text": "aaj hmein kitne ka faida howa?", "intent": "profit_report", "language": "roman_ur"}
+{"text": "kal ka munafa batao", "intent": "profit_report", "language": "roman_ur"}
+{"text": "September ka profit", "intent": "profit_report", "language": "roman_ur"}
