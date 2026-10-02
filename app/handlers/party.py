@@ -31,7 +31,7 @@ from app.schemas.khata import (
     SetPartyPhoneFields,
 )
 from app.services.amounts import confirmed_amount, format_rs, parse_amount_answer, parse_amounts
-from app.services.answers import parse_number, pick
+from app.services.answers import bought_by, parse_number, pick
 from app.handlers.money_steps import MONEY_KEYS, following_draft, money_account, money_line, money_step
 from app.services.registry import (
     DRAFT_STEPS,
@@ -275,7 +275,8 @@ def party_entry(ctx: Context, fields: PartyEntryFields) -> Outcome:
     entry_date = fields.date or _today(ctx)
     if entry_date > _today(ctx):
         return Outcome("party_entry", t("future_date", ctx.language))
-    if fields.direction != "got" and fields.paid_via is None and fields.party_name:
+    sold = fields.direction != "got" or bought_by(ctx.text, fields.party_name)
+    if sold and fields.paid_via is None and fields.party_name:
         goods = shop_goods(ctx, ctx.text)
         if goods:  # "Sameer ne udhar kiya 1 sock": the shop's own item with a count is a sale on udhaar
             return _as_bill(ctx, fields, goods, entry_date)

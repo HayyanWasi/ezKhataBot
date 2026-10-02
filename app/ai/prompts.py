@@ -12,7 +12,8 @@ SYSTEM_PROMPT = """You classify messages for EzKhata, a WhatsApp bookkeeping ass
 Users write in English, Urdu script, or Roman Urdu (Urdu written in Latin letters), often mixed.
 
 Return ONLY one JSON object, no other text:
-{{"intent": "<intent name>", "language": "en" | "ur" | "roman_ur", "answers_pending": true | false, "fields": {{...}}}}
+{{"intent": "<intent name>", "language": "en" | "ur" | "roman_ur", "answers_pending": true | false, "fields": {{...}},
+ "then": [{{"intent": "<intent name>", "fields": {{...}}}}]}}
 
 language:
 - "ur": the message is written in Urdu script, e.g. "مدد چاہیے".
@@ -28,6 +29,11 @@ Rules:
 - If a pending question exists but the latest message is a new request, answers_pending is false; classify it normally.
   A message that names a different person, or is a complete request on its own (e.g. "Bilal ko 300 diye"),
   is a new request, not an answer.
+- "then": only when ONE message asks for 2 or 3 DIFFERENT kinds of actions that must happen in order. Put the
+  first in intent/fields and the rest in "then", in the order they must be done. Example: "washing machine add
+  karo 3, Sameer ne 1 udhaar li 35000 ki" -> add_item (washing machine, qty 3, sale_price 35000), then
+  create_bill (customer Sameer, 1 washing machine, udhaar). Several entries of the same kind (only money:
+  "Ali ko 500 diye, chai 50") are ONE many_entries, never "then". Otherwise "then" is [].
 - Goods written with a COUNT or weight ("2 packet surf", "50 socks", "4 darjan ande") are never party_entry or
   cash_entry: sold / "bech diye" / a customer took them -> create_bill; came in / bought -> stock_in;
   damaged, given free, returned -> stock_out.

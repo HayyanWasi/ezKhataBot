@@ -28,6 +28,7 @@ from app.handlers.money_steps import MONEY_KEYS, money_account, money_line, mone
 from app.handlers.party import balance_line
 from app.schemas.khata import (
     AddItemFields,
+    CreateBillFields,
     EditItemFields,
     ItemFields,
     PendingAction,
@@ -38,7 +39,7 @@ from app.schemas.khata import (
 )
 from app.services import barcode, pdf
 from app.services.amounts import confirmed_amount, format_rs, parse_amount_answer, parse_amounts
-from app.services.answers import CASH_WORDS, ONLINE_WORDS, UDHAAR_WORDS, parse_number, parse_yes_no, pick
+from app.services.answers import CASH_WORDS, ONLINE_WORDS, UDHAAR_WORDS, bought_by, parse_number, parse_yes_no, pick
 from app.services.ocr import OCRError, read_text
 from app.services.registry import (
     DRAFT_STEPS,
@@ -585,12 +586,44 @@ def stock_in(ctx: Context, fields: StockInFields) -> Outcome:
     entry_date = fields.date or _today(ctx)
     if entry_date > _today(ctx):
         return Outcome("stock_in", t("future_date", ctx.language))
+    if _sold_to(ctx, fields):  # "Naveed ne 1 cooler udhaar li": Naveed is a customer, this is a sale
+        from app.handlers import bills  # bills imports this module
+
+        words = set(re.findall(r"\w+", ctx.text.lower()))
+        bill = CreateBillFields(customer_name=fields.supplier_name, items=fields.items, date=fields.date,
+                                paid_via="udhaar" if words & UDHAAR_WORDS else None)
+        return bills.create_bill(ctx, bill)
+    if _adds_new_item(ctx, fields):  # "fridge add krdo stocks mein 3": a NEW item, not goods from a supplier
+        line = fields.items[0]
+        return add_item(ctx, AddItemFields(name=line.name, unit=line.unit, qty=line.qty))
     pay, paid = _pay_from(ctx.text, fields)
     draft = new_stock_draft(
         "stock_in", fields.items, ctx.text, supplier_name=fields.supplier_name, pay=pay, paid_amount=paid,
         date=entry_date.isoformat(), bank_name=fields.bank_name,
     )
     return next_step(ctx, draft)
+
+
+def _sold_to(ctx: Context, fields: StockInFields) -> bool:
+    """'<name> ne ... udhaar ki / li / khareedi' about the shop's own items: <name> bought them (a sale),
+    unlike '<name> ne 50 socks diye / bheje' or '<name> se aaye' (goods from a supplier)."""
+    if ctx.business["role"] != "owner" or not bought_by(ctx.text, fields.supplier_name):
+        return False
+    with transaction() as conn:
+        return all(line.name and tools.find_item(conn, ctx.business["id"], line.name, partial=False)
+                   for line in fields.items)
+
+
+def _adds_new_item(ctx: Context, fields: StockInFields) -> bool:
+    """One item the shop doesn't have yet, with "add" written and no supplier or payment: add the item."""
+    if ctx.business["role"] != "owner" or len(fields.items) != 1 or not fields.items[0].name:
+        return False
+    if fields.supplier_name or fields.paid_via:
+        return False
+    if not re.search(r"\badd\b|ایڈ", ctx.text, re.IGNORECASE):
+        return False
+    with transaction() as conn:
+        return not tools.find_item(conn, ctx.business["id"], fields.items[0].name, partial=False)
 
 
 @intent(

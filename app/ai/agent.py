@@ -125,7 +125,9 @@ def resolve_pending(state: AgentState) -> AgentState:
     if resolver is None:
         log.warning("no resolver for pending kind %s", pending.kind)
         return {"outcome": INTENTS["unknown"].handler(ctx, None)}
-    return {"outcome": resolver(ctx, pending, state["answer"])}
+    outcome = resolver(ctx, pending, state["answer"])
+    outcome.continued = True  # the same flow goes on: the message's queued actions wait for it
+    return {"outcome": outcome}
 
 
 def run_intent(state: AgentState) -> AgentState:
@@ -141,7 +143,9 @@ def run_intent(state: AgentState) -> AgentState:
         return {"outcome": Outcome(spec.name, t("no_business", ctx.language))}
     if spec.owner_only and (ctx.business is None or ctx.business["role"] != "owner"):
         return {"outcome": Outcome(spec.name, t("owner_only", ctx.language))}
-    return {"outcome": spec.handler(ctx, fields)}
+    outcome = spec.handler(ctx, fields)
+    outcome.then = [a.model_dump() for a in result.then]  # done one by one after this one is saved
+    return {"outcome": outcome}
 
 
 def ask_business(state: AgentState) -> AgentState:
@@ -231,8 +235,20 @@ def build_agent():
 agent = build_agent()
 
 
-def decide(ctx: Context, pending: PendingAction | None, history: list[dict], preference: str | None) -> Outcome:
-    """Run the agent for one message and return its decision."""
+def decide(
+    ctx: Context,
+    pending: PendingAction | None,
+    history: list[dict],
+    preference: str | None,
+    action: dict | None = None,
+) -> Outcome:
+    """Run the agent for one message and return its decision.
+    action: a queued action from an earlier message ({"intent", "fields"}), run without the AI."""
+    if action is not None:
+        if ctx.business is None:
+            return ask_choose_business(ctx, replay_text=ctx.text)
+        classification = ClassifierOutput(intent=action["intent"], language=ctx.language, fields=action["fields"])
+        return run_intent({"ctx": ctx, "classification": classification})["outcome"]
     state = agent.invoke(
         {"ctx": ctx, "pending": pending, "history": history, "preference": preference},
         # Shown in LangSmith: filter traces by user, shop or channel

@@ -102,8 +102,9 @@ def preview_rows(ctx: Context, text: str, layout: str | None = None, from_messag
 
 @intent(
     "many_entries",
-    "The message lists TWO OR MORE separate entries at once (different people, expenses or amounts), usually one "
-    "per line, e.g. \"Abbas se 500 lene hain / Hayyan ko 100 diye / chai 50\". A message with one entry is never this.",
+    "The message lists TWO OR MORE separate MONEY entries at once (khata, expenses, cash; different people or "
+    "amounts), usually one per line, e.g. \"Abbas se 500 lene hain / Hayyan ko 100 diye / chai 50\". Never when an "
+    "item is added to stock or items are sold (use \"then\"). A message with one entry is never this.",
     fields_hint="{}",
     examples=["Ali ko 500 diye, Bilal se 300 mile, chai 100", "Abbas se 500 lene hain\nShahrukh ko 200 dene hain"],
     needs_business=True,

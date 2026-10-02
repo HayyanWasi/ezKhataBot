@@ -36,6 +36,26 @@ CASH_WORDS = {"cash", "nakad", "naqad", "nakd", "نقد", "کیش"}
 ONLINE_WORDS = {"online", "jazzcash", "easypaisa", "transfer", "آن", "لائن"}
 
 
+# "<name> ne ... udhaar ki / li / khareedi": the person TOOK the goods (a sale to them), unlike
+# "<name> ne 50 socks diye / bheje" or "<name> se aaye" (goods the shop got from a supplier)
+_TOOK_WORDS = {"udhaar", "udhar", "li", "liya", "lia", "le", "gaya", "gya", "kharidi", "kharida", "kharide",
+               "khareedi", "khareeda", "khareede", "bought", "took", "لی", "لیا", "خریدی", "خریدا", "ادھار"}
+_GAVE_WORDS = {"diye", "diya", "di", "bheje", "bheja", "aaye", "aae", "aya", "aaya", "aai", "supply",
+               "دیے", "دیا", "بھیجے"}
+
+
+def bought_by(text: str, name: str | None) -> bool:
+    if not name:
+        return False
+    low, who = text.lower(), re.escape(name.lower())
+    if not re.search(rf"\b{who}\s+ne\b", low) or re.search(rf"\b{who}\s+se\b", low):
+        return False
+    words = set(re.findall(r"\w+", low))
+    return bool(words & _TOOK_WORDS) and not words & _GAVE_WORDS
+
+
+
+
 _SKIP = {"skip", "chhor", "chhoro", "chor", "choro", "pata nahi", "pata nhi", "nahi pata", "nhi pata", "چھوڑو"}
 
 
