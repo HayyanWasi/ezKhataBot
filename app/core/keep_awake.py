@@ -29,12 +29,16 @@ class KeepAwake(threading.Thread):
 
     def run(self) -> None:
         interval = get_settings().keep_awake_minutes * 60
-        while not self.stopped.wait(interval):
+        while True:  # ping at once (a deploy restarts this thread), then every few minutes
             for url in self.urls:
                 try:
-                    requests.get(url, timeout=30)
+                    # A sleeping service takes ~1 min to wake up, so wait long enough for it
+                    res = requests.get(url, timeout=120)
+                    log.info("ping %s -> %s in %.1fs", url, res.status_code, res.elapsed.total_seconds())
                 except requests.RequestException as e:
                     log.warning("ping %s failed: %s", url, e)
+            if self.stopped.wait(interval):
+                return
 
     def stop(self) -> None:
         self.stopped.set()

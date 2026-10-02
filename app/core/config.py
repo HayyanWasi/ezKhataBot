@@ -82,7 +82,7 @@ class Settings(BaseSettings):
     # minutes. Render sets RENDER_EXTERNAL_URL (the bot's own URL); locally both are empty = off.
     render_external_url: str = ""
     keep_awake_urls: str = ""  # comma-separated, e.g. the Evolution service URL
-    keep_awake_minutes: int = 10
+    keep_awake_minutes: int = 5  # Render sleeps after 15 min idle: 5 leaves room for a missed ping
 
     @property
     def llm_api_keys(self) -> list[str]:
