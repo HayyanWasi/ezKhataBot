@@ -4,6 +4,8 @@ Only this file knows Evolution's URLs and JSON shapes."""
 
 import base64
 import mimetypes
+import threading
+from collections import deque
 from pathlib import Path
 
 import requests
@@ -26,8 +28,22 @@ def _post(path: str, body: dict) -> dict:
     return res.json() if res.content else {}
 
 
+# Ids of messages the bot sent lately: in the self-chat they come back like the owner's own messages
+_sent: deque[str] = deque(maxlen=500)
+_sent_lock = threading.Lock()
+
+
+def sent_by_bot(message_id: str) -> bool:
+    with _sent_lock:
+        return message_id in _sent
+
+
 def _message_id(data: dict) -> str | None:
-    return (data.get("key") or {}).get("id")
+    message_id = (data.get("key") or {}).get("id")
+    if message_id:
+        with _sent_lock:
+            _sent.append(message_id)
+    return message_id
 
 
 def send_text(number: str, text: str) -> str | None:

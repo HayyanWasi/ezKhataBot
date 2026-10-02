@@ -5,7 +5,11 @@ at once and the message is handled in the background (the AI can take several se
 message at a time per phone, so a shopkeeper's quick messages are handled in the order sent.
 
 Skipped without a reply: our own messages, groups, status updates, messages older than
-MESSAGE_MAX_AGE_SECONDS (the bot was down), and numbers that are not registered."""
+MESSAGE_MAX_AGE_SECONDS (the bot was down), and numbers that are not registered.
+
+Self-chat: the bot's own number can use the bot too, by writing in WhatsApp's "Message yourself"
+chat. Those messages arrive as fromMe, like the bot's own replies, so a reply is never taken as a
+new message: its id is remembered when sent, and a text equal to a recent bot message is skipped."""
 
 import hmac
 import logging
@@ -46,6 +50,7 @@ class Incoming:
     text: str
     kind: str  # text | image | unsupported
     data: dict  # Evolution's message, needed to download a photo
+    self_chat: bool = False  # written by the bot number's owner in "Message yourself"
 
 
 def _phone(key: dict, data: dict) -> str | None:
@@ -60,16 +65,21 @@ def _phone(key: dict, data: dict) -> str | None:
         return None
 
 
-def parse(data: dict) -> Incoming | None:
-    """One Evolution `messages.upsert` item -> what the bot needs, or None to skip it."""
+def parse(data: dict, own_phone: str | None = None) -> Incoming | None:
+    """One Evolution `messages.upsert` item -> what the bot needs, or None to skip it.
+    own_phone: the bot's own number (the webhook's `sender`), for the self-chat."""
     key = data.get("key") or {}
     log.debug("upsert key=%s keys=%s message=%s", key, sorted(data), sorted(data.get("message") or {}))
-    if key.get("fromMe") or not key.get("id"):
+    if not key.get("id"):
         return None
     phone = _phone(key, data)
     if phone is None:
-        log.info("no phone number in %s, skipped", key.get("remoteJid"))
+        if not key.get("fromMe"):
+            log.info("no phone number in %s, skipped", key.get("remoteJid"))
         return None
+    self_chat = bool(key.get("fromMe"))
+    if self_chat and (phone != own_phone or evolution.sent_by_bot(key["id"])):
+        return None  # our reply, or the owner writing to someone else
     sent_at = int(data.get("messageTimestamp") or 0)
     if sent_at and time.time() - sent_at > get_settings().message_max_age_seconds:
         log.info("old message %s from %s skipped", key["id"], phone)
@@ -78,12 +88,12 @@ def parse(data: dict) -> Incoming | None:
     message = data.get("message") or {}
     if "imageMessage" in message:
         caption = message["imageMessage"].get("caption") or ""
-        return Incoming(key["id"], phone, caption, "image", data)
+        return Incoming(key["id"], phone, caption, "image", data, self_chat)
     text = message.get("conversation") or (message.get("extendedTextMessage") or {}).get("text") or ""
     if text.strip():
-        return Incoming(key["id"], phone, text, "text", data)
-    if UNSUPPORTED & message.keys():
-        return Incoming(key["id"], phone, "", "unsupported", data)
+        return Incoming(key["id"], phone, text, "text", data, self_chat)
+    if UNSUPPORTED & message.keys() and not self_chat:  # in the self-chat the bot's own PDFs look like this
+        return Incoming(key["id"], phone, "", "unsupported", data, self_chat)
     return None
 
 
@@ -100,6 +110,8 @@ def process(msg: Incoming) -> None:
             if not allowed:  # only approved numbers with an open shop; others get no reply
                 log.info("not allowed %s ignored", msg.phone)
                 return
+            if msg.self_chat and _is_recent_bot_text(msg.phone, msg.text):
+                return  # the bot's own reply came back before its id was known
             if msg.kind == "unsupported":
                 channel.send(msg.phone, t("text_or_photo_only", detect_language(msg.text)))
                 return
@@ -109,6 +121,24 @@ def process(msg: Incoming) -> None:
             handler.handle_message(channel, msg.external_id, msg.phone, msg.text)
         except Exception:
             log.exception("webhook message %s from %s failed", msg.external_id, msg.phone)
+
+
+def _is_recent_bot_text(phone: str, text: str) -> bool:
+    """A bot message with exactly this text went to this number in the last 10 minutes."""
+    if not text.strip():
+        return False
+    with transaction() as conn:
+        return conn.execute(
+            """
+            select 1 from messages m
+            join conversations c on c.id = m.conversation_id
+            join users u on u.id = c.user_id
+            where u.phone = %s and m.role = 'bot' and m.text = %s
+              and m.created_at > now() - interval '10 minutes'
+            limit 1
+            """,
+            (phone, text),
+        ).fetchone() is not None
 
 
 def _handle_photo(msg: Incoming) -> None:
@@ -123,6 +153,13 @@ def _handle_photo(msg: Incoming) -> None:
         Path(f.name).unlink(missing_ok=True)
 
 
+def _own_phone(payload: dict) -> str | None:
+    try:
+        return normalize_phone(str(payload.get("sender") or "").split("@")[0])
+    except ValueError:
+        return None
+
+
 @router.post("/webhook/evolution/{secret}")
 async def evolution_webhook(secret: str, request: Request, background: BackgroundTasks) -> dict:
     expected = get_settings().webhook_secret
@@ -131,9 +168,10 @@ async def evolution_webhook(secret: str, request: Request, background: Backgroun
     payload = await request.json()
     if str(payload.get("event", "")).lower().replace("_", ".") != "messages.upsert":
         return {"ok": True}
+    own_phone = _own_phone(payload)
     items = payload.get("data")
     for data in items if isinstance(items, list) else [items or {}]:
-        msg = parse(data)
+        msg = parse(data, own_phone)
         if msg:
             background.add_task(process, msg)
     return {"ok": True}
