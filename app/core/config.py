@@ -4,6 +4,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from dotenv import load_dotenv
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
@@ -69,6 +70,19 @@ class Settings(BaseSettings):
     google_vision_api_key: str = ""
     ocr_max_rows: int = 20
     ocr_max_image_mb: int = 10
+
+    # WhatsApp through Evolution API (same .env names as the whatsappsetup/ scripts)
+    evolution_api_url: str = Field("http://localhost:8080", validation_alias=AliasChoices("EVOLUTION_API_URL", "API_URL"))
+    evolution_api_key: str = Field("", validation_alias=AliasChoices("EVOLUTION_API_KEY", "API_KEY"))
+    evolution_instance: str = Field("ezkhata", validation_alias=AliasChoices("EVOLUTION_INSTANCE", "INSTANCE"))
+    # Part of the webhook URL, so only Evolution can post messages to the bot. Empty = webhook off.
+    webhook_secret: str = ""
+    message_max_age_seconds: int = 600  # older messages (the bot was down) are ignored
+    # Render's free plan sleeps after 15 min without requests, so the server pings these every few
+    # minutes. Render sets RENDER_EXTERNAL_URL (the bot's own URL); locally both are empty = off.
+    render_external_url: str = ""
+    keep_awake_urls: str = ""  # comma-separated, e.g. the Evolution service URL
+    keep_awake_minutes: int = 10
 
     @property
     def llm_api_keys(self) -> list[str]:

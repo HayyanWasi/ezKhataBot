@@ -110,6 +110,12 @@ def list_balances(conn: Connection, business_id: Id, type: str | None = None) ->
 # ---------------------------------------------------------------------------
 
 
+def nice_name(name: str) -> str:
+    """ "ali bhai" -> "Ali Bhai"; a name the user wrote with capitals ("ABC Traders", "McDonald") stays as written."""
+    name = " ".join(name.split())
+    return name.title() if name == name.lower() else name
+
+
 def create_party(
     conn: Connection, business_id: Id, type: str, name: str, phone: str | None, created_by: Id
 ) -> dict:
@@ -119,7 +125,7 @@ def create_party(
         values (%s, %s, %s, %s, %s)
         returning id, type, name, phone
         """,
-        (business_id, type, name.strip(), phone, created_by),
+        (business_id, type, nice_name(name), phone, created_by),
     ).fetchone()
 
 

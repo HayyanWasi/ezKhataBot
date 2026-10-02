@@ -20,10 +20,9 @@ def check_status():
 
 def generate_pairing_code():
     print("=" * 60)
-    print("  exKhataBot - Generate Pairing Code")
+    print("  EzKhata - Generate Pairing Code")
     print("=" * 60)
     print(f"\nInstance Name: {INSTANCE}")
-    print(f"Global API Key: {API_KEY}")
 
     state = check_status()
     print(f"Current Connection State: {state}")

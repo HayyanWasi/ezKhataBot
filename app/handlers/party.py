@@ -143,6 +143,7 @@ def next_step(ctx: Context, draft: dict) -> Outcome:
 
     if not name:
         return _ask(ctx, "entry_party", "text", draft, t("ask_party", language))
+    draft["party_name"] = name = tools.nice_name(name)  # "ali" -> "Ali" in replies and when saved
 
     if mode != "add":
         if draft["amount"] is None:
@@ -373,10 +374,11 @@ def _save_phone(ctx: Context, party: dict, phone: str) -> Outcome:
 
 @intent(
     "party_balance",
-    "User asks for ONE customer's or supplier's balance, khata or entries.",
+    "User asks about ONE customer or supplier: who they are, their details, balance, khata or entries.",
     fields=PartyBalanceFields,
     fields_hint='{"party_name": string | null}',
-    examples=["Ali ka hisaab", "Ali ka khata dikhao", "how much does Bilal owe", "علی کا حساب"],
+    examples=["Ali ka hisaab", "Ali ka khata dikhao", "Ali kon hai?", "Bilal ki details", "how much does Bilal owe",
+              "علی کا حساب"],
     needs_business=True,
 )
 def party_balance(ctx: Context, fields: PartyBalanceFields) -> Outcome:
@@ -396,7 +398,8 @@ def _show_balance(ctx: Context, party: dict) -> Outcome:
         balance = tools.get_balance(conn, business_id, party["id"])
         entries = tools.recent_entries(conn, business_id, party["id"])
 
-    lines = [f"*{_party_label(language, party)}*", balance_line(language, party["name"], balance)]
+    lines = [f"*{_party_label(language, party)}*" + (f" · 📞 {party['phone']}" if party.get("phone") else ""),
+             balance_line(language, party["name"], balance)]
     if entries:
         lines.append("")
         for e in entries:

@@ -119,6 +119,12 @@ class EntryPhotoFields(DeleteEntryFields):
     pass
 
 
+class RecentEntriesFields(_Fields):
+    limit: int | None = None  # "last 3 entries" -> 3; "akhri customer" -> 1
+    date: dt.date | None = None  # "aaj kya hua" -> today
+    customers_only: bool | None = None  # about customers / sales
+
+
 class EditEntryFields(_Fields):
     party_name: str | None = None
     item: str | None = None
