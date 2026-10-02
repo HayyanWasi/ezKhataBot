@@ -74,7 +74,7 @@ class Settings(BaseSettings):
     # WhatsApp through Evolution API (same .env names as the whatsappsetup/ scripts)
     evolution_api_url: str = Field("http://localhost:8080", validation_alias=AliasChoices("EVOLUTION_API_URL", "API_URL"))
     evolution_api_key: str = Field("", validation_alias=AliasChoices("EVOLUTION_API_KEY", "API_KEY"))
-    evolution_instance: str = Field("exkhatabot", validation_alias=AliasChoices("EVOLUTION_INSTANCE", "INSTANCE"))
+    evolution_instance: str = Field("ezkhata", validation_alias=AliasChoices("EVOLUTION_INSTANCE", "INSTANCE"))
     # Part of the webhook URL, so only Evolution can post messages to the bot. Empty = webhook off.
     webhook_secret: str = ""
     message_max_age_seconds: int = 600  # older messages (the bot was down) are ignored

@@ -6,7 +6,7 @@ load_dotenv()
 
 API_URL = os.getenv("API_URL") or os.getenv("SERVER_URL") or "http://localhost:8080"
 API_KEY = os.getenv("API_KEY") or os.getenv("AUTHENTICATION_API_KEY")
-INSTANCE = os.getenv("INSTANCE") or "exkhatabot"
+INSTANCE = os.getenv("INSTANCE") or "ezkhata"
 MY_NUMBER = os.getenv("ALLOWED_NUMBER") or os.getenv("MY_NUMBER")
 
 

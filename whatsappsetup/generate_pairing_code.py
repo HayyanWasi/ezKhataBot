@@ -20,7 +20,7 @@ def check_status():
 
 def generate_pairing_code():
     print("=" * 60)
-    print("  exKhataBot - Generate Pairing Code")
+    print("  EzKhata - Generate Pairing Code")
     print("=" * 60)
     print(f"\nInstance Name: {INSTANCE}")
 

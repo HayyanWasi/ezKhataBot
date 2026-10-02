@@ -29,7 +29,7 @@ def check_status():
 
 def main():
     print("=" * 60)
-    print("  exKhataBot - Connect WhatsApp")
+    print("  EzKhata - Connect WhatsApp")
     print("=" * 60)
     print(f"\nInstance Name: {INSTANCE}")
 
@@ -46,7 +46,7 @@ def main():
     print("\nHow to scan the QR code:")
     print("  1. In the Manager webpage, log in with:")
     print("     - the Global API Key (API_KEY in .env)")
-    print("  2. Click on the 'exkhatabot' instance.")
+    print("  2. Click on the 'ezkhata' instance.")
     print("  3. Click 'Connect' / QR code button to display the QR code.")
     print("  4. Open WhatsApp on your phone -> Settings -> Linked Devices -> Link a Device.")
     print("  5. Scan the QR code.\n")

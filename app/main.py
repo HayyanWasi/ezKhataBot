@@ -10,11 +10,25 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.api import webhooks
+from app.core.config import get_settings
 from app.core.keep_awake import KeepAwake
 from app.core.scheduler import ReminderScheduler
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s: %(message)s")
 logging.getLogger("httpx").setLevel(logging.WARNING)
+
+
+class _HideSecret(logging.Filter):
+    """uvicorn logs every request path; the webhook path holds WEBHOOK_SECRET."""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        secret = get_settings().webhook_secret
+        if secret and isinstance(record.args, tuple):
+            record.args = tuple(a.replace(secret, "***") if isinstance(a, str) else a for a in record.args)
+        return True
+
+
+logging.getLogger("uvicorn.access").addFilter(_HideSecret())
 
 
 @asynccontextmanager
