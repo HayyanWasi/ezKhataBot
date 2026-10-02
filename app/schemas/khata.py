@@ -90,7 +90,7 @@ class PartyEntryFields(_Fields):
 
 
 class AddPartyFields(_Fields):
-    name: str = Field(min_length=1)
+    name: str | None = None  # "ek aur customer add karo": the name is asked next
     type: PartyType | None = None
     phone: str | None = None
     opening_amount: Any = None

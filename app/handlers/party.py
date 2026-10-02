@@ -142,7 +142,8 @@ def next_step(ctx: Context, draft: dict) -> Outcome:
     language, mode, name = ctx.language, draft["mode"], draft["party_name"]
 
     if not name:
-        return _ask(ctx, "entry_party", "text", draft, t("ask_party", language))
+        key = "ask_party" if mode == "entry" else "ask_new_party_name"
+        return _ask(ctx, "entry_party", "text", draft, t(key, language))
     draft["party_name"] = name = tools.nice_name(name)  # "ali" -> "Ali" in replies and when saved
 
     if mode != "add":
@@ -357,7 +358,8 @@ def paid_via(text: str, ai_value: str | None) -> str | None:
     '"will_give" = the shop owes the party ("pehle ke 2000 dene hain").',
     fields=AddPartyFields,
     fields_hint=(
-        '{"name": string, "type": "customer" | "supplier" | null, "phone": string | null, '
+        '{"name": string | null (null when no name is written, e.g. "ek aur customer add karo"), '
+        '"type": "customer" | "supplier" | null, "phone": string | null, '
         '"opening_amount": number | null, "opening_direction": "will_get" | "will_give" | null}'
     ),
     examples=[
