@@ -33,18 +33,26 @@ def create_business(conn: Connection, owner_id: UUID, name: str) -> Row:
     ).fetchone()
 
 
+def bot_allowed(conn: Connection, phone: str) -> bool:
+    """The bot answers this number: a registered user the admin hasn't turned off, with at least one open shop."""
+    user = get_user_by_phone(conn, phone)
+    return bool(user and user.get("disabled_at") is None and list_user_businesses(conn, user["id"]))
+
+
 def list_user_businesses(conn: Connection, user_id: UUID) -> list[Row]:
-    """Businesses the user can access (owner or active employee), oldest first, with role."""
+    """Businesses the user can access (owner or active employee), oldest first, with role.
+    A shop the admin turned off is left out."""
     return conn.execute(
         """
         select b.*, 'owner' as role
         from businesses b
-        where b.owner_id = %(user_id)s
+        where b.owner_id = %(user_id)s and b.disabled_at is null
         union all
         select b.*, 'employee' as role
         from businesses b
         join business_employees e on e.business_id = b.id
         where e.user_id = %(user_id)s and e.status = 'active' and b.owner_id <> %(user_id)s
+          and b.disabled_at is null
         order by created_at
         """,
         {"user_id": user_id},
