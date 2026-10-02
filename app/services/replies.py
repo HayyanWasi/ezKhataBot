@@ -190,6 +190,11 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "Kis ka hisaab hai? Naam likhein.",
         "ur": "کس کا حساب ہے؟ نام لکھیں۔",
     },
+    "ask_new_party_name": {
+        "en": "What is the name?",
+        "roman_ur": "Naam kya hai?",
+        "ur": "نام کیا ہے؟",
+    },
     "ask_amount": {
         "en": "{name}: how much?",
         "roman_ur": "{name}: kitne paise?",
