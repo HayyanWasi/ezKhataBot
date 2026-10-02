@@ -96,9 +96,9 @@ def process(msg: Incoming) -> None:
     with _lock(msg.phone):
         try:
             with transaction() as conn:
-                registered = crud.get_user_by_phone(conn, msg.phone) is not None
-            if not registered:  # only chosen numbers use the bot; others get no reply
-                log.info("unregistered %s ignored", msg.phone)
+                allowed = crud.bot_allowed(conn, msg.phone)
+            if not allowed:  # only approved numbers with an open shop; others get no reply
+                log.info("not allowed %s ignored", msg.phone)
                 return
             if msg.kind == "unsupported":
                 channel.send(msg.phone, t("text_or_photo_only", detect_language(msg.text)))
