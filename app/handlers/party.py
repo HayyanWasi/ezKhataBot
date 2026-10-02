@@ -46,6 +46,7 @@ from app.services.registry import (
 from app.services.replies import numbered, t
 from app.tools import money as money_tools
 from app.tools import party as tools
+from app.tools import stock as stock_tools
 
 # Outcome intent name for each kind of draft
 _DRAFT_INTENT = {"entry": "party_entry", "opening": "add_party", "add": "add_party"}
@@ -274,6 +275,10 @@ def party_entry(ctx: Context, fields: PartyEntryFields) -> Outcome:
     entry_date = fields.date or _today(ctx)
     if entry_date > _today(ctx):
         return Outcome("party_entry", t("future_date", ctx.language))
+    if fields.direction != "got" and fields.paid_via is None and fields.party_name:
+        goods = shop_goods(ctx, ctx.text)
+        if goods:  # "Sameer ne udhar kiya 1 sock": the shop's own item with a count is a sale on udhaar
+            return _as_bill(ctx, fields, goods, entry_date)
     amount = confirmed_amount(ctx.text, fields.amount)  # must be written in the message
     draft = new_draft(
         "entry",
@@ -287,6 +292,51 @@ def party_entry(ctx: Context, fields: PartyEntryFields) -> Outcome:
         bank_name=fields.bank_name,
     )
     return next_step(ctx, draft)
+
+
+_COUNT_WORDS = {"aik": 1, "ek": 1, "ik": 1, "do": 2, "teen": 3, "char": 4, "chaar": 4, "paanch": 5, "panch": 5,
+                "chay": 6, "chhe": 6, "saat": 7, "aath": 8, "nau": 9, "das": 10}
+_COUNTED = re.compile(
+    r"(?<![\w.])(\d+(?:\.\d+)?|" + "|".join(_COUNT_WORDS) + r")\s+([^\W\d_]+(?:\s+[^\W\d_]+)?)", re.IGNORECASE
+)
+
+
+def shop_goods(ctx: Context, text: str, count_needed: bool = True) -> list[tuple[dict, Decimal]]:
+    """The shop's own stock items written in the text with a count ("1 sock", "aik juicer") ->
+    [(item, count)]. Only a sure match on an item's name counts, never a guess.
+    count_needed=False: an item named without a count ("jitne ka sock hai") counts as 1."""
+    found: dict = {}
+    with transaction() as conn:
+        def item(word: str) -> dict | None:
+            matches = stock_tools.find_item(conn, ctx.business["id"], word, partial=False)
+            return matches[0] if len(matches) == 1 else None
+
+        for count, words in _COUNTED.findall(text):
+            first = words.split()[0]
+            hit = item(words) or item(first)
+            if hit:
+                found.setdefault(hit["id"], (hit, Decimal(_COUNT_WORDS.get(count.lower(), count))))
+        if not found and not count_needed:
+            for word in re.findall(r"[^\W\d_]+", text):
+                hit = item(word)
+                if hit:
+                    found.setdefault(hit["id"], (hit, Decimal(1)))
+    return list(found.values())
+
+
+def _as_bill(ctx: Context, fields: PartyEntryFields, goods: list[tuple[dict, Decimal]], entry_date: date) -> Outcome:
+    """A customer took the shop's items on credit: an udhaar bill (stock goes down, the khata goes up)."""
+    from dataclasses import replace
+
+    from app.handlers import bills  # bills imports this module
+    from app.schemas.khata import CreateBillFields, StockLine
+
+    lines = [StockLine(name=item["name"], qty=str(count)) for item, count in goods]
+    # "aik sock" -> the count must be written for the bill's checks: add it in digits
+    text = ctx.text + " " + " ".join(f"{count} {item['name']}" for item, count in goods)
+    bill = CreateBillFields(customer_name=fields.party_name, items=lines, paid_via="udhaar",
+                            date=entry_date if fields.date else None)
+    return bills.create_bill(replace(ctx, text=text), bill)
 
 
 # "Ali ko 500 diye?" asks, it doesn't tell. Code decides too, so a question is never saved
@@ -521,6 +571,10 @@ def resolve_entry_amount(ctx: Context, pending: PendingAction, answer: str) -> O
     if amount is None:
         amounts = parse_amounts(answer)
         amount = amounts[0] if len(amounts) == 1 else None
+    if amount is None:  # "jitne ka sock hai": the item's sale price x count
+        goods = shop_goods(ctx, answer, count_needed=False)
+        if len(goods) == 1 and goods[0][0]["sale_price"] is not None:
+            amount = goods[0][0]["sale_price"] * goods[0][1]
     if amount is None:
         return _retry(ctx, pending, t("ask_amount", ctx.language, name=pending.data["draft"]["party_name"]))
     draft = _draft(pending)
