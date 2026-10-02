@@ -182,6 +182,13 @@ def finish_user_message(
     )
 
 
+def queue_notice(conn: Connection, user_id: UUID, channel: str, text: str, business_id: UUID | None) -> Row:
+    """A message the bot starts (a new employee's welcome, a low-stock alert to the owner). It is saved
+    here, inside the caller's commit, and the scheduler sends it within seconds (and retries it)."""
+    conversation = get_or_create_conversation(conn, user_id, channel)
+    return insert_bot_reply(conn, conversation["id"], None, text, business_id, "notice")
+
+
 def insert_bot_reply(
     conn: Connection,
     conversation_id: UUID,

@@ -282,6 +282,11 @@ class ItemFields(_Fields):
 # ---------------------------------------------------------------------------
 
 
+class EmployeeFields(_Fields):
+    name: str | None = None
+    phone: str | None = None
+
+
 class ProfitFields(_Fields):
     start_date: dt.date | None = None  # null = today
     end_date: dt.date | None = None

@@ -107,16 +107,17 @@ def mark_queued(conn: Connection, send_id: Id, message_id: Id) -> None:
 
 
 def unsent_reminder_messages(conn: Connection, max_attempts: int = 3, older_than_seconds: int = 60) -> list[dict]:
-    """Reminder messages that failed (or were never sent because the process stopped)."""
+    """Reminder messages that failed (or were never sent because the process stopped), and new notices."""
     return conn.execute(
         """
         select m.*, c.channel, u.phone
         from messages m
         join conversations c on c.id = m.conversation_id
         join users u on u.id = c.user_id
-        where m.role = 'bot' and m.intent = 'reminder'
+        where m.role = 'bot' and m.intent in ('reminder', 'notice')
           and m.delivery_status in ('pending', 'failed') and m.send_attempts < %s
-          and m.created_at < now() - make_interval(secs => %s)
+          and (m.created_at < now() - make_interval(secs => %s)
+               or (m.intent = 'notice' and m.send_attempts = 0))  -- a notice goes out on the next run
         order by m.created_at
         limit 20
         """,
