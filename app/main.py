@@ -1,4 +1,4 @@
-"""EzKhata server: WhatsApp webhook, reminders, and the APIs for the website (signup + admin dashboard).
+"""EzKhata server: WhatsApp webhook + reminders.
 
     uv run uvicorn app.main:app --port 8000
 
@@ -9,9 +9,8 @@ import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import admin, signup, webhooks
+from app.api import webhooks
 from app.core.config import get_settings
 from app.core.keep_awake import KeepAwake
 from app.core.scheduler import ReminderScheduler
@@ -48,16 +47,6 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="EzKhata", lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
 app.include_router(webhooks.router)
-app.include_router(signup.router)
-app.include_router(admin.public)
-app.include_router(admin.router)
-# Only our own website (Vercel) may call the APIs from a browser
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[o.strip().rstrip("/") for o in get_settings().cors_origins.split(",") if o.strip()],
-    allow_methods=["GET", "POST", "DELETE"],
-    allow_headers=["Authorization", "Content-Type"],
-)
 
 
 @app.api_route("/", methods=["GET", "HEAD"])

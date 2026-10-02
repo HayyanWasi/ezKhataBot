@@ -2,7 +2,7 @@
 
     uv run python -m app.jobs.add_shop 03001234567 "Ali" "Ali General Store"
 
-Only registered numbers get replies on WhatsApp. The signup website will call add_shop() later."""
+Only registered numbers get replies on WhatsApp."""
 
 import sys
 

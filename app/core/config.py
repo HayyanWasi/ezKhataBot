@@ -84,14 +84,6 @@ class Settings(BaseSettings):
     keep_awake_urls: str = ""  # comma-separated, e.g. the Evolution service URL
     keep_awake_minutes: int = 5  # Render sleeps after 15 min idle: 5 leaves room for a missed ping
 
-    # Admin dashboard (frontend on Vercel). Empty = admin login off.
-    admin_username: str = ""
-    admin_password_hash: str = ""  # from: uv run python -m app.core.security
-    admin_secret: str = ""  # signs admin tokens; a long random string
-    # Websites allowed to call the APIs (comma-separated), e.g. https://ezkhata.vercel.app
-    cors_origins: str = "http://localhost:3000"
-    signup_per_ip_per_hour: int = 5
-
     @property
     def llm_api_keys(self) -> list[str]:
         """Main key first, then the fallbacks."""
