@@ -248,14 +248,16 @@ def _save(ctx: Context, draft: dict) -> Outcome:
     "Salary or wages paid to a worker is NOT a party entry (use cash_entry). "
     "A message that lists ITEMS with quantities (\"100 belt\", \"10 kg cheeni\") is NOT a party entry, even when "
     "a party is named: items coming in = stock_in, going back = stock_out, SOLD to a customer (\"Ali ko 2 packet "
-    "surf udhaar diye\", \"customer ne 4 darjan ande liye\") = create_bill.",
+    "surf udhaar diye\", \"customer ne 4 darjan ande liye\") = create_bill. "
+    "question: true when the user only ASKS whether it happened (\"Rohaan ko 500 diye?\", \"kya Ali ne paise diye "
+    "the\", \"Ali ko 500 diye ya nahi\") - then nothing is saved, the khata is checked.",
     fields=PartyEntryFields,
     fields_hint=(
         '{"party_name": string | null (as written, e.g. "Ali"), '
         '"party_type": "customer" | "supplier" | null (only if the user says it), '
         '"direction": "gave" | "got" | null, "amount": number | null, '
         '"date": "YYYY-MM-DD" | null, "note": string | null (item or reason, e.g. "cheeni"), '
-        '"paid_via": "cash" | "bank" | null, "bank_name": string | null}'
+        '"paid_via": "cash" | "bank" | null, "bank_name": string | null, "question": true | false}'
     ),
     examples=[
         "Ali ko 500 udhaar diye", "Ali se 300 mile", "Rohaan se 5000 ka maal liya kal",
@@ -266,6 +268,8 @@ def _save(ctx: Context, draft: dict) -> Outcome:
     owner_only=True,
 )
 def party_entry(ctx: Context, fields: PartyEntryFields) -> Outcome:
+    if fields.question or asks_question(ctx.text):
+        return _answer_entry_question(ctx, fields)
     entry_date = fields.date or _today(ctx)
     if entry_date > _today(ctx):
         return Outcome("party_entry", t("future_date", ctx.language))
@@ -282,6 +286,52 @@ def party_entry(ctx: Context, fields: PartyEntryFields) -> Outcome:
         bank_name=fields.bank_name,
     )
     return next_step(ctx, draft)
+
+
+# "Ali ko 500 diye?" asks, it doesn't tell. Code decides too, so a question is never saved
+# even when the AI misses it.
+_QUESTION = re.compile(
+    r"[?؟]\s*$|\b(ya nahi|ya nhi|ya nahin|or not|did i|have i|kya maine|kia maine)\b|^\s*(kya|kia|کیا)\b",
+    re.IGNORECASE,
+)
+
+
+def asks_question(text: str) -> bool:
+    return bool(_QUESTION.search(text))
+
+
+def _answer_entry_question(ctx: Context, fields: PartyEntryFields) -> Outcome:
+    """Was it given / received? Look in the khata and say haan or nahi, then show the khata."""
+    language = ctx.language
+    if not fields.party_name:
+        return list_parties(ctx, ListPartiesFields())
+    matches = _find(ctx, fields.party_name)
+    if not matches:
+        return Outcome("party_balance", t("asked_entry_no_party", language, name=fields.party_name))
+    if len(matches) > 1:
+        return ask_choose_party(ctx, fields.party_name, matches, "balance", {})
+    party = matches[0]
+    amount = confirmed_amount(ctx.text, fields.amount)
+    with transaction() as conn:
+        entries = tools.recent_entries(conn, _business_id(ctx), party["id"], limit=50)
+    found = next(
+        (e for e in entries
+         if e["transaction_type"] != "opening_balance"
+         and (amount is None or abs(e["amount"]) == amount)
+         and (fields.direction is None or (e["amount"] > 0) == (fields.direction == "gave"))
+         and (fields.date is None or e["transaction_date"] == fields.date)),
+        None,
+    )
+    if found:
+        verb = "verb_gave" if found["amount"] > 0 else "verb_got"
+        answer = t("asked_entry_yes", language, date=short_date(found["transaction_date"]),
+                   text=f"{party['name']} · {t(verb, language)} {format_rs(found['amount'])}")
+    else:
+        what = f"{party['name']} · {t('verb_got' if fields.direction == 'got' else 'verb_gave', language)}"
+        what += f" {format_rs(amount)}" if amount is not None else ""
+        answer = t("asked_entry_no", language, text=what) if fields.direction or amount else ""
+    khata = _show_balance(ctx, party).reply
+    return Outcome("party_balance", f"{answer}\n\n{khata}" if answer else khata)
 
 
 # Words that mean real money was paid (not udhaar / goods). Code decides, so the same sentence

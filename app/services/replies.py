@@ -256,6 +256,21 @@ TEXTS: dict[str, dict[str, str]] = {
     "short_get": {"en": "get {amount}", "roman_ur": "lene {amount}", "ur": "لینے {amount}"},
     "short_give": {"en": "give {amount}", "roman_ur": "dene {amount}", "ur": "دینے {amount}"},
     "short_settled": {"en": "settled", "roman_ur": "barabar", "ur": "برابر"},
+    "asked_entry_yes": {
+        "en": "✅ Yes, saved on {date}: {text}",
+        "roman_ur": "✅ Haan, {date} ko entry hai: {text}",
+        "ur": "✅ جی ہاں، {date} کو انٹری ہے: {text}",
+    },
+    "asked_entry_no": {
+        "en": "❌ No such entry: {text}\nTo save it, write it as a statement, not a question.",
+        "roman_ur": "❌ Aisi koi entry nahi: {text}\nSave karni hai to sawal ke bajaye seedha likhein.",
+        "ur": "❌ ایسی کوئی انٹری نہیں: {text}\nمحفوظ کرنی ہے تو سوال کے بجائے سیدھا لکھیں۔",
+    },
+    "asked_entry_no_party": {
+        "en": "❌ No — {name} is not in your khata, so there is no entry.",
+        "roman_ur": "❌ Nahi — {name} aapke khate mein nahi hai, koi entry nahi.",
+        "ur": "❌ نہیں — {name} آپ کے کھاتے میں نہیں، کوئی انٹری نہیں۔",
+    },
     "no_entries": {
         "en": "No entries yet.",
         "roman_ur": "Abhi koi entry nahi.",

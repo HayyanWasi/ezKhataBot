@@ -86,6 +86,7 @@ class PartyEntryFields(_Fields):
     note: str | None = None
     paid_via: Literal["cash", "bank"] | None = None  # real money moved (payment); None = udhaar / goods
     bank_name: str | None = None
+    question: bool = False  # user only ASKS whether this happened ("Ali ko 500 diye?"): answer, never save
 
 
 class AddPartyFields(_Fields):
