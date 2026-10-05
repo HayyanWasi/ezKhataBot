@@ -199,7 +199,9 @@ _FILLER = r"(?:(?:bhai|yaar|yar|ji|sahi|asal|naam|balke|balkay|sir)\s+)*"
 _HAI = r"(?:hai|he|h)"
 _NOT_NAMES = {"hai", "he", "h", "tha", "thi", "balke", "balkay", "naam", "name", "wala", "wali", "ka", "ki", "bhai",
               "yaar", "ji", "sahi", "galat", "ye", "yeh", "woh", "wo", "to", "toh", "mera", "theek", "aaj", "kal", "abhi",
-              "yahan", "idhar", "wahan", "udhar", "udhaar", "aaya", "aya", "gaya", "diya", "liya", "mila", "koi"}
+              "yahan", "idhar", "wahan", "udhar", "udhaar", "aaya", "aya", "gaya", "diya", "liya", "mila", "koi",
+              # commands, not names: "aleem hatake save karo"
+              "save", "karo", "kardo", "krdo", "kar", "kr", "do", "delete", "cancel", "likho", "entry", "sab", "baqi"}
 
 
 def name_fixes(text: str, names: list[str]) -> dict[str, str]:
@@ -212,8 +214,13 @@ def name_fixes(text: str, names: list[str]) -> dict[str, str]:
         patterns = (
             rf"\b{n}\s+(?:nahi|nhi|nai|nahin)\s+{_HAI}\s+{_FILLER}{_WORD}",
             rf"\b{n}\s+(?:nahi|nhi|nai|nahin)\s+{_FILLER}{_WORD}\s+{_HAI}\b",
-            rf"\b{n}\s+(?:ki\s+jagah|ke\s+bajaye|ki\s+bajaye)\s+{_WORD}",
-            rf"\b{n}\s+(?:ko|ka\s+naam)\s+{_WORD}\s+(?:karo|kardo|kar\s+do|kr\s+do|krdo|likho|likh\s+do)\b",
+            rf"\b{n}\s+(?:ki\s+jagah|ke\s+bajaye|ki\s+bajaye|ki\s+bajae)\s+{_WORD}",
+            # "aleem hatake saleem kardo", "aleem hata ke saleem likho", "aleem change karke saleem"
+            rf"\b{n}\s+(?:ko\s+)?(?:hatake|hata\s+ke|hata\s+kar|hatakar|hta\s+ke|change\s+kar\s*ke|badal\s+ke)"
+            rf"\s+{_FILLER}{_WORD}",
+            rf"\b{n}\s+(?:ko|ka\s+naam)\s+{_WORD}\s+(?:karo|kardo|kar\s+do|kr\s+do|krdo|likho|likh\s+do|"
+            rf"bana\s+do|banado)\b",
+            rf"\b{n}\s+ko\s+{_WORD}\s+se\s+(?:badal|change)\b",  # "aleem ko saleem se badal do"
             rf"\b{_WORD}\s+(?:hai|he|h)\s*,?\s+{n}\s+(?:nahi|nhi|nai|nahin)\b",
         )
         for pattern in patterns:
@@ -282,6 +289,14 @@ def resolve_confirm_image(ctx: Context, pending: PendingAction, answer: str) -> 
 def resolve_image_new_parties(ctx: Context, pending: PendingAction, answer: str) -> Outcome:
     choice = parse_number(answer)
     data = pending.data
+    fixes = name_fixes(ctx.text, [i.get("name") for i in data["items"]])
+    if fixes:  # "1 aleem hatake saleem kardo": the rename, then the number at the start
+        data = _rename(ctx, data, fixes)
+        pending = pending.model_copy(update={"data": data})
+        first = re.match(r"\s*(\d{1,2})\b", ctx.text)
+        choice = choice if choice is not None else (int(first.group(1)) if first else None)
+        if not data["new_names"]:  # the corrected name is a party already: nothing new to ask about
+            return _save_items(ctx, {**data, "new_type": None})
     if choice == 1:
         return _save_items(ctx, {**data, "new_type": "customer"})
     if choice == 2:

@@ -129,6 +129,14 @@ def create_party(
     ).fetchone()
 
 
+def rename_party(conn: Connection, business_id: Id, account_id: Id, name: str) -> str:
+    """A party's name is changed; its entries stay with it. Returns the saved name."""
+    return conn.execute(
+        "update accounts set name = %s where id = %s and business_id = %s and deleted_at is null returning name",
+        (nice_name(name), account_id, business_id),
+    ).fetchone()["name"]
+
+
 def set_party_phone(conn: Connection, business_id: Id, account_id: Id, phone: str) -> None:
     conn.execute(
         "update accounts set phone = %s where id = %s and business_id = %s and deleted_at is null",
