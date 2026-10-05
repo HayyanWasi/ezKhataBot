@@ -680,13 +680,16 @@ def list_parties(ctx: Context, fields: ListPartiesFields) -> Outcome:
         rows = [r for r in rows if r["balance"] < 0]
     elif side == "get":
         rows = [r for r in rows if r["balance"] > 0]
-    if side and not rows:
-        return Outcome("list_parties", t(f"nobody_{side}", language, get=get, give=give))
+    if side and not rows:  # a plain answer, no table: "Nahi, aap ne kisi ko kuch nahi dena"
+        return Outcome("list_parties", t(f"nobody_{side}", language))
 
     items = numbered([f"{r['name']} — {_short_balance(language, r['balance'])}" for r in rows[:10]])
     if len(rows) > 10:
         items += "\n" + t("list_more", language, n=len(rows) - 10)
     reply = t(f"party_list_{side}" if side else "party_list", language, get=get, give=give, items=items)
+    other = {"give": total_get, "get": total_give}.get(side)
+    if other:  # the other side only when there is something on it
+        reply += "\n\n" + t(f"also_{'get' if side == 'give' else 'give'}", language, get=get, give=give)
     return Outcome("list_parties", reply)
 
 
