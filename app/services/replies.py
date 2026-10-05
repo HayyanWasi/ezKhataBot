@@ -255,6 +255,11 @@ TEXTS: dict[str, dict[str, str]] = {
     },
     "recent_head": {"en": "🕘 *Latest entries*", "roman_ur": "🕘 *Haaliya entries*", "ur": "🕘 *حالیہ انٹریاں*"},
     "recent_none": {"en": "No entries yet.", "roman_ur": "Abhi koi entry nahi.", "ur": "ابھی کوئی انٹری نہیں۔"},
+    "recent_none_for": {
+        "en": "No entry found for: {what}",
+        "roman_ur": "Is ki koi entry nahi mili: {what}",
+        "ur": "اس کی کوئی انٹری نہیں ملی: {what}",
+    },
     "verb_gave": {"en": "gave", "roman_ur": "diye", "ur": "دیے"},
     "verb_got": {"en": "got", "roman_ur": "liye", "ur": "لیے"},
     "verb_opening": {"en": "old bal.", "roman_ur": "pehle ka", "ur": "پہلے کا"},
@@ -286,6 +291,32 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "Kul lene hain: {get}\nKul dene hain: {give}\n\n{items}",
         "ur": "کل لینے ہیں: {get}\nکل دینے ہیں: {give}\n\n{items}",
     },
+    "party_list_give": {
+        "en": "Total you will give: {give}\n\n{items}\n\n(Total you will get: {get})",
+        "roman_ur": "Kul dene hain: {give}\n\n{items}\n\n(Kul lene hain: {get})",
+        "ur": "کل دینے ہیں: {give}\n\n{items}\n\n(کل لینے ہیں: {get})",
+    },
+    "party_list_get": {
+        "en": "Total you will get: {get}\n\n{items}\n\n(Total you will give: {give})",
+        "roman_ur": "Kul lene hain: {get}\n\n{items}\n\n(Kul dene hain: {give})",
+        "ur": "کل لینے ہیں: {get}\n\n{items}\n\n(کل دینے ہیں: {give})",
+    },
+    "nobody_give": {
+        "en": "You don't owe anyone. Total you will give: Rs 0\n(Total you will get: {get})",
+        "roman_ur": "Aap pe kisi ka udhaar nahi. Kul dene hain: Rs 0\n(Kul lene hain: {get})",
+        "ur": "آپ پر کسی کا ادھار نہیں۔ کل دینے ہیں: Rs 0\n(کل لینے ہیں: {get})",
+    },
+    "nobody_get": {
+        "en": "Nobody owes you. Total you will get: Rs 0\n(Total you will give: {give})",
+        "roman_ur": "Kisi se kuch lena nahi. Kul lene hain: Rs 0\n(Kul dene hain: {give})",
+        "ur": "کسی سے کچھ لینا نہیں۔ کل لینے ہیں: Rs 0\n(کل دینے ہیں: {give})",
+    },
+    "no_parties_type": {
+        "en": "No {type} yet.",
+        "roman_ur": "Abhi koi {type} nahi.",
+        "ur": "ابھی کوئی {type} نہیں۔",
+    },
+    "list_more": {"en": "… and {n} more", "roman_ur": "… aur {n}", "ur": "… اور {n}"},
     "no_parties": {
         "en": "No parties yet. Try: \"Gave 500 to Ali\"",
         "roman_ur": "Abhi koi party nahi. Likhein: \"Ali ko 500 diye\"",

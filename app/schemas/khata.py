@@ -133,6 +133,7 @@ class PartyBalanceFields(_Fields):
 
 class ListPartiesFields(_Fields):
     type: PartyType | None = None
+    side: Literal["get", "give"] | None = None  # get = they owe the shop, give = the shop owes them
 
 
 class DeleteEntryFields(_Fields):
