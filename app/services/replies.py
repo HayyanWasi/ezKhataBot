@@ -402,6 +402,16 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "{date} · {name} se {amount} liye",
         "ur": "{date} · {name} سے {amount} لیے",
     },
+    "image_row_will_get": {
+        "en": "{date} · {name} owes you {amount}",
+        "roman_ur": "{date} · {name} se {amount} lene hain",
+        "ur": "{date} · {name} سے {amount} لینے ہیں",
+    },
+    "image_row_will_give": {
+        "en": "{date} · You owe {name} {amount}",
+        "roman_ur": "{date} · {name} ko {amount} dene hain",
+        "ur": "{date} · {name} کو {amount} دینے ہیں",
+    },
     "image_new": {"en": "(new)", "roman_ur": "(naya)", "ur": "(نیا)"},
     "image_missing_amount": {"en": "no amount", "roman_ur": "amount nahi mila", "ur": "رقم نہیں ملی"},
     "image_missing_direction": {

@@ -230,7 +230,8 @@ def _numbers(value: object) -> set[Decimal]:
 def unused_amounts(text: str, result: ClassifierOutput) -> list[Decimal]:
     """Amounts written in a message with two or more parts that no action uses. Quantity x price and
     the sum of the numbers count as used ("2 charger 3000 ke" may be stored as 2 x 1500)."""
-    if result.intent == "unknown" or not _JOINER.search(text):
+    # many_entries has no fields: its rows are read in a second step, which shows every amount it found
+    if result.intent in ("unknown", "many_entries") or not _JOINER.search(text):
         return []
     used = _numbers([result.fields] + [a.fields for a in result.then])
     small = [n for n in used if n < 100_000]

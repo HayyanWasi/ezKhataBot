@@ -46,8 +46,8 @@ direction (party_entry only), always from the SHOP's side:
   amount = the grand total (if no total is written and there is one item line, its amount). Do NOT list the
   item lines as rows. A pen stroke or tick after a number (e.g. "22572/-1") is not a digit.
 - A payment screenshot is one row: "received from X" = got, "sent to X" / "paid to X" = gave.
-- Owed amounts: "X se 500 lene hain" (the shop will get, X owes) = gave; "X ko 500 dene hain" (the shop must pay)
-  = got. "pehle ke" / "reh gaye thay" only says the amount is old; the direction rule is the same.
+- Owed amounts: "X se 500 lene hain" / "X mujhe 500 dega" (the shop will get, X owes) = gave; "X ko 500 dene
+  hain" / "X ko 500 dunga" (the shop must pay) = got. "pehle ke" / "reh gaye thay" only says the amount is old; the direction rule is the same.
 - If the direction really cannot be told, use null. Never guess.
 
 bank rows: direction "got" = money came INTO the shop's account, "gave" = money went OUT of it (null if unclear).
