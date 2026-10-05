@@ -122,6 +122,11 @@ class SetPartyPhoneFields(_Fields):
     phone: str = Field(min_length=1)
 
 
+class RenamePartyFields(_Fields):
+    party_name: str | None = None  # the name now ("Aleem")
+    new_name: str | None = None  # the right name ("Saleem")
+
+
 class PartyBalanceFields(_Fields):
     party_name: str | None = None
 

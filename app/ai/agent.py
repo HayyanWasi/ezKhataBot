@@ -92,7 +92,7 @@ def check_rules(state: AgentState) -> AgentState:
         return {"outcome": Outcome("cancel", t("cancelled" if pending else "okay", ctx.language))}
     if pending and is_trivial_answer(ctx.text, pending.expects):
         return {"answer": ctx.text}
-    if pending and pending.kind == "confirm_image" and _corrects_preview(ctx.text, pending):
+    if pending and pending.kind in ("confirm_image", "image_new_parties") and _corrects_preview(ctx.text, pending):
         return {"answer": ctx.text}  # "han kardo, urqan nhi hai furqan hai": a name fix to the list just shown
     return {}
 

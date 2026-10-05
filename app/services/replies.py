@@ -413,6 +413,26 @@ TEXTS: dict[str, dict[str, str]] = {
         "ur": "{date} · {name} کو {amount} دینے ہیں",
     },
     "image_new": {"en": "(new)", "roman_ur": "(naya)", "ur": "(نیا)"},
+    "confirm_rename": {
+        "en": "Change the name {old} → {new}? All entries stay with it. (yes/no)",
+        "roman_ur": "Naam {old} → {new} kar doon? Saari entries isi ke saath rahengi. (haan/nahi)",
+        "ur": "نام {old} ← {new} کر دوں؟ سارے اندراج اسی کے ساتھ رہیں گے۔ (ہاں/نہیں)",
+    },
+    "party_renamed": {
+        "en": "✏️ Name changed: {old} → {new}",
+        "roman_ur": "✏️ Naam badal diya: {old} → {new}",
+        "ur": "✏️ نام بدل دیا: {old} ← {new}",
+    },
+    "rename_exists": {
+        "en": "{name} is already a {type}. Use a fuller name (e.g. {name} Khan).",
+        "roman_ur": "{name} pehle se {type} hai. Poora naam likhein (jaise {name} Khan).",
+        "ur": "{name} پہلے سے {type} ہے۔ پورا نام لکھیں (جیسے {name} خان)۔",
+    },
+    "rename_how": {
+        "en": "Write the old and the new name, e.g. \"Aleem ka naam Saleem kardo\".",
+        "roman_ur": "Purana aur naya naam likhein, jaise: \"Aleem ka naam Saleem kardo\".",
+        "ur": "پرانا اور نیا نام لکھیں، جیسے: \"علیم کا نام سلیم کر دو\"۔",
+    },
     "image_names_fixed": {"en": "✏️ Name corrected:", "roman_ur": "✏️ Naam theek kar diya:", "ur": "✏️ نام درست کر دیا:"},
     "image_missing_amount": {"en": "no amount", "roman_ur": "amount nahi mila", "ur": "رقم نہیں ملی"},
     "image_missing_direction": {

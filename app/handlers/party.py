@@ -28,10 +28,11 @@ from app.schemas.khata import (
     PartyBalanceFields,
     PartyEntryFields,
     PendingAction,
+    RenamePartyFields,
     SetPartyPhoneFields,
 )
 from app.services.amounts import confirmed_amount, format_rs, parse_amount_answer, parse_amounts
-from app.services.answers import bought_by, parse_number, pick
+from app.services.answers import bought_by, parse_number, parse_yes_no, pick
 from app.handlers.money_steps import (
     MONEY_KEYS,
     check_step,
@@ -499,6 +500,61 @@ def set_party_phone(ctx: Context, fields: SetPartyPhoneFields) -> Outcome:
     return _save_phone(ctx, matches[0], phone)
 
 
+@intent(
+    "rename_party",
+    "CHANGE the NAME of an existing customer / supplier (a typo). Not an entry's amount or note (edit_entry).",
+    fields=RenamePartyFields,
+    fields_hint='{"party_name": string (the name now), "new_name": string}',
+    examples=["aleem ka naam saleem kardo", "urqan hatake furqan kardo"],
+    needs_business=True,
+    owner_only=True,
+)
+def rename_party(ctx: Context, fields: RenamePartyFields) -> Outcome:
+    new = (fields.new_name or "").strip()
+    # The new name must be written in the message: the AI never makes one up
+    if not fields.party_name or not new or new.lower() not in ctx.text.lower():
+        return Outcome("rename_party", t("rename_how", ctx.language))
+    matches = _find(ctx, fields.party_name)
+    if not matches:
+        return Outcome("rename_party", t("party_not_found", ctx.language, name=fields.party_name))
+    exact = [p for p in matches if p["name"].lower() == fields.party_name.strip().lower()]
+    if len(exact) == 1:
+        matches = exact
+    if len(matches) > 1:
+        return ask_choose_party(ctx, fields.party_name, matches, "rename", {"new_name": new})
+    return _ask_rename(ctx, matches[0], new)
+
+
+def _ask_rename(ctx: Context, party: dict, new: str) -> Outcome:
+    new = tools.nice_name(new)
+    taken = [p for p in _find(ctx, new, party["type"]) if p["name"].lower() == new.lower() and p["id"] != party["id"]]
+    if taken:  # two parties can't share a name: an entry would not know which one
+        return Outcome("rename_party", t("rename_exists", ctx.language, name=taken[0]["name"],
+                                          type=_type_label(ctx.language, party["type"])))
+    question = t("confirm_rename", ctx.language, old=party["name"], new=new)
+    pending = PendingAction(kind="confirm_rename", language=ctx.language, expects="yes_no",
+                            data={"account_id": str(party["id"]), "old": party["name"], "new": new})
+    return Outcome("rename_party", question, pending=pending)
+
+
+@pending_resolver("confirm_rename")
+def resolve_confirm_rename(ctx: Context, pending: PendingAction, answer: str) -> Outcome:
+    yes = parse_yes_no(answer)
+    if yes is None:
+        return Outcome("rename_party", t("answer_yes_no", ctx.language), pending=pending)
+    if not yes:
+        return Outcome("rename_party", t("cancelled", ctx.language))
+    business_id, data = _business_id(ctx), pending.data
+
+    def commit(conn: Connection) -> str:
+        name = tools.rename_party(conn, business_id, data["account_id"], data["new"])
+        balance = tools.get_balance(conn, business_id, data["account_id"])
+        renamed = t("party_renamed", ctx.language, old=data["old"], new=name)
+        return f"{renamed}\n{balance_line(ctx.language, name, balance)}"
+
+    return Outcome("rename_party", commit=commit)
+
+
 def _save_phone(ctx: Context, party: dict, phone: str) -> Outcome:
     business_id = _business_id(ctx)
 
@@ -672,6 +728,7 @@ def resolve_choose_party(ctx: Context, pending: PendingAction, answer: str) -> O
 PARTY_CHOICE_HANDLERS.update({
     "balance": ("party_balance", lambda ctx, party, data: _show_balance(ctx, party)),
     "phone": ("set_party_phone", lambda ctx, party, data: _save_phone(ctx, party, data["phone"])),
+    "rename": ("rename_party", lambda ctx, party, data: _ask_rename(ctx, party, data["new_name"])),
 })
 
 
