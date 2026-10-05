@@ -144,6 +144,7 @@ class RecentEntriesFields(_Fields):
     limit: int | None = None  # "last 3 entries" -> 3; "akhri customer" -> 1
     date: dt.date | None = None  # "aaj kya hua" -> today
     customers_only: bool | None = None  # about customers / sales
+    amount: Any = None  # "wo 500 wala entry dikha" -> only entries of 500
 
 
 class EditEntryFields(_Fields):

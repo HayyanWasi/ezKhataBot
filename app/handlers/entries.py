@@ -432,17 +432,22 @@ PARTY_CHOICE_HANDLERS.update({
     "recent_entries",
     "User asks what happened lately: the last / latest entries, sales or customers, or everything on one day. "
     "\"akhri customer kon tha\" -> customers_only true, limit 1. \"aaj kya kya hua\" -> date today. "
-    "Not for one named party's khata (party_balance) or the bill list (bill_report).",
+    "\"wo 500 wala entry dikha\" -> amount 500. Not for one named party's khata (party_balance) or the bill "
+    "list (bill_report).",
     fields=RecentEntriesFields,
-    fields_hint='{"limit": number | null, "date": "YYYY-MM-DD" | null, "customers_only": true | false | null}',
-    examples=["humara akhri customer kon tha", "last 5 entries dikhao", "aaj kya kya hua", "abhi kya entry ki thi"],
+    fields_hint=('{"limit": number | null, "date": "YYYY-MM-DD" | null, "customers_only": true | false | null, '
+                 '"amount": number | null}'),
+    examples=["humara akhri customer kon tha", "last 5 entries dikhao", "aaj kya kya hua", "wo 500 wala entry dikha"],
     needs_business=True,
 )
 def recent_entries(ctx: Context, fields: RecentEntriesFields) -> Outcome:
     limit = min(max(fields.limit or 5, 1), 15)
+    amount = confirmed_amount(ctx.text, fields.amount)  # "wo 500 wala": look further back for it
     with transaction() as conn:
-        entries = tools.recent_entries(conn, ctx.business["id"], limit=limit, on=fields.date,
+        entries = tools.recent_entries(conn, ctx.business["id"], limit=100 if amount else limit, on=fields.date,
                                        customers_only=bool(fields.customers_only))
+    if amount:
+        entries = [e for e in entries if any(abs(leg["amount"]) == amount for leg in e["legs"])][:limit]
     if not entries:
         return Outcome("recent_entries", t("recent_none", ctx.language))
     lines = [t("recent_head", ctx.language)] + [_recent_line(ctx.language, e) for e in entries]

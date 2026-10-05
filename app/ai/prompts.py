@@ -43,8 +43,8 @@ Rules:
   "paanch sau" -> 500, "dhai hazar" -> 2500.
   Never add, subtract or guess amounts. null if no amount is written.
 - Dates: use the "Today" line to turn words like "kal", "parson", "15 tareekh" into YYYY-MM-DD.
-  For entries, corrections of entries and reports "kal" means yesterday and "parso" the day before; only for
-  reminders "kal" means tomorrow.
+  For entries, corrections of entries and reports "kal" means yesterday and "parso" the day before (past:
+  diye, liye, hua, tha); only for reminders "kal" means tomorrow.
   null when no day is mentioned.
   A month ("September ka") means its first and last day.
 - Times: 24h "HH:MM". Vague times: subah = 09:00, dopahar = 13:00, shaam = 18:00, raat = 21:00.

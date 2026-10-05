@@ -347,8 +347,8 @@ def _period(start: date, end: date) -> str:
         '{"account": "cash" | string | null, "start_date": "YYYY-MM-DD" | null, "end_date": "YYYY-MM-DD" | null, '
         '"pdf": true | false}  (a month -> its first and last day; "aaj" -> today for both; none said -> both null)'
     ),
-    examples=["aaj ka hisaab", "aaj ka cash dikhao", "kitna cash hai", "September ka cash", "JazzCash ka hisaab",
-              "cash book PDF bhejo"],
+    examples=["aaj ka hisaab", "aaj ka cash dikhao", "mera kya hisab hai", "is month ka kya scene hai",
+              "kitna cash hai", "September ka cash", "JazzCash ka hisaab", "cash book PDF bhejo"],
     needs_business=True,
 )
 def money_report(ctx: Context, fields: MoneyReportFields) -> Outcome:

@@ -17,6 +17,7 @@ commits the Outcome in one transaction afterwards.
 import logging
 import re
 from dataclasses import replace
+from datetime import date, timedelta
 from decimal import Decimal
 from typing import TypedDict
 
@@ -162,6 +163,8 @@ def run_intent(state: AgentState) -> AgentState:
     raw = dict(result.fields)
     if raw.get("date") and not _DATE_HINT.search(ctx.text):
         raw["date"] = None  # "Sameer ne 4 topi li": no day is written, so the AI's "4 Oct" is a guess
+    if "reminder" not in spec.name and _KAL.search(ctx.text):
+        _kal_is_yesterday(raw, now(ctx.business["timezone"] if ctx.business else None).date())
     try:
         fields = spec.fields.model_validate(raw) if spec.fields else None
     except ValidationError as e:
@@ -179,6 +182,18 @@ def run_intent(state: AgentState) -> AgentState:
             amounts = ", ".join(format_rs(a) for a in missed)
             outcome = with_note(outcome, t("part_not_done", ctx.language, amounts=amounts))
     return {"outcome": outcome}
+
+
+_KAL = re.compile(r"\b(kal|kl|kall)\b|کل", re.IGNORECASE)
+
+
+def _kal_is_yesterday(raw: dict, today: date) -> None:
+    """"Tariq ko kal 500 diye", "kal ki sale": for entries and reports "kal" is yesterday. A date the AI
+    set to tomorrow is moved to yesterday (only reminders look ahead)."""
+    tomorrow = today + timedelta(days=1)
+    for key in ("date", "start_date", "end_date"):
+        if str(raw.get(key) or "") == tomorrow.isoformat():
+            raw[key] = (today - timedelta(days=1)).isoformat()
 
 
 def _keep_waiting(ctx: Context, pending: PendingAction | None, reply: str, intent: str = "unknown") -> Outcome:
