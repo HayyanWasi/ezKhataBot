@@ -163,6 +163,15 @@ def _save(ctx: Context, draft: dict) -> Outcome:
     return Outcome("cash_entry", commit=commit)
 
 
+# Words for moving money, never an expense category ("nikaal" -> no "Nikaal" category)
+_NOT_A_CATEGORY = {
+    "nikaal", "nikal", "nikale", "nikala", "nikali", "nikaale", "nikaala", "nikaali", "nikalna", "nikaalna",
+    "gaye", "gae", "gaya", "gya", "diye", "diya", "di", "de", "liye", "liya", "aaye", "aae", "aaya", "aya", "mile",
+    "mila", "out", "in", "cash", "paise", "paisa", "raqam", "kharcha", "kharch", "expense", "jama", "withdraw",
+    "nikalwaye", "nikalwaya", "نکالے", "نکالا", "خرچہ",
+}
+
+
 @intent(
     "cash_entry",
     "Money INTO or OUT OF the shop's cash/bank with NO party khata: expenses (bijli, kiraya, chai, a worker's"
@@ -189,7 +198,10 @@ def cash_entry(ctx: Context, fields: CashEntryFields) -> Outcome:
         return Outcome("cash_entry", t("future_date", ctx.language))
     amount = confirmed_amount(ctx.text, fields.amount)
     direction = "in" if fields.is_sale else fields.direction
-    if direction is None and fields.category_word:  # "rickshaw 300": an expense word means money went out
+    word = fields.category_word
+    if word and word.strip().lower() in _NOT_A_CATEGORY:  # "cash mai se 2000 nikaal liye": a verb, not an expense
+        word = None
+    if direction is None and word:  # "rickshaw 300": an expense word means money went out
         direction = "out"
     draft = new_cash_draft(
         direction=direction,
@@ -197,7 +209,7 @@ def cash_entry(ctx: Context, fields: CashEntryFields) -> Outcome:
         date=entry_date.isoformat(),
         note=fields.note,
         sale=bool(fields.is_sale),
-        category_word=fields.category_word if direction != "in" else None,
+        category_word=word if direction != "in" else None,
         via="bank" if fields.bank_name else "cash",
         bank_name=fields.bank_name,
     )
@@ -338,7 +350,7 @@ def _period(start: date, end: date) -> str:
         '{"account": "cash" | string | null, "start_date": "YYYY-MM-DD" | null, "end_date": "YYYY-MM-DD" | null, '
         '"pdf": true | false}  (a month -> its first and last day; "aaj" -> today for both; none said -> both null)'
     ),
-    examples=["aaj ka hisaab", "aaj ka cash dikhao", "mera kya hisab hai", "is month ka kya scene hai",
+    examples=["aaj ka hisaab", "aaj ka cash dikhao", "yeh cash 3800 kya hai", "is month ka kya scene hai",
               "kitna cash hai", "September ka cash", "JazzCash ka hisaab", "cash book PDF bhejo"],
     needs_business=True,
 )
