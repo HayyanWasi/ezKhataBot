@@ -67,6 +67,11 @@ def preview_rows(ctx: Context, text: str, layout: str | None = None, from_messag
     if from_message:
         rows = [_owed_direction(r, text) for r in rows]
     items = [ROW_SAVERS[r.category].prepare(ctx, r, source) for r in rows if r.category in ROW_SAVERS]
+    if from_message:  # "Furqan se 8000 lene hain" is shown as written, not as "Furqan ko 8000 diye"
+        for row, item in zip([r for r in rows if r.category in ROW_SAVERS], items, strict=True):
+            if _owed(row, text) and item["category"] == "party_entry":
+                item["owed"] = True
+                item["line"] = _party_line(language, item)
     later = [r for r in rows if r.category not in ROW_SAVERS]
     if not items and not later:
         return Outcome("read_image", t("image_nothing_found", language))
@@ -114,21 +119,31 @@ def many_entries(ctx: Context, fields) -> Outcome:
     return preview_rows(ctx, ctx.text, from_message=True)
 
 
-_WILL_GET = ("lene hain", "lene hai", "lena hai", "lene he", "lainay", "lene", "لینے")  # the party owes the shop
-_WILL_GIVE = ("dene hain", "dene hai", "dena hai", "dene he", "dainay", "dene", "دینے")  # the shop owes the party
+# The party owes the shop: "Abbas se 500 lene hain", "habib mujhe 90k dega" (will give me)
+_WILL_GET = ("lene hain", "lene hai", "lena hai", "lene he", "lainay", "lene", "dega", "degi", "denge", "de ga",
+             "dy ga", "dene wala", "لینے", "دے گا", "دیں گے")
+# The shop owes the party: "Shahrukh ko 200 dene hain", "Bilal ko 500 dunga" (I will give)
+_WILL_GIVE = ("dene hain", "dene hai", "dena hai", "dene he", "dainay", "dene", "dunga", "dungi", "doonga",
+              "de dunga", "دینے", "دوں گا")
+
+
+def _owed(row: ExtractedRow, text: str) -> str | None:
+    """"gave" for 'Abbas se 500 lene hain' (the shop will get), "got" for 'Shahrukh ko 500 dene hain' (the shop
+    owes), from the row's own line; None if its line says neither."""
+    if row.category != "party_entry" or not row.party_name:
+        return None
+    line = next((l.lower() for l in text.splitlines() if row.party_name.lower() in l.lower()), "")
+    if any(w in line for w in _WILL_GET):
+        return "gave"
+    if any(w in line for w in _WILL_GIVE):
+        return "got"
+    return None
 
 
 def _owed_direction(row: ExtractedRow, text: str) -> ExtractedRow:
-    """'Abbas se 500 lene hain' = the shop will get (gave); 'Shahrukh ko 500 dene hain' = the shop owes (got).
-    Decided from the row's own line in code: the AI mixes up 'se ... lene' with 'se liye'."""
-    if row.category != "party_entry" or not row.party_name:
-        return row
-    line = next((l.lower() for l in text.splitlines() if row.party_name.lower() in l.lower()), "")
-    if any(w in line for w in _WILL_GET):
-        return row.model_copy(update={"direction": "gave"})
-    if any(w in line for w in _WILL_GIVE):
-        return row.model_copy(update={"direction": "got"})
-    return row
+    """Decided in code from the row's own line: the AI mixes up 'se ... lene' with 'se liye'."""
+    direction = _owed(row, text)
+    return row.model_copy(update={"direction": direction}) if direction else row
 
 
 def _later_line(language: str, row: ExtractedRow, source: str) -> str:
@@ -295,6 +310,8 @@ def _party_line(language: str, item: dict) -> str:
     amount = format_rs(Decimal(item["amount"])) if item["amount"] else None
     if item["ready"]:
         key = "image_row_gave" if item["direction"] == "gave" else "image_row_got"
+        if item.get("owed"):
+            key = "image_row_will_get" if item["direction"] == "gave" else "image_row_will_give"
         line = t(key, language, date=day, name=item["name"], amount=amount)
         return f"{line} {t('image_new', language)}" if item["is_new"] else line
     if not item["name"]:
