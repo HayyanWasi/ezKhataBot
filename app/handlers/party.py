@@ -580,16 +580,34 @@ def party_balance(ctx: Context, fields: PartyBalanceFields) -> Outcome:
     matches = _find(ctx, fields.party_name)
     if not matches:
         return Outcome("party_balance", t("party_not_found", ctx.language, name=fields.party_name))
+    side, decided = asked_side(ctx.text)  # "Abbas ko kitne dene hain?" asks one thing: answer just that
+    side = side if decided else None
     if len(matches) > 1:
-        return ask_choose_party(ctx, fields.party_name, matches, "balance", {})
-    return _show_balance(ctx, matches[0])
+        return ask_choose_party(ctx, fields.party_name, matches, "balance", {"side": side})
+    return _show_balance(ctx, matches[0], side)
 
 
-def _show_balance(ctx: Context, party: dict) -> Outcome:
+def _side_answer(language: str, name: str, balance: Decimal, side: str) -> str:
+    """"Abbas ko kitne dene hain?" -> "Nahi, Abbas ko kuch nahi dena. Ulta Abbas se Rs 5,000 lene hain." """
+    amount = format_rs(balance)
+    if side == "give":
+        if balance < 0:
+            return t("yes_give", language, name=name, amount=amount)
+        reply = t("no_give", language, name=name)
+        return reply + " " + t("instead_get", language, name=name, amount=amount) if balance > 0 else reply
+    if balance > 0:
+        return t("yes_get", language, name=name, amount=amount)
+    reply = t("no_get", language, name=name)
+    return reply + " " + t("instead_give", language, name=name, amount=amount) if balance < 0 else reply
+
+
+def _show_balance(ctx: Context, party: dict, side: str | None = None) -> Outcome:
     language, business_id = ctx.language, _business_id(ctx)
     with transaction() as conn:
         balance = tools.get_balance(conn, business_id, party["id"])
         entries = tools.recent_entries(conn, business_id, party["id"])
+    if side:  # a yes / no question about one side: a plain answer, the khata is "Abbas ka khata"
+        return Outcome("party_balance", _side_answer(language, party["name"], balance, side))
 
     lines = [f"*{_party_label(language, party)}*" + (f" · 📞 {party['phone']}" if party.get("phone") else ""),
              balance_line(language, party["name"], balance)]
@@ -786,7 +804,7 @@ def resolve_choose_party(ctx: Context, pending: PendingAction, answer: str) -> O
 
 
 PARTY_CHOICE_HANDLERS.update({
-    "balance": ("party_balance", lambda ctx, party, data: _show_balance(ctx, party)),
+    "balance": ("party_balance", lambda ctx, party, data: _show_balance(ctx, party, data.get("side"))),
     "phone": ("set_party_phone", lambda ctx, party, data: _save_phone(ctx, party, data["phone"])),
     "rename": ("rename_party", lambda ctx, party, data: _ask_rename(ctx, party, data["new_name"])),
 })
