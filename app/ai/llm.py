@@ -43,7 +43,8 @@ def _model(schema: type[BaseModel], base_url: str, model_name: str, api_key: str
         model=model_name,
         base_url=base_url,
         api_key=api_key,
-        temperature=0,
+        temperature=s.llm_temperature,
+        top_p=s.llm_top_p,
         timeout=s.llm_timeout_seconds,
         max_retries=0,  # retries and key fallback are handled below
         max_tokens=max_tokens,
