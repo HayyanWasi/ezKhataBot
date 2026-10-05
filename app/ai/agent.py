@@ -38,7 +38,7 @@ from app.core.dates import now
 from app.core.database import transaction
 from app.db import crud
 from app.handlers.foundation import ask_choose_business, help_
-from app.handlers.images import read_image
+from app.handlers.images import name_fixes, read_image
 from app.handlers.stock import stock_photo
 from app.schemas.khata import ClassifierOutput, PendingAction, PendingAnswerFields
 from app.services.amounts import format_rs, parse_amounts
@@ -92,6 +92,8 @@ def check_rules(state: AgentState) -> AgentState:
         return {"outcome": Outcome("cancel", t("cancelled" if pending else "okay", ctx.language))}
     if pending and is_trivial_answer(ctx.text, pending.expects):
         return {"answer": ctx.text}
+    if pending and pending.kind == "confirm_image" and _corrects_preview(ctx.text, pending):
+        return {"answer": ctx.text}  # "han kardo, urqan nhi hai furqan hai": a name fix to the list just shown
     return {}
 
 
@@ -194,6 +196,10 @@ def _kal_is_yesterday(raw: dict, today: date) -> None:
     for key in ("date", "start_date", "end_date"):
         if str(raw.get(key) or "") == tomorrow.isoformat():
             raw[key] = (today - timedelta(days=1)).isoformat()
+
+
+def _corrects_preview(text: str, pending: PendingAction) -> bool:
+    return bool(name_fixes(text, [i.get("name") for i in pending.data.get("items", [])]))
 
 
 def _keep_waiting(ctx: Context, pending: PendingAction | None, reply: str, intent: str = "unknown") -> Outcome:

@@ -11,6 +11,7 @@ row number), so the photo stays with the entry as proof and can't be saved twice
 Which categories can be saved is in app/services/image_rows.py.
 """
 
+import re
 from datetime import date
 from decimal import Decimal
 
@@ -192,9 +193,80 @@ def _row_date(ctx: Context, row: ExtractedRow) -> str:
 # ---------------------------------------------------------------------------
 
 
+# "urqan nahi furqan hai", "urqan ki jagah furqan", "urqan ko furqan karo", "furqan hai urqan nahi"
+_WORD = r"([^\W\d_]{2,})"
+_FILLER = r"(?:(?:bhai|yaar|yar|ji|sahi|asal|naam|balke|balkay|sir)\s+)*"
+_HAI = r"(?:hai|he|h)"
+_NOT_NAMES = {"hai", "he", "h", "tha", "thi", "balke", "balkay", "naam", "name", "wala", "wali", "ka", "ki", "bhai",
+              "yaar", "ji", "sahi", "galat", "ye", "yeh", "woh", "wo", "to", "toh", "mera", "theek", "aaj", "kal", "abhi",
+              "yahan", "idhar", "wahan", "udhar", "udhaar", "aaya", "aya", "gaya", "diya", "liya", "mila", "koi"}
+
+
+def name_fixes(text: str, names: list[str]) -> dict[str, str]:
+    """Names the user corrects in a reply to the preview: {old (lower case): new}. Only names in the preview.
+    A "hai" is needed around the new name ("urqan nahi hai furqan", "urqan nahi furqan hai"), so a remark
+    like "habib nahi aaya" is never a rename."""
+    low, fixes = text.lower(), {}
+    for name in {n.lower() for n in names if n}:
+        n = re.escape(name)
+        patterns = (
+            rf"\b{n}\s+(?:nahi|nhi|nai|nahin)\s+{_HAI}\s+{_FILLER}{_WORD}",
+            rf"\b{n}\s+(?:nahi|nhi|nai|nahin)\s+{_FILLER}{_WORD}\s+{_HAI}\b",
+            rf"\b{n}\s+(?:ki\s+jagah|ke\s+bajaye|ki\s+bajaye)\s+{_WORD}",
+            rf"\b{n}\s+(?:ko|ka\s+naam)\s+{_WORD}\s+(?:karo|kardo|kar\s+do|kr\s+do|krdo|likho|likh\s+do)\b",
+            rf"\b{_WORD}\s+(?:hai|he|h)\s*,?\s+{n}\s+(?:nahi|nhi|nai|nahin)\b",
+        )
+        for pattern in patterns:
+            m = re.search(pattern, low)
+            if m and m.group(1) not in _NOT_NAMES and m.group(1) != name:
+                fixes[name] = m.group(1)
+                break
+    return fixes
+
+
+def leading_yes_no(text: str) -> bool | None:
+    """"han kardo, urqan nhi hai furqan hai": the yes / no at the start of a longer reply."""
+    first = re.split(r"[,.\n]|\s+(?:aur|or|and|lekin|magar|but)\s+", text.strip(), maxsplit=1)[0]
+    words = first.split()
+    for size in (len(words), 2, 1):
+        answer = parse_yes_no(" ".join(words[:size]))
+        if answer is not None:
+            return answer
+    return None
+
+
+def _rename(ctx: Context, data: dict, fixes: dict[str, str]) -> dict:
+    """The preview's items with the corrected names, matched again against the shop's parties."""
+    items = []
+    for item in data["items"]:
+        item = dict(item)
+        new = fixes.get((item.get("name") or "").lower())
+        if new and item["category"] == "party_entry":
+            item["name"], item["account_id"], item["is_new"], item["several"] = new.capitalize(), None, True, False
+            with transaction() as conn:
+                matches = party_tools.find_parties(conn, ctx.business["id"], new)
+            exact = [p for p in matches if p["name"].lower() == new]
+            if len(exact) == 1:
+                item["account_id"], item["name"], item["is_new"] = str(exact[0]["id"]), exact[0]["name"], False
+            item["line"] = _party_line(ctx.language, item)
+        items.append(item)
+    new_names = list({i["name"].lower(): i["name"] for i in items if i.get("is_new")}.values())
+    return {**data, "items": items, "new_names": new_names}
+
+
 @pending_resolver("confirm_image")
 def resolve_confirm_image(ctx: Context, pending: PendingAction, answer: str) -> Outcome:
+    fixes = name_fixes(ctx.text, [i.get("name") for i in pending.data["items"]])
+    if fixes:  # "han kardo, urqan nhi hai furqan hai": correct the names first, never drop the correction
+        pending = pending.model_copy(update={"data": _rename(ctx, pending.data, fixes)})
     yes = parse_yes_no(answer)
+    if yes is None:
+        yes = leading_yes_no(ctx.text)
+    if yes is None and fixes:  # only a correction: show the corrected list and ask again
+        lines = [t("image_names_fixed", ctx.language)]
+        lines += [f"{n}) {i['line']}" for n, i in enumerate(pending.data["items"], 1)]
+        lines.append(t("image_confirm", ctx.language))
+        return Outcome("read_image", "\n".join(lines), pending=pending)
     if yes is None:
         return Outcome("read_image", t("answer_yes_no", ctx.language), pending=pending)
     if not yes:

@@ -413,6 +413,7 @@ TEXTS: dict[str, dict[str, str]] = {
         "ur": "{date} · {name} کو {amount} دینے ہیں",
     },
     "image_new": {"en": "(new)", "roman_ur": "(naya)", "ur": "(نیا)"},
+    "image_names_fixed": {"en": "✏️ Name corrected:", "roman_ur": "✏️ Naam theek kar diya:", "ur": "✏️ نام درست کر دیا:"},
     "image_missing_amount": {"en": "no amount", "roman_ur": "amount nahi mila", "ur": "رقم نہیں ملی"},
     "image_missing_direction": {
         "en": "gave or got not clear",
