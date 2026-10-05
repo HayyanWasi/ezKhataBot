@@ -163,9 +163,8 @@ def _legs_data(entry: dict) -> list[dict]:
 
 @intent(
     "delete_entry",
-    "User wants to undo or delete an entry (khata, cash or stock): the last one, or one described by party name, "
-    "item and/or amount (a stock entry's quantity counts as its amount: \"cheeni ki 10 kg wali entry\" -> "
-    "item cheeni, amount 10).",
+    "Undo / delete an entry (khata, cash or stock): the last one, or one named by party, item and/or amount "
+    "(a stock qty counts as amount: \"cheeni ki 10 kg wali entry\" -> item cheeni, amount 10).",
     fields=DeleteEntryFields,
     fields_hint='{"party_name": string | null, "item": string | null, "amount": number | null}',
     examples=["undo", "bijli wali entry delete karo", "galti ho gayi, entry hatao", "Ali ki 500 wali entry delete karo", "آخری انٹری ڈیلیٹ کرو"],
@@ -229,13 +228,10 @@ def resolve_confirm_delete(ctx: Context, pending: PendingAction, answer: str) ->
 
 @intent(
     "edit_entry",
-    "User CORRECTS an entry already saved (khata, cash or stock): a different amount, quantity, date or note. "
-    "Signs: \"entry\", "
-    "\"wali\", \"thi/tha\", \"nahi ... thi\", \"galat\", \"theek karo\", \"change karo\". "
-    "\"Ali wali entry 500 nahi 600 thi\" -> party_name Ali, amount 500, new_amount 600. "
-    "\"chai wali 150 entry 180 thi\" -> amount 150, new_amount 180 (chai is not a party: party_name null). "
-    "\"last entry ki date kal karo\" -> new_date. amount = the entry's current amount (or quantity) if said. "
-    "\"socks wali entry 50 nahi 40 thi\" -> item socks, amount 50, new_qty 40.",
+    "CORRECTING a saved entry (khata, cash or stock): amount, quantity, date or note (\"wali\", \"thi\", \"galat\","
+    " \"change karo\"). \"Ali wali entry 500 nahi 600 thi\" -> party_name Ali, amount 500, new_amount 600. \"chai "
+    "wali 150 entry 180 thi\" -> amount 150, new_amount 180, party_name null. \"socks wali entry 50 nahi 40 "
+    "thi\" -> item socks, amount 50, new_qty 40. \"last entry ki date kal karo\" -> new_date.",
     fields=EditEntryFields,
     fields_hint=(
         '{"party_name": string | null, "item": string | null, "amount": number | null, "new_amount": number | null, '
@@ -430,10 +426,8 @@ PARTY_CHOICE_HANDLERS.update({
 
 @intent(
     "recent_entries",
-    "User asks what happened lately: the last / latest entries, sales or customers, or everything on one day. "
-    "\"akhri customer kon tha\" -> customers_only true, limit 1. \"aaj kya kya hua\" -> date today. "
-    "\"wo 500 wala entry dikha\" -> amount 500. Not for one named party's khata (party_balance) or the bill "
-    "list (bill_report).",
+    "What happened lately: last entries, sales or customers, or one day. \"akhri customer kon tha\" -> "
+    "customers_only true, limit 1. \"wo 500 wala entry\" -> amount 500. One named party is party_balance.",
     fields=RecentEntriesFields,
     fields_hint=('{"limit": number | null, "date": "YYYY-MM-DD" | null, "customers_only": true | false | null, '
                  '"amount": number | null}'),

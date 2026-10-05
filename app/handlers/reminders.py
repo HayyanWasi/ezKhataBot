@@ -61,12 +61,11 @@ def _ask(ctx: Context, kind: str, draft: dict, question: str) -> Outcome:
 
 @intent(
     "set_reminder",
-    "User asks to be REMINDED of something at a time or on a day: \"yaad dilana\", \"yaad krwana\", "
-    '"remind me". Anything can be reminded (payments, calls, tasks). A fact to keep with no reminding '
-    "is remember_user_fact / remember_business_fact instead. Only when asked (\"ali ne kaha kal dega\" is not).",
+    "User ASKS to be reminded at a time or day (\"yaad dilana\", \"yaad krwana\", \"remind me\"), about anything. A"
+    " note with no time is remember_*_fact. A remark (\"ali ne kaha kal dega\") is not a reminder.",
     fields=SetReminderFields,
     fields_hint=(
-        '{"text": string | null (what to remind, without the time words, e.g. "Rohaan ko payment karni hai"), '
+        '{"text": string | null (without the time words), '
         '"date": "YYYY-MM-DD" | null, "time": "HH:MM" (24h) | null, '
         '"party_name": string | null (a customer/supplier the reminder is about)}'
     ),

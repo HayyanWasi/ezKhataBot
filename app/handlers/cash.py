@@ -165,17 +165,12 @@ def _save(ctx: Context, draft: dict) -> Outcome:
 
 @intent(
     "cash_entry",
-    "User records money that came INTO or went OUT of the shop's cash (or its own bank/wallet) with NO "
-    "customer/supplier khata: expenses (bijli bill, kiraya, chai, salary/tankhwah to a worker, transport), "
-    "cash sales, cash in / cash out. People write it many ways (\"500 gae aaj\", \"500 out\", \"cash out 500\", "
-    "\"3000 aaye\", \"kharcha 200\"). "
-    'direction: "in" = money came (aaye, aae, mile, cash in, sale, bikri); "out" = money went (gaye, gae, out, '
-    "nikale, kharcha, bill bhara, diye for an expense or salary); null if not clear. "
-    "category_word: the expense word as written (bijli, kiraya, chai, salary), else null. A bare word + amount "
-    '("rickshaw 300", "nashta 150") is an expense: direction "out", category_word = the word. '
-    "is_sale: true for a sale (sale hui, bikri, becha). bank_name: only if a bank/wallet is named. "
-    "Correcting an entry already saved (\"... wali entry ... thi\") is edit_entry, not a new cash_entry. "
-    "Selling ITEMS with quantities (\"2 socks bech diye\") is create_bill.",
+    "Money INTO or OUT OF the shop's cash/bank with NO party khata: expenses (bijli, kiraya, chai, a worker's"
+    " salary, transport), cash sales, cash in/out (\"500 gae\", \"cash out 500\", \"3000 aaye\", \"kharcha 200\"). "
+    "direction: \"in\" (aaye, mile, sale, bikri) / \"out\" (gaye, nikale, kharcha, bill bhara, salary di) / null."
+    " category_word: the expense word as written; a bare word + amount (\"rickshaw 300\") is \"out\" with that "
+    "word. is_sale: a sale. bank_name: only if named. A correction of a saved entry is edit_entry; selling "
+    "ITEMS with counts is create_bill.",
     fields=CashEntryFields,
     fields_hint=(
         '{"direction": "in" | "out" | null, "amount": number | null, "date": "YYYY-MM-DD" | null, '
@@ -264,9 +259,8 @@ def _save_transfer(ctx: Context, draft: dict) -> Outcome:
 
 @intent(
     "transfer_money",
-    "User moves money between the shop's cash and its OWN bank/wallet. "
-    '"to_bank" = cash deposited into the bank (bank mein jama karaye, bank mein daale); '
-    '"from_bank" = cash taken out of the bank (bank se nikale, ATM se nikale).',
+    "Money between the shop's cash and its OWN bank/wallet: \"to_bank\" (bank mein jama karaye), \"from_bank\" "
+    "(bank / ATM se nikale).",
     fields=TransferFields,
     fields_hint=(
         '{"direction": "to_bank" | "from_bank" | null, "bank_name": string | null, '
@@ -337,11 +331,8 @@ def _period(start: date, end: date) -> str:
 
 @intent(
     "money_report",
-    "User asks about CASH or a BANK (not a party): cash in hand, money in / out, expenses, the cash book, "
-    "for today, a day or a month, or as a PDF. \"aaj ka hisaab\" / \"aaj ka cash\" / \"kitna cash hai\" / "
-    "\"September ke kharche\" / \"JazzCash ka hisaab\" / \"cash book PDF\". "
-    'account: "cash", a bank name, or null for cash and all banks. pdf: true if a PDF / sheet is asked for. '
-    'Total SALES ("is mahine ki sale", "aaj ki sale kitni") are bill_report.',
+    "CASH or a BANK (not a party): cash in hand, money in/out, expenses, the cash book, for a day or a month,"
+    " or a PDF. account: \"cash\", a bank name, or null for all. Sales totals are bill_report.",
     fields=MoneyReportFields,
     fields_hint=(
         '{"account": "cash" | string | null, "start_date": "YYYY-MM-DD" | null, "end_date": "YYYY-MM-DD" | null, '
