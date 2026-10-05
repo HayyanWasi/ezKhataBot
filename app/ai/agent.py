@@ -178,7 +178,9 @@ def run_intent(state: AgentState) -> AgentState:
         return {"outcome": Outcome(spec.name, t("owner_only", ctx.language))}
     outcome = spec.handler(ctx, fields)
     outcome.then = [a.model_dump() for a in result.then]  # done one by one after this one is saved
-    if not state.get("queued"):
+    # Only for a message that saves or starts saving something: a report or a question ("yeh cash : 3800 kiya
+    # hai?") saves nothing, so an amount it names is not a dropped entry
+    if not state.get("queued") and (outcome.commit or outcome.pending):
         missed = unused_amounts(ctx.text, result)
         if missed:  # "Ali ko 300 diye aur ..." where a part was not understood: say so, never drop it silently
             amounts = ", ".join(format_rs(a) for a in missed)
