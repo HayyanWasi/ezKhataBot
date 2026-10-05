@@ -302,12 +302,11 @@ def bill_summary(language: str, bill: dict) -> str:
 
 @intent(
     "create_bill",
-    "User SELLS items and wants a bill / invoice, for a customer or a walk-in (counter) sale: \"Rohaan ka bill: 50 "
-    "socks, 2 belt 250 wale\", \"2 socks aur 1 belt bech diye\", \"counter sale 3 surf\", \"Ali ko 2 packet surf "
-    "udhaar diye 500 ke\". items: every item with qty, unit and rate (price per unit) if said. customer_name: null "
-    "for a walk-in. discount / tax: percent (\"10% discount\") or amount (\"100 discount\", \"tax 36\"). paid_via: "
-    "\"cash\", \"bank\" (online / a bank named), \"udhaar\", or null. paid_amount: paid now when the rest is udhaar. "
-    "An amount-only sale with no items (\"aaj 20000 ki sale hui\") is cash_entry.",
+    "SELLING items, to a customer or walk-in: \"Rohaan ka bill: 50 socks, 2 belt 250 wale\", \"2 socks bech "
+    "diye\", \"Ali ko 2 packet surf udhaar diye 500 ke\". items: each with qty, unit and rate. customer_name: "
+    "null for a walk-in. discount / tax: percent or amount. paid_via: \"cash\" | \"bank\" | \"udhaar\" | null; "
+    "paid_amount: paid now when the rest is udhaar. A sale amount with no items (\"aaj 20000 ki sale\") is "
+    "cash_entry.",
     fields=CreateBillFields,
     fields_hint=(
         '{"customer_name": string | null, "items": [{"name": string, "qty": number | null, "unit": string | null, '
@@ -437,9 +436,8 @@ def _period(start: date, end: date) -> str:
 
 @intent(
     "profit_report",
-    "User asks the shop's PROFIT / munafa / faida / kamai (or loss / nuqsaan) for a day or a period: "
-    "\"aaj kitna faida hua\", \"kal ka munafa\", \"15 tareekh ka faida\", \"is hafte ka faida\", "
-    "\"September ka munafa\". start_date / end_date: the period (one day: both the same; null = today).",
+    "PROFIT / munafa / faida / kamai (or loss) for a day or a period. start_date / end_date: one day = both "
+    "the same; null = today.",
     fields=ProfitFields,
     fields_hint='{"start_date": "YYYY-MM-DD" | null, "end_date": "YYYY-MM-DD" | null}',
     examples=["aaj hmein kitne ka faida howa?", "kal ka munafa batao", "is mahine ka profit", "5 tareekh ka faida"],
@@ -490,10 +488,9 @@ def profit_report(ctx: Context, fields: ProfitFields) -> Outcome:
 
 @intent(
     "bill_report",
-    "User asks about BILLS or SALES: one bill (\"Bill 3 bhejo\", \"bill no 3 dikhao\"), the bill list, a "
-    "customer's bills, or the total sale for a period (\"is mahine ki sale\", \"September ke bills PDF\"). "
-    "Sale / bikri is always bill_report, not profit_report. "
-    'kind: "one" (a bill number is given) or "list". pdf: true if a PDF / sheet is asked for.',
+    "BILLS or SALES: one bill (\"Bill 3 bhejo\"), the bill list, a customer's bills, or the total sale for a "
+    "period. Sale / bikri is always this, never profit_report. kind: \"one\" (a bill number is given) or "
+    "\"list\".",
     fields=BillReportFields,
     fields_hint=(
         '{"kind": "one" | "list", "bill_no": number | null, "customer_name": string | null, '
@@ -561,8 +558,7 @@ def send_bill(ctx: Context, bill_no: int) -> Outcome:
 
 @intent(
     "cancel_bill",
-    "User CANCELS / deletes a bill by its number (\"Bill 3 cancel karo\", \"bill no 3 delete karo\"). "
-    "Changing a bill is also cancel_bill (a bill is cancelled and made again).",
+    "CANCEL / delete a bill by number. Changing a bill is also this (cancelled and made again).",
     fields=CancelBillFields,
     fields_hint='{"bill_no": number | null}',
     examples=["Bill 3 cancel karo", "bill number 5 delete kar do", "Bill 3 mein socks 40 karo"],

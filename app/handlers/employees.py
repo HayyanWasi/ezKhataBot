@@ -30,8 +30,7 @@ def _number(phone: str) -> str:
 
 @intent(
     "add_employee",
-    "The OWNER adds a shop employee / worker / staff (salesman, munshi) who will use the bot from their own "
-    "WhatsApp number. name and phone as written.",
+    "The OWNER adds an employee / staff member who will use the bot from their own WhatsApp.",
     fields=EmployeeFields,
     fields_hint='{"name": string | null, "phone": string | null}',
     examples=["Bilal ko employee add karo 03001234567", "employee add karna hai", "usman ko staff me dal"],

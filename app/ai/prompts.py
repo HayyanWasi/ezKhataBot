@@ -15,27 +15,23 @@ Return ONLY one JSON object, no other text:
 {{"intent": "<intent name>", "language": "en" | "ur" | "roman_ur", "answers_pending": true | false, "fields": {{...}},
  "then": [{{"intent": "<intent name>", "fields": {{...}}}}]}}
 
-language:
-- "ur": the message is written in Urdu script, e.g. "مدد چاہیے".
-- "roman_ur": Urdu written in Latin letters, even when mixed with English words, e.g. "madad chahiye", "shop switch karo", "kya haal hai".
-- "en": plain English, e.g. "I need help".
+language: "ur" = Urdu script ("مدد چاہیے"); "roman_ur" = Urdu in Latin letters, even mixed with English
+("madad chahiye", "shop switch karo"); "en" = plain English.
 
 Rules:
 - Pick exactly one intent from the list below. If none fits, use "unknown".
-- Fill fields only with what the user actually said. Never invent names, amounts or facts. Use null when something is not stated.
+- Fill fields only with what the user actually said. Never invent names, amounts or facts. Every field is null
+  when it is not stated (the field lists below leave "| null" out). str = string, num = number,
+  date = "YYYY-MM-DD", bool = true | false.
 - Keep names and notes exactly as the user wrote them.
-- answers_pending: true only when a pending question is shown and the latest message answers it.
-  Then use intent "pending_answer" and fields {{"answer": "<the answer as a short value, e.g. a number or a name>"}}.
-- If a pending question exists but the latest message is a new request, answers_pending is false; classify it normally.
-  A message that names a different person, or is a complete request on its own (e.g. "Bilal ko 300 diye"),
-  is a new request, not an answer.
-- "then": only when ONE message asks for 2 or 3 DIFFERENT kinds of actions that must happen in order. Put the
-  first in intent/fields and the rest in "then", in the order they must be done. Example: "washing machine add
-  karo 3, Sameer ne 1 udhaar li 35000 ki" -> add_item (washing machine, qty 3, sale_price 35000), then
-  create_bill (customer Sameer, 1 washing machine, udhaar). Several entries of the same kind (only money:
-  "Ali ko 500 diye, chai 50") are ONE many_entries, never "then". Other intents for two people or items do
-  use "then": "ali ka khata aur ahmed ka bhi" -> party_balance Ali, then party_balance Ahmed. Never leave out a
-  part ("Ali ko 300 diye aur kal yaad dila dena" -> party_entry, then set_reminder). Otherwise "then" is [].
+- answers_pending: true only when the latest message answers the pending question; then intent "pending_answer",
+  fields {{"answer": "<short value, e.g. a number or a name>"}}. A message naming a different person or complete
+  on its own ("Bilal ko 300 diye") is a new request: answers_pending false, classify it normally.
+- "then": when ONE message asks for 2 or 3 actions: the first in intent/fields, the rest in "then", in order.
+  "washing machine add karo 3, Sameer ne 1 udhaar li 35000 ki" -> add_item, then create_bill (Sameer, udhaar).
+  "ali ka khata aur ahmed ka bhi" -> party_balance Ali, then party_balance Ahmed. "Ali ko 300 diye aur kal yaad
+  dila dena" -> party_entry, then set_reminder. Only money entries ("Ali ko 500 diye, chai 50") are ONE
+  many_entries instead. Never leave out a part. Otherwise "then" is [].
 - Goods written with a COUNT or weight ("2 packet surf", "50 socks", "4 darjan ande") are never party_entry or
   cash_entry: sold / "bech diye" / a customer took them -> create_bill; came in / bought -> stock_in;
   damaged, given free, returned -> stock_out.
@@ -58,9 +54,15 @@ Intents:
 """
 
 
+def _compact(hint: str) -> str:
+    """The fields' JSON shape, shorter: "| null" is said once in the rules, dates and booleans by name."""
+    hint = hint.replace(" | null", "").replace('"YYYY-MM-DD"', "date").replace("true | false", "bool")
+    return hint.replace(": string", ": str").replace(": number", ": num")
+
+
 def _describe(spec: IntentSpec) -> str:
     lines = [f"- {spec.name}: {spec.description}"]
-    lines.append(f"  fields: {spec.fields_hint or '{}'}")
+    lines.append(f"  fields: {_compact(spec.fields_hint) or '{}'}")
     if spec.examples:
         lines.append("  examples: " + " | ".join(f'"{e}"' for e in spec.examples))
     return "\n".join(lines)

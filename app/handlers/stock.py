@@ -286,10 +286,8 @@ def _item_line(language: str, item: dict, qty: Decimal) -> str:
 
 @intent(
     "add_item",
-    "User adds a NEW item (product) to the shop's stock list, optionally with unit, sale price (\"30 ki bechta "
-    "hun\", \"sale 30\"), purchase price (\"20 ki aati hai\", \"khareed 20\"), the quantity in stock now, and a "
-    "low-stock alert level. category: YOUR guess of a short general shop category for the item in English "
-    "(Clothing, Grocery, Hardware, Stationery, Cosmetics, Electronics, Crockery ...).",
+    "A NEW stock item, with unit, sale price (\"30 ki bechta hun\"), purchase price (\"20 ki aati hai\"), qty and"
+    " low-stock alert if said. category: your guess, a short English shop category (Grocery, Clothing ...).",
     fields=AddItemFields,
     fields_hint=(
         '{"name": string, "unit": string | null (pcs, kg, darjan, litre ... as written), "category": string | null, '
@@ -562,13 +560,11 @@ def _pay_from(text: str, fields: StockInFields) -> tuple[str | None, str | None]
 
 @intent(
     "stock_in",
-    "User got ITEMS (goods with quantities) into the shop's stock: bought from a supplier, a delivery came, "
-    "\"50 socks aae\", \"Bilal se 20 bori cheeni li\". items: every item with its qty, unit and rate (price per "
-    "unit: \"20 wale\", \"20 ke\"). paid_via: \"udhaar\" (on credit), \"cash\", \"bank\" (a bank / JazzCash / "
-    "online named), \"none\" (just add stock, no money), or null if not said. paid_amount: money paid now "
-    "when the rest is udhaar (\"500 cash diye baqi udhaar\"). A message with an amount of money but NO item "
-    "quantities (\"Bilal se 5000 ka maal liya\") is party_entry, and a thing bought for the shop's own use with just "
-    "a price (\"paani ki bottle 150\", \"chai 200\") is cash_entry, not stock_in.",
+    "ITEMS with quantities came into stock (bought, a delivery): \"50 socks aae\", \"Bilal se 20 bori cheeni "
+    "li\". items: each with qty, unit and rate (price per unit, \"20 wale\"). paid_via: \"udhaar\" | \"cash\" | "
+    "\"bank\" | \"none\" (only add stock) | null. paid_amount: paid now when the rest is udhaar. Money with no "
+    "item counts (\"Bilal se 5000 ka maal liya\") is party_entry; a thing for own use with a price (\"chai 200\")"
+    " is cash_entry.",
     fields=StockInFields,
     fields_hint=(
         '{"items": [{"name": string, "qty": number | null, "unit": string | null, "rate": number | null}], '
@@ -625,9 +621,8 @@ def _adds_new_item(ctx: Context, fields: StockInFields) -> bool:
 
 @intent(
     "stock_out",
-    "User takes ITEMS out of stock WITHOUT a sale bill: damaged / expired (kharab), given free (muft), used "
-    "in the shop, lost, returned to the supplier, or just \"5 socks nikale\" / \"stock out 5 socks\". "
-    "items: every item with its qty and unit. reason: the reason as written, else null.",
+    "ITEMS out of stock WITHOUT a sale: kharab, muft, used, lost, returned to the supplier, \"5 socks nikale\"."
+    " items: each with qty and unit. reason: as written.",
     fields=StockOutFields,
     fields_hint=(
         '{"items": [{"name": string, "qty": number | null, "unit": string | null, "rate": null}], '
@@ -784,10 +779,8 @@ def _period(start: date, end: date) -> str:
 
 @intent(
     "stock_report",
-    "User asks about STOCK / items: the stock list (\"stock dikhao\"), the rate list, low stock, stock value, "
-    "the stock IN or stock OUT report for a period, or ONE item (\"socks kitne hain\", \"cheeni ka stock\"). "
-    'kind: "list" | "rates" | "low" | "value" | "in" | "out" | "item". item: the item word for "item" (or to '
-    "filter in / out). pdf: true if a PDF / sheet is asked for.",
+    "STOCK: the list (\"stock dikhao\"), rates, low stock, value, the stock in / out report for a period, or "
+    "ONE item (\"socks kitne hain\"). kind: list | rates | low | value | in | out | item. item: the item word.",
     fields=StockReportFields,
     fields_hint=(
         '{"kind": "list" | "rates" | "low" | "value" | "in" | "out" | "item", "item": string | null, '
@@ -907,8 +900,7 @@ def _moves_reply(ctx: Context, kind: str, rows: list[dict], start: date, end: da
 
 @intent(
     "edit_item",
-    "User CHANGES an existing item's details: sale price / rate (\"socks ka rate 35 karo\"), purchase price, "
-    "name, unit, category, or its low-stock alert level (\"socks ka alert 10 pe lagao\").",
+    "CHANGE an existing item: sale price / rate, purchase price, name, unit, category or low-stock alert.",
     fields=EditItemFields,
     fields_hint=(
         '{"item": string, "new_name": string | null, "unit": string | null, "category": string | null, '
@@ -1025,8 +1017,7 @@ def resolve_confirm_delete_item(ctx: Context, pending: PendingAction, answer: st
 
 @intent(
     "item_photo",
-    "User asks to SEE the photo of a stock item (\"socks ki photo bhejo\", \"cheeni ki tasveer dikhao\"). "
-    "The photo of a saved entry / bill is entry_photo.",
+    "SEE a stock item's photo. A saved entry's / bill's photo is entry_photo.",
     fields=ItemFields,
     fields_hint='{"item": string}',
     examples=["socks ki photo bhejo", "surf ki tasveer dikhao"],

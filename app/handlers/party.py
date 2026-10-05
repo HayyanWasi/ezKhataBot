@@ -258,22 +258,13 @@ def _save(ctx: Context, draft: dict) -> Outcome:
 
 @intent(
     "party_entry",
-    "User records money or goods GIVEN TO or RECEIVED FROM a customer or supplier (khata entry). "
-    "direction is from the SHOP's side: "
-    '"gave" = the shop gave money/goods to the party, e.g. "Ali ko 500 diye", "Ali ko udhaar diya", '
-    '"Rohaan ko payment ki", "Ali ne 500 liye" (Ali took). '
-    '"got" = the shop received money/goods from the party, e.g. "Ali se 300 mile", "Ali ne 300 diye" '
-    '(Ali gave), "Rohaan se maal liya", "Ali ne paise wapis kiye". '
-    "Use null when the message does not say who gave to whom (e.g. \"Ali 500\"). "
-    'paid_via: "cash" when it clearly says real money was paid or paid back (wapas/wapis, payment, ada, '
-    'cash, nakad, "paise wapas"); "bank" when a bank or wallet is named (JazzCash, Easypaisa, Meezan, '
-    '"account mein bheje"); null for udhaar, goods (maal/saman) or when it is not clear. '
-    "Salary or wages paid to a worker is NOT a party entry (use cash_entry). "
-    "A message that lists ITEMS with quantities (\"100 belt\", \"10 kg cheeni\") is NOT a party entry, even when "
-    "a party is named: items coming in = stock_in, going back = stock_out, SOLD to a customer (\"Ali ko 2 packet "
-    "surf udhaar diye\", \"customer ne 4 darjan ande liye\") = create_bill. "
-    "question: true when the user only ASKS whether it happened (\"Rohaan ko 500 diye?\", \"kya Ali ne paise diye "
-    "the\", \"Ali ko 500 diye ya nahi\") - then nothing is saved, the khata is checked.",
+    "Money or goods GIVEN TO or RECEIVED FROM a customer/supplier (khata). direction, from the shop's side: "
+    "\"gave\" = the shop gave (\"Ali ko 500 diye\", \"Ali ne 500 liye\", \"Rohaan ko payment ki\"); \"got\" = the shop "
+    "received (\"Ali se 300 mile\", \"Ali ne 300 diye\", \"Ali ne paise wapis kiye\"); null if it is not said who "
+    "gave (\"Ali 500\"). paid_via: \"cash\" if real money was paid (wapas, payment, ada, cash, nakad), \"bank\" if "
+    "a bank or wallet is named, else null (udhaar, maal). Not for a worker's salary (cash_entry) or ITEMS "
+    "with counts (\"10 kg cheeni\": stock_in / stock_out / create_bill). question: true when the user only ASKS"
+    " (\"Rohaan ko 500 diye?\", \"Ali ko 500 diye ya nahi\"): nothing is saved.",
     fields=PartyEntryFields,
     fields_hint=(
         '{"party_name": string | null (as written, e.g. "Ali"), '
@@ -448,9 +439,8 @@ def paid_via(text: str, ai_value: str | None) -> str | None:
 
 @intent(
     "add_party",
-    "User adds a NEW customer or supplier, optionally with a phone number and an old (opening) balance. "
-    'opening_direction: "will_get" = the party owes the shop ("pehle ke 2000 lene hain"), '
-    '"will_give" = the shop owes the party ("pehle ke 2000 dene hain").',
+    "A NEW customer or supplier, maybe with phone and old balance: opening_direction \"will_get\" = they owe "
+    "the shop (\"pehle ke 2000 lene hain\"), \"will_give\" = the shop owes them (\"dene hain\").",
     fields=AddPartyFields,
     fields_hint=(
         '{"name": string | null (null when no name is written, e.g. "ek aur customer add karo"), '

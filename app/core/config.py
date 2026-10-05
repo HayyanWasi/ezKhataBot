@@ -28,10 +28,15 @@ class Settings(BaseSettings):
     llm_base_url: str = "https://api.groq.com/openai/v1"
     llm_api_key: str
     llm_fallback_api_keys: str = ""  # comma-separated; tried in order when a key is rate limited
-    llm_model: str = "openai/gpt-oss-120b"
+    llm_model: str = "qwen/qwen3.8-27b"
+    # Groq and OpenRouter run Qwen with thinking off: it answers in a few tokens
+    qwen_reasoning_effort: str = "none"  # "none" = no thinking (neither API takes enable_thinking)
+    qwen_top_p: float | None = 1.0
+    qwen_classify_max_tokens: int = 600  # a two-action answer is ~200 tokens; 150 cut it off (input limit unaffected)
+    # Gemini
     llm_reasoning_effort: str = "low"  # empty = don't send (for providers that reject it)
     llm_temperature: float = 0.1  # low: the same message gets (almost) the same answer
-    llm_top_p: float | None = None  # None = provider default (Qwen non-thinking mode suggests 0.8 with 0.7 temperature)
+    llm_top_p: float | None = None  # None = provider default
     llm_timeout_seconds: float = 20
     llm_max_tokens: int = 2500  # answer cap; without it providers reserve the whole context per call
     llm_classify_max_tokens: int = 1000  # the classifier's JSON is short; Groq counts prompt + cap per minute
@@ -42,7 +47,7 @@ class Settings(BaseSettings):
     # Second provider, tried after every key above is rate limited (empty = off)
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
     openrouter_api_keys: str = ""  # comma-separated
-    openrouter_model: str = "openai/gpt-oss-120b"
+    openrouter_model: str = "qwen/qwen3.8-27b:free"
 
     # Conversation
     pending_ttl_seconds: int = 600  # pending question expires after 10 min
@@ -102,19 +107,22 @@ class Settings(BaseSettings):
         return [m.strip() for m in self.gemini_models.split(",") if m.strip()]
 
     @property
-    def llm_endpoints(self) -> list[tuple[str, str, str]]:
-        """(base_url, model, api_key) for every key of the allowed providers (LLM_PROVIDERS).
+    def llm_endpoints(self) -> list[tuple[str, str, str, tuple]]:
+        """(base_url, model, api_key, (reasoning_effort, top_p, short_cap)) for every key of the allowed
+        providers (LLM_PROVIDERS). short_cap: the answer cap for short calls (the classifier), None = theirs.
         app/ai/llm.py starts each call at the next one in turn and falls through the rest on a limit."""
         wanted = {p.strip().lower() for p in self.llm_providers.split(",") if p.strip()}
+        qwen = (self.qwen_reasoning_effort, self.qwen_top_p, self.qwen_classify_max_tokens)
+        gemini = (self.llm_reasoning_effort, self.llm_top_p, None)
         endpoints = []
         if not wanted or "groq" in wanted:
-            endpoints += [(self.llm_base_url, self.llm_model, key) for key in self.llm_api_keys]
+            endpoints += [(self.llm_base_url, self.llm_model, key, qwen) for key in self.llm_api_keys]
         if not wanted or "openrouter" in wanted:
             keys = [k.strip() for k in self.openrouter_api_keys.split(",") if k.strip()]
-            endpoints += [(self.openrouter_base_url, self.openrouter_model, key) for key in keys]
+            endpoints += [(self.openrouter_base_url, self.openrouter_model, key, qwen) for key in keys]
         if not wanted or "gemini" in wanted:
             models = [m.strip() for m in self.gemini_llm_models.split(",") if m.strip()]
-            endpoints += [(self.gemini_openai_url, m, key) for m in models for key in self.gemini_api_keys]
+            endpoints += [(self.gemini_openai_url, m, key, gemini) for m in models for key in self.gemini_api_keys]
         return endpoints
 
 

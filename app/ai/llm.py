@@ -37,18 +37,21 @@ def _used_up(error: Exception) -> bool:
 
 
 @lru_cache
-def _model(schema: type[BaseModel], base_url: str, model_name: str, api_key: str, max_tokens: int) -> Runnable:
+def _model(
+    schema: type[BaseModel], base_url: str, model_name: str, api_key: str, max_tokens: int,
+    reasoning_effort: str, top_p: float | None,
+) -> Runnable:
     s = get_settings()
     llm = ChatOpenAI(
         model=model_name,
         base_url=base_url,
         api_key=api_key,
         temperature=s.llm_temperature,
-        top_p=s.llm_top_p,
+        top_p=top_p,
         timeout=s.llm_timeout_seconds,
         max_retries=0,  # retries and key fallback are handled below
         max_tokens=max_tokens,
-        reasoning_effort=s.llm_reasoning_effort or None,
+        reasoning_effort=reasoning_effort or None,
     )
     # json_mode: the prompt describes the JSON; LangChain parses it into the schema
     return llm.with_structured_output(schema, method="json_mode")
@@ -75,7 +78,10 @@ def call_structured[T: BaseModel](
     failures = 0
     for attempt, endpoint in enumerate(order, 1):
         key_no = endpoints.index(endpoint) + 1
-        model = _model(schema, *endpoint, cap)
+        base_url, model_name, api_key, (reasoning_effort, top_p, short_cap) = endpoint
+        # A short call (the classifier) uses the provider's own short cap when it has one (Qwen)
+        call_cap = short_cap if max_tokens and short_cap else cap
+        model = _model(schema, base_url, model_name, api_key, call_cap, reasoning_effort, top_p)
         started = time.monotonic()
         try:
             result = model.invoke(messages, config={"run_name": run_name})
