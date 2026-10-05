@@ -8,6 +8,7 @@ that would take an item's stock below 0 is refused.
 The owner can change any entry. Staff can only change their own cash and stock entries.
 """
 
+import re
 from datetime import date, timedelta
 from decimal import Decimal
 
@@ -29,6 +30,9 @@ from app.tools import bills as bill_tools
 from app.tools import stock as stock_tools
 
 _PARTY_TYPES = ("customer", "supplier")
+# Words that ask about customers / people, so a "customers only" filter is really wanted
+_WHO_WORDS = {"customer", "customers", "costumer", "grahak", "gahak", "gaahak", "banda", "bande", "admi", "aadmi",
+              "گاہک"}
 
 
 def _is_owner(ctx: Context) -> bool:
@@ -437,12 +441,20 @@ PARTY_CHOICE_HANDLERS.update({
 def recent_entries(ctx: Context, fields: RecentEntriesFields) -> Outcome:
     limit = min(max(fields.limit or 5, 1), 15)
     amount = confirmed_amount(ctx.text, fields.amount)  # "wo 500 wala": look further back for it
+    # Customers only when the user said so ("akhri customer kon tha"), not the AI's guess for "aaj kya hua"
+    customers_only = bool(fields.customers_only) and bool(set(re.findall(r"\w+", ctx.text.lower())) & _WHO_WORDS)
     with transaction() as conn:
         entries = tools.recent_entries(conn, ctx.business["id"], limit=100 if amount else limit, on=fields.date,
-                                       customers_only=bool(fields.customers_only))
+                                       customers_only=customers_only)
     if amount:
         entries = [e for e in entries if any(abs(leg["amount"]) == amount for leg in e["legs"])][:limit]
     if not entries:
+        # Nothing matched what was asked: say what was looked for, never "no entries" for the whole shop
+        what = [short_date(fields.date)] if fields.date else []
+        what += [format_rs(amount)] if amount else []
+        what += [t("type_customer", ctx.language)] if customers_only else []
+        if what:
+            return Outcome("recent_entries", t("recent_none_for", ctx.language, what=" · ".join(what)))
         return Outcome("recent_entries", t("recent_none", ctx.language))
     lines = [t("recent_head", ctx.language)] + [_recent_line(ctx.language, e) for e in entries]
     return Outcome("recent_entries", "\n".join(lines))

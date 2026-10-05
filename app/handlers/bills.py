@@ -501,7 +501,7 @@ def profit_report(ctx: Context, fields: ProfitFields) -> Outcome:
 )
 def bill_report(ctx: Context, fields: BillReportFields) -> Outcome:
     language, business_id = ctx.language, ctx.business["id"]
-    if fields.bill_no is not None:
+    if confirmed_amount(ctx.text, fields.bill_no) is not None:  # a bill number the user wrote, never a guess
         return send_bill(ctx, fields.bill_no)
     day = _today(ctx)
     end = min(fields.end_date or day, day)
@@ -566,7 +566,7 @@ def send_bill(ctx: Context, bill_no: int) -> Outcome:
     owner_only=True,
 )
 def cancel_bill(ctx: Context, fields: CancelBillFields) -> Outcome:
-    if fields.bill_no is None:
+    if confirmed_amount(ctx.text, fields.bill_no) is None:  # not written: ask which bill, never guess one
         return Outcome("cancel_bill", t("ask_bill_no", ctx.language))
     if re.search(r"\bkaro\b|\bkar\b", ctx.text.lower()) and not re.search(r"cancel|delete|hatao|khatam|radd",
                                                                         ctx.text.lower()):

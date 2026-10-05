@@ -148,7 +148,8 @@ def resolve_pending(state: AgentState) -> AgentState:
 _DATE_HINT = re.compile(
     r"\b(kal|kl|parso|parson|parsun|aaj|aj|today|yesterday|tomorrow|tareekh|tarikh|tarik|date|"
     r"jan\w*|feb\w*|mar\w*|apr\w*|may|jun\w*|jul\w*|aug\w*|sep\w*|oct\w*|nov\w*|dec\w*|"
-    r"pichl\w*|pichh\w*|guzr\w*|last|pehle|hafte|week|mahine|month|din|raat|subah|shaam|dopahar|"
+    r"pichl\w*|pichh\w*|guzr\w*|last|pehle|hafte|week|mahin\w*|month|maah|saal|year|20\d\d|"
+    r"din|raat|subah|shaam|dopahar|"
     r"baje|baad|minute|ghant\w*|monday|tuesday|wednesday|thursday|friday|saturday|sunday|"
     r"somwar|peer|mangal|budh|jumerat|jumma|hafta|itwar|\d{1,2}(st|nd|rd|th))\b"
     r"|\d{1,2}\s*[/.-]\s*\d{1,2}|کل|آج|پرسوں|تاریخ",
@@ -163,10 +164,13 @@ def run_intent(state: AgentState) -> AgentState:
     if spec.name == "unknown" and pending:  # "han" to a 1/2 question: ask the same question again
         return {"outcome": _keep_waiting(ctx, pending, t("ask_again", ctx.language))}
     raw = dict(result.fields)
-    if raw.get("date") and not _DATE_HINT.search(ctx.text):
-        raw["date"] = None  # "Sameer ne 4 topi li": no day is written, so the AI's "4 Oct" is a guess
-    if "reminder" not in spec.name and _KAL.search(ctx.text):
-        _kal_is_yesterday(raw, now(ctx.business["timezone"] if ctx.business else None).date())
+    if not _DATE_HINT.search(ctx.text):
+        # "Sameer ne 4 topi li", "kitna cash hai": no day or period is written, so the AI's dates are a guess
+        for key in ("date", "start_date", "end_date"):
+            if raw.get(key):
+                raw[key] = None
+    if _KAL.search(ctx.text):
+        _kal_day(raw, now(ctx.business["timezone"] if ctx.business else None).date(), "reminder" in spec.name)
     try:
         fields = spec.fields.model_validate(raw) if spec.fields else None
     except ValidationError as e:
@@ -191,13 +195,15 @@ def run_intent(state: AgentState) -> AgentState:
 _KAL = re.compile(r"\b(kal|kl|kall)\b|کل", re.IGNORECASE)
 
 
-def _kal_is_yesterday(raw: dict, today: date) -> None:
-    """"Tariq ko kal 500 diye", "kal ki sale": for entries and reports "kal" is yesterday. A date the AI
-    set to tomorrow is moved to yesterday (only reminders look ahead)."""
-    tomorrow = today + timedelta(days=1)
+def _kal_day(raw: dict, today: date, ahead: bool) -> None:
+    """"Tariq ko kal 500 diye", "kal ki sale": for entries and reports "kal" is yesterday, so a date the AI
+    set to tomorrow is moved to yesterday. A reminder looks ahead ("kal 5 baje yaad krwana"), so there it is
+    the other way round."""
+    tomorrow, yesterday = (today + timedelta(days=1)).isoformat(), (today - timedelta(days=1)).isoformat()
+    wrong, right = (yesterday, tomorrow) if ahead else (tomorrow, yesterday)
     for key in ("date", "start_date", "end_date"):
-        if str(raw.get(key) or "") == tomorrow.isoformat():
-            raw[key] = (today - timedelta(days=1)).isoformat()
+        if str(raw.get(key) or "") == wrong:
+            raw[key] = right
 
 
 def _corrects_preview(text: str, pending: PendingAction) -> bool:

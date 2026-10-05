@@ -608,28 +608,85 @@ def _show_balance(ctx: Context, party: dict) -> Outcome:
     return Outcome("party_balance", "\n".join(lines))
 
 
+_CUSTOMER_WORDS = {"customer", "customers", "costumer", "costumers", "grahak", "gahak", "gaahak", "گاہک", "گاہکوں"}
+_SUPPLIER_WORDS = {"supplier", "suppliers", "suplier", "supliers", "sapplier", "vendor", "vendors", "wholesaler",
+                   "dealer", "سپلائر", "سپلائرز"}
+# Which side of the khata a question asks about. "give" = the shop owes them, "get" = they owe the shop.
+_GIVE_SIDE = re.compile(
+    r"\b(hum|ham|mujh|mjh|hamare|humare|hmare|mere|apne)\s*(pe|par|pr|per|upar|uper|oper)\b"
+    r"|\bko\s+(dene|dena|deny|deney|dainay)\b"
+    r"|\b(humne|hamne|hmne|maine|mene|mainy|hum\s+ne|ham\s+ne|mai\s+ne|main\s+ne)\b(\s+\w+)?\s+(dene|dena|deny)\b"
+    r"|\b(we|i)\s+owe\b|\bpayable\b|ہم\s*پر|مجھ\s*پر|کو\s*دینے"
+)
+_GET_SIDE = re.compile(
+    r"\b(se|say|sy|sey)\s+(lene|lena|leny|leney|lainay)\b"
+    r"|\b(?<!hum\s)(?<!ham\s)(?<!mai\s)(?<!main\s)ne(\s+\w+)?\s+(dene|dena|deny)\b"
+    r"|\bowes?\s+(me|us)\b|\breceivables?\b|سے\s*لینے"
+)
+_BARE_GIVE = re.compile(r"\b(dene|dena|deny|deney|dainay)\b|دینے")
+_BARE_GET = re.compile(r"\b(lene|lena|leny|leney|lainay)\b|لینے")
+
+
+def asked_party_type(text: str) -> str | None:
+    """customer / supplier only when the user wrote that word (the AI guessed "supplier" for "hum pe udhaar")."""
+    words = set(re.findall(r"\w+", text.lower()))
+    customer, supplier = bool(words & _CUSTOMER_WORDS), bool(words & _SUPPLIER_WORDS)
+    return ("customer" if customer else "supplier") if customer != supplier else None
+
+
+def asked_side(text: str) -> tuple[str | None, bool]:
+    """("give" | "get" | None, whether the text decided it). Both sides asked -> (None, True): show all."""
+    text = text.lower()
+    give, get = bool(_GIVE_SIDE.search(text)), bool(_GET_SIDE.search(text))
+    if not give and not get:
+        give, get = bool(_BARE_GIVE.search(text)), bool(_BARE_GET.search(text))
+    if give and get:
+        return None, True
+    if give or get:
+        return ("give" if give else "get"), True
+    return None, False
+
+
 @intent(
     "list_parties",
     "User asks for ALL parties' balances or totals: who owes the shop, whom the shop owes, customer/supplier list.",
     fields=ListPartiesFields,
-    fields_hint='{"type": "customer" | "supplier" | null}',
-    examples=["sab ka hisaab", "sab udhar dikhao", "kis kis se lene hain", "suppliers ko kitne dene hain",
-              "customer list"],
+    fields_hint=('{"type": "customer" | "supplier" | null, "side": "get" | "give" | null} '
+                 '(give: the shop owes them, "hum pe kis ka udhaar"; get: they owe the shop)'),
+    examples=["sab ka hisaab", "sab udhar dikhao", "kis kis se lene hain", "hum pe kis kis ka udhaar hai",
+              "suppliers ko kitne dene hain", "customer list"],
     needs_business=True,
 )
 def list_parties(ctx: Context, fields: ListPartiesFields) -> Outcome:
     language = ctx.language
+    party_type = asked_party_type(ctx.text)
+    side, decided = asked_side(ctx.text)
+    if not decided:
+        side = fields.side  # no side words the code knows; the AI's reading, both totals are still shown
     with transaction() as conn:
-        rows = tools.list_balances(conn, _business_id(ctx), fields.type)
+        rows = tools.list_balances(conn, _business_id(ctx), party_type)
+        if not rows and party_type:
+            any_party = bool(tools.list_balances(conn, _business_id(ctx)))
     if not rows:
+        if party_type and any_party:
+            return Outcome("list_parties", t("no_parties_type", language, type=_type_label(language, party_type)))
         return Outcome("list_parties", t("no_parties", language))
 
+    # All money is worked out here from the saved balances, never by the AI
     total_get = sum((r["balance"] for r in rows if r["balance"] > 0), Decimal(0))
     total_give = sum((-r["balance"] for r in rows if r["balance"] < 0), Decimal(0))
-    items = [f"{r['name']} — {_short_balance(language, r['balance'])}" for r in rows[:10]]
-    reply = t(
-        "party_list", language, get=format_rs(total_get), give=format_rs(total_give), items=numbered(items)
-    )
+    get, give = format_rs(total_get), format_rs(total_give)
+    if side == "give":
+        rows = [r for r in rows if r["balance"] < 0]
+    elif side == "get":
+        rows = [r for r in rows if r["balance"] > 0]
+    if side and not rows:
+        return Outcome("list_parties", t(f"nobody_{side}", language, get=get, give=give))
+
+    items = numbered([f"{r['name']} — {_short_balance(language, r['balance'])}" for r in rows[:10]])
+    if len(rows) > 10:
+        items += "\n" + t("list_more", language, n=len(rows) - 10)
+    reply = t(f"party_list_{side}" if side else "party_list", language, get=get, give=give, items=items)
     return Outcome("list_parties", reply)
 
 
