@@ -255,7 +255,7 @@ def _commit(
                 conn,
                 conversation_id,
                 outcome.pending.model_dump(),
-                reply_text,
+                outcome.question or reply_text,
                 datetime.now(timezone.utc) + ttl,
             )
         else:

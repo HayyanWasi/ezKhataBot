@@ -32,7 +32,14 @@ from app.schemas.khata import (
 )
 from app.services.amounts import confirmed_amount, format_rs, parse_amount_answer, parse_amounts
 from app.services.answers import bought_by, parse_number, pick
-from app.handlers.money_steps import MONEY_KEYS, following_draft, money_account, money_line, money_step
+from app.handlers.money_steps import (
+    MONEY_KEYS,
+    check_step,
+    following_draft,
+    money_account,
+    money_line,
+    money_step,
+)
 from app.services.registry import (
     DRAFT_STEPS,
     Context,
@@ -142,10 +149,17 @@ def new_draft(mode: str, **values) -> dict:
 def next_step(ctx: Context, draft: dict) -> Outcome:
     language, mode, name = ctx.language, draft["mode"], draft["party_name"]
 
-    if not name:
+    if not name or name.strip().lower() in _NOT_A_NAME:  # "3k supplier ko diya": which supplier?
+        draft["party_name"] = None
         key = "ask_party" if mode == "entry" else "ask_new_party_name"
         return _ask(ctx, "entry_party", "text", draft, t(key, language))
     draft["party_name"] = name = tools.nice_name(name)  # "ali" -> "Ali" in replies and when saved
+
+    if mode != "entry" and not draft["party_type"] and draft["new_type"] is None:
+        same = [p for p in _find(ctx, name) if p["name"].lower() == name.lower()]
+        if same:  # "ali add kr" when Ali is already there: no second Ali
+            party_type = _type_label(language, same[0]["type"])
+            return Outcome(_DRAFT_INTENT[mode], t("party_already", language, name=same[0]["name"], type=party_type))
 
     if mode != "add":
         if draft["amount"] is None:
@@ -179,6 +193,13 @@ def next_step(ctx: Context, draft: dict) -> Outcome:
     question = money_step(ctx, draft)  # paid in cash / a bank: which bank? opening cash?
     if question:
         return question
+    if mode != "add":  # a very large amount, or the same entry a minute ago: asked first
+        amount = Decimal(draft["amount"])
+        signed = amount if draft["direction"] == "gave" else -amount
+        types = ("gave", "got") if draft["account_id"] else ()  # a new party has no earlier entry
+        question = check_step(ctx, draft, types, signed, draft["account_id"])
+        if question:
+            return question
 
     saved = _save(ctx, draft)
     if draft.get("queue"):  # save this one, then ask about the next draft in the same reply
@@ -285,7 +306,8 @@ def party_entry(ctx: Context, fields: PartyEntryFields) -> Outcome:
         "entry",
         party_name=fields.party_name,
         party_type=fields.party_type,
-        direction=fields.direction,
+        # "Ali ko 500", "ali ko 500 daldo": no word says who gave, so it is asked, never guessed
+        direction=fields.direction if direction_written(ctx.text) else None,
         amount=str(amount) if amount is not None else None,
         date=entry_date.isoformat(),
         note=fields.note,
@@ -391,6 +413,28 @@ def _answer_entry_question(ctx: Context, fields: PartyEntryFields) -> Outcome:
 _PAYMENT_WORDS = {"payment", "wapas", "wapis", "wapsi", "lota", "lotaye", "lotae", "ada", "cash", "nakad",
                   "naqad", "paid", "returned", "ادا", "واپس", "نقد", "کیش"}
 _CREDIT_WORDS = {"udhaar", "udhar", "udhari", "saman", "samaan", "maal", "credit", "ادھار", "سامان", "مال"}
+
+
+# Words that tell which way money or goods went. Without one ("Ali ko 500", "500rs ali ko") the
+# direction is asked.
+_DIRECTION_WORDS = {
+    "diye", "diya", "di", "dia", "de", "dey", "diay", "dye", "dediye", "dediya", "dedia", "dedi", "dedye",
+    "liye", "liya", "li", "lia", "le", "lie", "leliye", "leliya", "lelia", "lelya", "mile", "mila", "mili",
+    "aaye", "aae", "aaya", "aya", "aye", "aai", "ayi", "gaye", "gae", "gya", "gaya", "bheje", "bheja", "bheji",
+    "bhejy", "wapas", "wapis", "wapsi", "lota", "lotaye", "lotae", "ada", "jama", "udhaar", "udhar", "udhari",
+    "lene", "lena", "dene", "dena", "baqi", "baaki", "kharida", "kharide", "kharidi", "khareeda", "khareedi",
+    "becha", "beche", "bechi", "payment", "pay", "paid", "gave", "give", "given", "got", "received", "took",
+    "sent", "returned", "lent", "borrowed", "owes", "owe", "credit",
+    "دیے", "دیا", "دی", "دئیے", "لیے", "لیا", "لی", "ملے", "ملا", "آئے", "آیا", "بھیجے", "بھیجا", "ادا", "واپس",
+    "ادھار", "جمع", "لینے", "دینے",
+}
+# Words for a kind of party, not a name: "supplier ko 3000 diye" names nobody
+_NOT_A_NAME = {"supplier", "suppliers", "customer", "customers", "party", "banda", "bande", "admi", "aadmi",
+               "dukandar", "grahak", "gahak", "wala", "wale", "koi", "سپلائر", "گاہک"}
+
+
+def direction_written(text: str) -> bool:
+    return bool(set(re.findall(r"\w+", text.lower())) & _DIRECTION_WORDS)
 
 
 def paid_via(text: str, ai_value: str | None) -> str | None:
@@ -523,7 +567,8 @@ def _show_balance(ctx: Context, party: dict) -> Outcome:
     "User asks for ALL parties' balances or totals: who owes the shop, whom the shop owes, customer/supplier list.",
     fields=ListPartiesFields,
     fields_hint='{"type": "customer" | "supplier" | null}',
-    examples=["sab ka hisaab", "kis kis se lene hain", "suppliers ko kitne dene hain", "customer list"],
+    examples=["sab ka hisaab", "sab udhar dikhao", "kis kis se lene hain", "suppliers ko kitne dene hain",
+              "customer list"],
     needs_business=True,
 )
 def list_parties(ctx: Context, fields: ListPartiesFields) -> Outcome:

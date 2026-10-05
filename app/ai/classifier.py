@@ -34,6 +34,9 @@ def classify(
     ]
     cap = get_settings().llm_classify_max_tokens
     result = call_structured(ClassifierOutput, messages, "classify_llm", max_tokens=cap)
+    if result.intent not in intents and result.intent != "pending_answer":
+        # A made-up intent ("cash_report"): ask once more (the next call goes to the next key/model)
+        result = call_structured(ClassifierOutput, messages, "classify_llm", max_tokens=cap)
 
     # Script is certain, the model's guess is not: Urdu script <=> "ur"
     if _URDU_SCRIPT.search(text):

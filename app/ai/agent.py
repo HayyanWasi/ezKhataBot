@@ -17,6 +17,8 @@ commits the Outcome in one transaction afterwards.
 import logging
 import re
 from dataclasses import replace
+from datetime import date, timedelta
+from decimal import Decimal
 from typing import TypedDict
 
 from langgraph.graph import END, START, StateGraph
@@ -39,7 +41,8 @@ from app.handlers.foundation import ask_choose_business, help_
 from app.handlers.images import read_image
 from app.handlers.stock import stock_photo
 from app.schemas.khata import ClassifierOutput, PendingAction, PendingAnswerFields
-from app.services.answers import is_trivial_answer
+from app.services.amounts import format_rs, parse_amounts
+from app.services.answers import is_cancel, is_thanks, is_trivial_answer
 from app.services.registry import INTENTS, PENDING_RESOLVERS, Context, Outcome, chain
 from app.services.replies import t
 
@@ -55,6 +58,7 @@ class AgentState(TypedDict, total=False):
     classification: ClassifierOutput  # what the AI understood
     outcome: Outcome | None  # the decision
     first_outcome: Outcome | None  # set when a message is replayed (e.g. after choosing a shop)
+    queued: bool  # a queued action from an earlier message (no AI call)
 
 
 # ---------------------------------------------------------------------------
@@ -80,6 +84,12 @@ def check_rules(state: AgentState) -> AgentState:
         if ctx.business["role"] != "owner":  # photos write money
             return {"outcome": Outcome("read_image", t("owner_only", ctx.language))}
         return {"outcome": read_image(ctx)}
+    if is_thanks(ctx.text):  # "shukriya bhai": a friendly word; a waiting question keeps waiting
+        return {"outcome": _keep_waiting(ctx, pending, t("thanks_reply", ctx.language), "greeting")}
+    # "rehne do" / "cancel karo": stop, never a new request. A yes/no question takes it as "nahi", and
+    # where a skip is allowed (opening cash, shop details) it is a skip.
+    if is_cancel(ctx.text) and not (pending and pending.expects in ("yes_no", "amount_or_skip", "free_text")):
+        return {"outcome": Outcome("cancel", t("cancelled" if pending else "okay", ctx.language))}
     if pending and is_trivial_answer(ctx.text, pending.expects):
         return {"answer": ctx.text}
     return {}
@@ -106,8 +116,8 @@ def classify_message(state: AgentState) -> AgentState:
         # request, so it is classified again without the question.
         if pending and pending.expects in ("amount", "amount_or_skip") and result.answers_pending:
             result = call_ai(None)
-    except AIError:
-        return {"outcome": Outcome("unknown", t("not_understood", ctx.language))}
+    except AIError:  # the AI service is busy or down: the user's wording was not the problem
+        return {"outcome": _keep_waiting(ctx, pending, t("ai_busy", ctx.language))}
 
     # The AI's language guess is used unless a language is saved, or the message is one
     # word ("undo", "ok"), which is too short to tell
@@ -146,11 +156,15 @@ _DATE_HINT = re.compile(
 
 def run_intent(state: AgentState) -> AgentState:
     """A new request: validate the AI's fields and run the intent's handler."""
-    ctx, result = state["ctx"], state["classification"]
+    ctx, result, pending = state["ctx"], state["classification"], state.get("pending")
     spec = INTENTS.get(result.intent) or INTENTS["unknown"]
+    if spec.name == "unknown" and pending:  # "han" to a 1/2 question: ask the same question again
+        return {"outcome": _keep_waiting(ctx, pending, t("ask_again", ctx.language))}
     raw = dict(result.fields)
     if raw.get("date") and not _DATE_HINT.search(ctx.text):
         raw["date"] = None  # "Sameer ne 4 topi li": no day is written, so the AI's "4 Oct" is a guess
+    if "reminder" not in spec.name and _KAL.search(ctx.text):
+        _kal_is_yesterday(raw, now(ctx.business["timezone"] if ctx.business else None).date())
     try:
         fields = spec.fields.model_validate(raw) if spec.fields else None
     except ValidationError as e:
@@ -162,7 +176,77 @@ def run_intent(state: AgentState) -> AgentState:
         return {"outcome": Outcome(spec.name, t("owner_only", ctx.language))}
     outcome = spec.handler(ctx, fields)
     outcome.then = [a.model_dump() for a in result.then]  # done one by one after this one is saved
+    if not state.get("queued"):
+        missed = unused_amounts(ctx.text, result)
+        if missed:  # "Ali ko 300 diye aur ..." where a part was not understood: say so, never drop it silently
+            amounts = ", ".join(format_rs(a) for a in missed)
+            outcome = with_note(outcome, t("part_not_done", ctx.language, amounts=amounts))
     return {"outcome": outcome}
+
+
+_KAL = re.compile(r"\b(kal|kl|kall)\b|کل", re.IGNORECASE)
+
+
+def _kal_is_yesterday(raw: dict, today: date) -> None:
+    """"Tariq ko kal 500 diye", "kal ki sale": for entries and reports "kal" is yesterday. A date the AI
+    set to tomorrow is moved to yesterday (only reminders look ahead)."""
+    tomorrow = today + timedelta(days=1)
+    for key in ("date", "start_date", "end_date"):
+        if str(raw.get(key) or "") == tomorrow.isoformat():
+            raw[key] = (today - timedelta(days=1)).isoformat()
+
+
+def _keep_waiting(ctx: Context, pending: PendingAction | None, reply: str, intent: str = "unknown") -> Outcome:
+    """Reply, and keep the question the bot is waiting on (asked again under the reply)."""
+    if pending is None:
+        return Outcome(intent, reply)
+    question = ctx.conversation.get("pending_question") or ""
+    return Outcome(intent, f"{reply}\n\n{question}".strip(), pending=pending, question=question or None)
+
+
+# A second request in the same message: "aur", "and", "phir", a comma ...
+_JOINER = re.compile(r"\b(aur|or|and|phir|fir|then|sath|saath|bhi|plus)\b|[,;\n]", re.IGNORECASE)
+# Numbers that are not money: times, days, dates ("5 baje", "2 din", "15 tareekh", "5/10")
+_NOT_MONEY = re.compile(
+    r"\d+\s*(baje|bje|minute|mint|min|ghant\w*|din|hafte|mahine|tareekh|tarikh|tarik|st|nd|rd|th|am|pm|%)\b"
+    r"|\d{1,2}\s*[:/]\s*\d{1,2}",
+    re.IGNORECASE,
+)
+
+
+def _numbers(value: object) -> set[Decimal]:
+    """Every number in the AI's fields (amounts, quantities, prices, dates)."""
+    if isinstance(value, dict):
+        return set().union(*(_numbers(v) for v in value.values())) if value else set()
+    if isinstance(value, list):
+        return set().union(*(_numbers(v) for v in value)) if value else set()
+    if isinstance(value, bool) or value is None:
+        return set()
+    if isinstance(value, (int, float, Decimal)):
+        return {Decimal(str(value))}
+    return set(parse_amounts(str(value))) | {Decimal(d) for d in re.findall(r"\d+", str(value))}
+
+
+def unused_amounts(text: str, result: ClassifierOutput) -> list[Decimal]:
+    """Amounts written in a message with two or more parts that no action uses. Quantity x price and
+    the sum of the numbers count as used ("2 charger 3000 ke" may be stored as 2 x 1500)."""
+    if result.intent == "unknown" or not _JOINER.search(text):
+        return []
+    used = _numbers([result.fields] + [a.fields for a in result.then])
+    small = [n for n in used if n < 100_000]
+    used |= {a * b for a in small for b in small} | {sum(used, Decimal(0))}
+    written = parse_amounts(_NOT_MONEY.sub(" ", text))
+    return [a for a in dict.fromkeys(written) if a not in used]
+
+
+def with_note(outcome: Outcome, note: str) -> Outcome:
+    """The outcome with a line added under its reply."""
+    if outcome.commit:
+        commit = outcome.commit
+        outcome.commit = lambda conn: commit(conn) + "\n\n" + note
+    else:
+        outcome.reply = f"{outcome.reply}\n\n{note}" if outcome.reply else note
+    return outcome
 
 
 def ask_business(state: AgentState) -> AgentState:
@@ -265,7 +349,7 @@ def decide(
         if ctx.business is None:
             return ask_choose_business(ctx, replay_text=ctx.text)
         classification = ClassifierOutput(intent=action["intent"], language=ctx.language, fields=action["fields"])
-        return run_intent({"ctx": ctx, "classification": classification})["outcome"]
+        return run_intent({"ctx": ctx, "classification": classification, "queued": True})["outcome"]
     state = agent.invoke(
         {"ctx": ctx, "pending": pending, "history": history, "preference": preference},
         # Shown in LangSmith: filter traces by user, shop or channel

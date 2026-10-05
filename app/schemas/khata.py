@@ -48,7 +48,7 @@ class PendingAction(BaseModel):
     # amount_or_skip: an amount, or "skip" / "nahi" / "0" (e.g. opening cash)
     # choice_or_name: a list number, or a short name (a new category / bank), handled without the AI
     # free_text: any answer is taken as it is, without the AI (e.g. the shop's address)
-    expects: Literal["choice", "choice_or_name", "yes_no", "amount", "amount_or_skip", "text", "free_text"] = "text"
+    expects: Literal["choice", "choice_or_name", "yes_no", "amount", "amount_or_skip", "phone", "text", "free_text"] = "text"
     data: dict[str, Any] = Field(default_factory=dict)
     # More actions from the same message, done once this flow is finished (see app/services/handler.py)
     queue: list[dict[str, Any]] = Field(default_factory=list)
@@ -144,6 +144,7 @@ class RecentEntriesFields(_Fields):
     limit: int | None = None  # "last 3 entries" -> 3; "akhri customer" -> 1
     date: dt.date | None = None  # "aaj kya hua" -> today
     customers_only: bool | None = None  # about customers / sales
+    amount: Any = None  # "wo 500 wala entry dikha" -> only entries of 500
 
 
 class EditEntryFields(_Fields):

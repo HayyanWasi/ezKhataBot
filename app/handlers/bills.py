@@ -181,7 +181,8 @@ def next_step(ctx: Context, draft: dict) -> Outcome:
     if question:
         return question
 
-    if not (shop["address"] or shop["phone"]) and not draft["shop_asked"]:
+    # Asked once per shop: a skip is saved as an empty address, so it isn't asked on every bill
+    if shop["address"] is None and shop["phone"] is None and not draft["shop_asked"]:
         return ask_draft(ctx, "shop_details", "free_text", draft, t("ask_shop_details", language))
     return _save(ctx, draft)
 
@@ -415,6 +416,7 @@ def resolve_shop_details(ctx: Context, pending: PendingAction, answer: str) -> O
     """The shop's address and phone in one message ("skip" = none). Code picks out the phone number."""
     draft = _draft(pending)
     draft["shop_asked"] = True
+    draft["shop_address"] = ""  # skipped: remembered, not asked again
     if not is_skip(answer):
         match = _PHONE.search(answer)
         phone = re.sub(r"[\s-]", "", match.group()) if match else None
@@ -490,13 +492,14 @@ def profit_report(ctx: Context, fields: ProfitFields) -> Outcome:
     "bill_report",
     "User asks about BILLS or SALES: one bill (\"Bill 3 bhejo\", \"bill no 3 dikhao\"), the bill list, a "
     "customer's bills, or the total sale for a period (\"is mahine ki sale\", \"September ke bills PDF\"). "
+    "Sale / bikri is always bill_report, not profit_report. "
     'kind: "one" (a bill number is given) or "list". pdf: true if a PDF / sheet is asked for.',
     fields=BillReportFields,
     fields_hint=(
         '{"kind": "one" | "list", "bill_no": number | null, "customer_name": string | null, '
         '"start_date": "YYYY-MM-DD" | null, "end_date": "YYYY-MM-DD" | null, "pdf": true | false}'
     ),
-    examples=["Bill 3 bhejo", "bills dikhao", "is mahine ki sale kitni hui", "Rohaan ke bills", "September ke bills PDF"],
+    examples=["Bill 3 bhejo", "bills dikhao", "kl ki sale", "Rohaan ke bills", "September ke bills PDF"],
     needs_business=True,
 )
 def bill_report(ctx: Context, fields: BillReportFields) -> Outcome:

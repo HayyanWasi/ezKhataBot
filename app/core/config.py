@@ -30,9 +30,11 @@ class Settings(BaseSettings):
     llm_fallback_api_keys: str = ""  # comma-separated; tried in order when a key is rate limited
     llm_model: str = "openai/gpt-oss-120b"
     llm_reasoning_effort: str = "low"  # empty = don't send (for providers that reject it)
+    llm_temperature: float = 0.1  # low: the same message gets (almost) the same answer
+    llm_top_p: float | None = None  # None = provider default (Qwen non-thinking mode suggests 0.8 with 0.7 temperature)
     llm_timeout_seconds: float = 20
     llm_max_tokens: int = 2500  # answer cap; without it providers reserve the whole context per call
-    llm_classify_max_tokens: int = 1200  # the classifier's JSON is short; Groq counts prompt + cap per minute
+    llm_classify_max_tokens: int = 1000  # the classifier's JSON is short; Groq counts prompt + cap per minute
     # Which providers answer AI calls: any of groq, openrouter, gemini (comma-separated; empty = all).
     # Calls take turns across every key of these providers, so no single key hits its per-minute limit.
     llm_providers: str = ""

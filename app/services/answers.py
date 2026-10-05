@@ -11,8 +11,32 @@ T = TypeVar("T")
 # Urdu/Arabic-Indic digits -> ASCII
 _DIGITS = str.maketrans("۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩", "01234567890123456789")
 
-_YES = {"haan", "han", "haa", "ha", "ji", "jee", "yes", "y", "ok", "okay", "theek", "thik", "ہاں", "جی", "ٹھیک"}
-_NO = {"nahi", "nhi", "nai", "na", "no", "n", "نہیں", "نہ"}
+_YES = {
+    "haan", "han", "haa", "ha", "ji", "jee", "g", "yes", "y", "ok", "okay", "theek", "thik", "bilkul", "sahi",
+    "hanji", "haanji", "haan ji", "han ji", "haa ji", "han g", "haan g", "ji haan", "jee haan", "ji han", "g han",
+    "theek hai", "thik hai", "ok hai", "kr do", "kar do", "krdo", "kardo", "kar dein", "kr dain", "haan kar do",
+    "han kr do", "han krdo", "haan krdo", "ok kar do", "save karo", "save kr do",
+    "ہاں", "جی", "ٹھیک", "جی ہاں", "ہاں جی", "ٹھیک ہے", "کر دو",
+}
+_NO = {
+    "nahi", "nhi", "nai", "na", "no", "n", "nahin", "nahi ji", "nhi ji", "na ji", "nai ji", "nahin ji",
+    "mat karo", "mat kro", "mat", "nahi karo", "nhi kro", "nahi karna", "nhi krna", "cancel", "cancel karo",
+    "cancel kr do", "cancel kardo", "nahi chahiye", "nhi chahiye", "rehne do", "rehnay do", "rhne do", "rehne dein",
+    "chor do", "chhor do", "chhoro", "choro", "chodo", "bas karo", "bas kro",
+    "نہیں", "نہ", "مت کرو", "رہنے دو", "چھوڑو", "نہیں جی",
+}
+# Said instead of answering: drop the question ("rehne do"); with no question, just "theek hai"
+_CANCEL = _NO - {"nahi", "nhi", "nai", "na", "no", "n", "nahin", "nahi ji", "nhi ji", "na ji", "nai ji",
+                 "nahin ji", "mat", "نہیں", "نہ", "نہیں جی"}
+_FILLER_WORDS = {"bhai", "yaar", "yar", "please", "plz", "pls", "sir", "boss"}
+
+
+def _plain(text: str) -> str:
+    """"Haan ji bhai!" -> "haan ji": lower case, no punctuation, no trailing bhai / yaar."""
+    words = re.sub(r"[.!,?؟۔]+", " ", text.strip().lower()).split()
+    while len(words) > 1 and words[-1] in _FILLER_WORDS:
+        words.pop()
+    return " ".join(words)
 
 
 def parse_number(text: str) -> int | None:
@@ -21,12 +45,25 @@ def parse_number(text: str) -> int | None:
 
 
 def parse_yes_no(text: str) -> bool | None:
-    word = text.strip().lower().rstrip(".!")
+    word = _plain(text)
     if word in _YES:
         return True
     if word in _NO:
         return False
     return None
+
+
+def is_cancel(text: str) -> bool:
+    """"rehne do", "cancel karo", "chor do": the user wants to stop, not to answer."""
+    return _plain(text) in _CANCEL
+
+
+_THANKS = re.compile(r"^(shukriya|shukria|shukrya|thanks|thank you|thank u|thx|jazakallah\w*|meherbani|"
+                     r"mehrbani|شکریہ|جزاک اللہ)\b", re.IGNORECASE)
+
+
+def is_thanks(text: str) -> bool:
+    return bool(_THANKS.search(_plain(text))) and len(text.split()) <= 4 and not re.search(r"\d", text)
 
 
 # Words that decide how goods were paid for (stock in, bills). Code decides, not the AI,
@@ -61,7 +98,7 @@ _SKIP = {"skip", "chhor", "chhoro", "chor", "choro", "pata nahi", "pata nhi", "n
 
 def is_skip(text: str) -> bool:
     """"skip" / "nahi" / "pata nahi": the user doesn't want to answer."""
-    word = text.strip().lower().rstrip(".!")
+    word = _plain(text)
     return word in _SKIP or parse_yes_no(word) is False
 
 
@@ -77,6 +114,8 @@ def is_trivial_answer(text: str, expects: str) -> bool:
         return parse_amount_answer(text) is not None
     if expects == "amount_or_skip":
         return parse_amount_answer(text) is not None or text.strip() == "0" or is_skip(text)
+    if expects == "phone":  # "0333-1234567", "+92 333 1234567"
+        return bool(re.fullmatch(r"\+?[\d\s-]{4,20}", text.strip()))
     if expects == "choice_or_name":  # "2", or a short name like "Bills" / "Ghar ka kharcha"
         words = text.split()
         if parse_number(text) is not None:

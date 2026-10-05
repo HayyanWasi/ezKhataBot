@@ -21,6 +21,7 @@ from app.core.dates import short_date, today
 from app.handlers.money_steps import (
     MONEY_KEYS,
     cash_account,
+    check_step,
     following_draft,
     money_account,
     money_line,
@@ -102,6 +103,12 @@ def next_step(ctx: Context, draft: dict) -> Outcome:
             labels = [t("new_category_option", language, name=options[0]["name"])] + [c["name"] for c in categories]
             question = t("ask_category", language, word=word, options=numbered(labels))
             return ask_draft(ctx, "choose_category", "choice_or_name", draft, question, options=options)
+
+    amount = Decimal(draft["amount"])
+    signed = amount if draft["direction"] == "in" else -amount
+    question = check_step(ctx, draft, ("cash_in", "cash_out", "sale"), signed)
+    if question:  # a very large amount, or the same entry a minute ago
+        return question
 
     saved = _save(ctx, draft)
     if draft.get("queue"):  # rows from a photo: save this one, then ask about the next
@@ -340,7 +347,8 @@ def _period(start: date, end: date) -> str:
         '{"account": "cash" | string | null, "start_date": "YYYY-MM-DD" | null, "end_date": "YYYY-MM-DD" | null, '
         '"pdf": true | false}  (a month -> its first and last day; "aaj" -> today for both; none said -> both null)'
     ),
-    examples=["aaj ka hisaab", "kitna cash hai", "September ka cash", "JazzCash ka hisaab", "cash book PDF bhejo"],
+    examples=["aaj ka hisaab", "aaj ka cash dikhao", "mera kya hisab hai", "is month ka kya scene hai",
+              "kitna cash hai", "September ka cash", "JazzCash ka hisaab", "cash book PDF bhejo"],
     needs_business=True,
 )
 def money_report(ctx: Context, fields: MoneyReportFields) -> Outcome:

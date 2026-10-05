@@ -8,10 +8,12 @@ A new employee gets a welcome message from the bot. What staff may do is decided
 intent (owner_only); employees can be in several shops ("dukaan badlo").
 """
 
+import re
+
 from psycopg import Connection
 
 from app.core.database import transaction
-from app.core.phone import normalize_phone
+from app.core.phone import typed_phone
 from app.db import crud
 from app.schemas.khata import EmployeeFields, PendingAction
 from app.services.answers import parse_yes_no
@@ -32,18 +34,31 @@ def _number(phone: str) -> str:
     "WhatsApp number. name and phone as written.",
     fields=EmployeeFields,
     fields_hint='{"name": string | null, "phone": string | null}',
-    examples=["Bilal ko employee add karo 03001234567", "employee add karna hai", "add staff Ahmed 0321 1234567"],
+    examples=["Bilal ko employee add karo 03001234567", "employee add karna hai", "usman ko staff me dal"],
     needs_business=True,
     owner_only=True,
 )
 def add_employee(ctx: Context, fields: EmployeeFields) -> Outcome:
+    return _add(ctx, fields.name, fields.phone)
+
+
+def _add(ctx: Context, name: str | None, typed: str | None, invalid: bool = False) -> Outcome:
+    """Ask for what is missing (name, then number), keeping what was already said; then confirm."""
     language = ctx.language
-    if not fields.name or not fields.phone:
-        return Outcome("add_employee", t("employee_how", language))
-    try:
-        phone = normalize_phone(fields.phone)
-    except ValueError:
-        return Outcome("add_employee", t("invalid_phone", language))
+    phone = None
+    if typed and any(c.isdigit() for c in typed):  # "number" / "baad mein" is no number yet
+        try:
+            phone = typed_phone(typed)
+        except ValueError:
+            invalid = True
+    if not name or not phone:
+        question = t("employee_ask_name", language) if not name else t("employee_ask_phone", language, name=name)
+        if invalid:
+            question = t("invalid_phone", language) + "\n" + question
+        pending = PendingAction(kind="employee_details", language=language,
+                                expects="text" if not name else "phone",
+                                data={"name": name, "phone": phone})
+        return Outcome("add_employee", question, pending=pending)
     business = ctx.business
     with transaction() as conn:
         user = crud.get_user_by_phone(conn, phone)
@@ -51,11 +66,30 @@ def add_employee(ctx: Context, fields: EmployeeFields) -> Outcome:
             return Outcome("add_employee", t("employee_is_owner", language))
         if user and tools.is_employee(conn, business["id"], user["id"]):
             return Outcome("add_employee", t("employee_exists", language, name=user["name"]))
-    name = user["name"] if user else nice_name(fields.name)
+    name = user["name"] if user else nice_name(name)
     question = t("employee_confirm_add", language, name=name, number=_number(phone), shop=business["name"])
     pending = PendingAction(kind="confirm_add_employee", language=language, expects="yes_no",
                             data={"phone": phone, "name": name})
     return Outcome("add_employee", question, pending=pending)
+
+
+_PHONE_IN_TEXT = re.compile(r"\+?\d[\d\s-]{3,18}\d")
+
+
+@pending_resolver("employee_details")
+def resolve_employee_details(ctx: Context, pending: PendingAction, answer: str) -> Outcome:
+    """The answer to "naam kya hai?" / "number kya hai?": a name, a number, or both ("Rizwan 0333...")."""
+    name, phone = pending.data.get("name"), pending.data.get("phone")
+    found = _PHONE_IN_TEXT.search(answer)
+    typed = found.group() if found else None
+    rest = (answer[:found.start()] + answer[found.end():]) if found else answer
+    rest = re.sub(r"\b(ka|ki|ke|number|no|naam|name|hai|he|whatsapp)\b", " ", rest, flags=re.IGNORECASE)
+    rest = re.sub(r"[^\w\s]", " ", rest).strip()
+    if not name and rest and not re.search(r"\d", rest):
+        name = rest
+    if typed is None:
+        return _add(ctx, name, phone, invalid=bool(name and pending.data.get("name")))
+    return _add(ctx, name, typed)
 
 
 @pending_resolver("confirm_add_employee")
