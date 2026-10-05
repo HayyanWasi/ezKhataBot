@@ -72,6 +72,27 @@ def record_transaction(
     return transaction_id
 
 
+def saved_just_now(
+    conn: Connection, business_id: Id, types: tuple[str, ...], amount: Decimal,
+    account_id: Id | None = None, seconds: int = 120,
+) -> bool:
+    """True if the same entry (type, signed leg amount, and account when given) was saved in the last
+    `seconds`: "rickshaw 100" sent twice by mistake."""
+    row = conn.execute(
+        """
+        select 1 from business_transactions t
+        join khata_entries e on e.transaction_id = t.id
+        where t.business_id = %s and t.deleted_at is null
+          and t.created_at > now() - make_interval(secs => %s)
+          and t.transaction_type = any(%s) and e.amount = %s
+          and (%s::uuid is null or e.account_id = %s::uuid)
+        limit 1
+        """,
+        (business_id, seconds, list(types), amount, account_id, account_id),
+    ).fetchone()
+    return row is not None
+
+
 def delete_transaction(conn: Connection, business_id: Id, transaction_id: Id, user_id: Id) -> bool:
     """Soft delete. False if it was already deleted."""
     row = conn.execute(

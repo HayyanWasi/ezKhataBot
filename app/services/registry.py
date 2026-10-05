@@ -52,6 +52,7 @@ class Outcome:
     # More actions from the same message ({"intent", "fields"}), done after this one is saved
     then: list[dict] = field(default_factory=list)
     continued: bool = False  # answers the pending question: the message's queued actions carry on
+    question: str | None = None  # the waiting question's text, when the reply says more ("shukriya" + it)
 
 
 def chain(first: Outcome, second: Outcome) -> Outcome:

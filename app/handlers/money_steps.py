@@ -67,6 +67,26 @@ def money_step(ctx: Context, draft: dict) -> Outcome | None:
     return None
 
 
+BIG_AMOUNT = Decimal(1_000_000)
+
+
+def check_step(ctx: Context, draft: dict, types: tuple[str, ...], signed: Decimal,
+               account_id: str | None = None) -> Outcome | None:
+    """Last check before a typed entry is saved: a very large amount ("Ali ko 5000000 diye"), or the
+    same entry saved a minute ago ("rickshaw 100" sent twice), is asked with haan/nahi. None = save."""
+    if draft.get("checked") or draft.get("source_message_id"):  # photo rows have their own confirm
+        return None
+    amount = abs(signed)
+    if amount >= BIG_AMOUNT:
+        question = t("confirm_big_amount", ctx.language, amount=format_rs(amount))
+    else:
+        with transaction() as conn:
+            if not tools.saved_just_now(conn, ctx.business["id"], types, signed, account_id):
+                return None
+        question = t("confirm_repeat_entry", ctx.language, amount=format_rs(amount))
+    return ask_draft(ctx, "confirm_entry", "yes_no", draft, question)
+
+
 def following_draft(draft: dict) -> dict:
     """The next queued draft (rows from a photo). The opening cash, once answered, is passed on so it
     isn't asked again: the cash account is only created when this reply is committed."""
@@ -156,4 +176,16 @@ def resolve_opening_cash(ctx: Context, pending: PendingAction, answer: str) -> O
     if amount is None and not (answer.strip() == "0" or is_skip(answer)):
         return Outcome(draft_intent(draft), t("ask_opening_cash", ctx.language), pending=pending)
     draft["opening_cash"] = str(amount) if amount is not None else "0"
+    return continue_draft(ctx, draft)
+
+
+@pending_resolver("confirm_entry")
+def resolve_confirm_entry(ctx: Context, pending: PendingAction, answer: str) -> Outcome:
+    yes = parse_yes_no(answer)
+    draft = _draft(pending)
+    if yes is None:
+        return Outcome(draft_intent(draft), t("answer_yes_no", ctx.language), pending=pending)
+    if not yes:
+        return Outcome(draft_intent(draft), t("cancelled", ctx.language))
+    draft["checked"] = True
     return continue_draft(ctx, draft)

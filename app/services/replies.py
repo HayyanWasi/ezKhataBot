@@ -1016,6 +1016,61 @@ TEXTS: dict[str, dict[str, str]] = {
         "roman_ur": "*{name}* ki koi photo nahi. Photo ke saath likhein: \"{name} ki photo\"",
         "ur": "*{name}* کی کوئی تصویر نہیں۔ تصویر کے ساتھ لکھیں: \"{name} کی تصویر\"",
     },
+    "thanks_reply": {
+        "en": "You're welcome! 😊 Tell me if you need anything else.",
+        "roman_ur": "Koi baat nahi! 😊 Aur kuch ho to batayein.",
+        "ur": "کوئی بات نہیں! 😊 اور کچھ ہو تو بتائیں۔",
+    },
+    "okay": {
+        "en": "OK 👍",
+        "roman_ur": "Theek hai 👍",
+        "ur": "ٹھیک ہے 👍",
+    },
+    "ai_busy": {
+        "en": "The service is busy right now, so I couldn't read that. Your message was fine: please send it "
+              "again in a minute.",
+        "roman_ur": "Abhi system busy hai, is liye message parh nahi saka. Aap ka message theek tha: 1 minute baad "
+                    "dobara bhejein.",
+        "ur": "ابھی سسٹم مصروف ہے، اس لیے پیغام نہیں پڑھ سکا۔ آپ کا پیغام ٹھیک تھا: ایک منٹ بعد دوبارہ بھیجیں۔",
+    },
+    "ask_again": {
+        "en": "🤔 I didn't get that. My question was:",
+        "roman_ur": "🤔 Samajh nahi aaya. Mera sawal tha:",
+        "ur": "🤔 سمجھ نہیں آیا۔ میرا سوال تھا:",
+    },
+    "part_not_done": {
+        "en": "⚠️ Your message also had {amounts}, which I did NOT save. If it was another entry, send it as a "
+              "separate message.",
+        "roman_ur": "⚠️ Aap ke message mein {amounts} bhi tha, jo maine save NAHI kiya. Agar woh alag entry thi to "
+                    "alag message mein bhejein.",
+        "ur": "⚠️ آپ کے پیغام میں {amounts} بھی تھا، جو میں نے محفوظ نہیں کیا۔ اگر وہ الگ اندراج تھا تو الگ پیغام "
+              "میں بھیجیں۔",
+    },
+    "employee_ask_name": {
+        "en": "What is the employee's name?",
+        "roman_ur": "Employee ka naam kya hai?",
+        "ur": "ملازم کا نام کیا ہے؟",
+    },
+    "employee_ask_phone": {
+        "en": "What is {name}'s WhatsApp number? (e.g. 03001234567)",
+        "roman_ur": "{name} ka WhatsApp number kya hai? (jaise 03001234567)",
+        "ur": "{name} کا واٹس ایپ نمبر کیا ہے؟ (جیسے 03001234567)",
+    },
+    "confirm_big_amount": {
+        "en": "{amount} is a very large amount. Is it correct? (yes/no)",
+        "roman_ur": "{amount} bohat bari raqam hai. Kya yeh sahi hai? (haan/nahi)",
+        "ur": "{amount} بہت بڑی رقم ہے۔ کیا یہ درست ہے؟ (ہاں/نہیں)",
+    },
+    "confirm_repeat_entry": {
+        "en": "The same entry ({amount}) was saved a minute ago. Save it again? (yes/no)",
+        "roman_ur": "Yahi entry ({amount}) abhi 1-2 minute pehle save hui thi. Dobara save karun? (haan/nahi)",
+        "ur": "یہی اندراج ({amount}) ابھی ایک دو منٹ پہلے محفوظ ہوا تھا۔ دوبارہ محفوظ کروں؟ (ہاں/نہیں)",
+    },
+    "party_already": {
+        "en": "{name} is already in your khata ({type}). To write an entry: \"{name} ko 500 diye\".",
+        "roman_ur": "{name} pehle se aap ke khate mein hai ({type}). Entry ke liye likhein: \"{name} ko 500 diye\".",
+        "ur": "{name} پہلے سے آپ کے کھاتے میں ہے ({type})۔ اندراج کے لیے لکھیں: \"{name} کو 500 دیے\"۔",
+    },
     "answer_yes_no": {
         "en": "Please reply yes or no.",
         "roman_ur": "Haan ya nahi likhein.",
@@ -1051,6 +1106,8 @@ _ROMAN_URDU_WORDS = {
     "thi", "thay", "kitni", "dikhao", "bhejo", "banao", "lagao", "hatao", "bech", "becha", "beche", "diye",
     "diya", "liye", "liya", "aae", "aaye", "gae", "gaye", "hui", "hua", "mila", "mile", "wale", "wali",
     "baqi", "kharab", "muft", "sab", "hisaab", "mahine", "wapas", "wapis", "karna", "ho",
+    "assalam", "alaikum", "salaam", "walaikum", "mujhse", "baat", "kro", "krdo", "kardo", "karein", "kr",
+    "rha", "rhe", "raha", "rahe", "tum", "tu", "tou", "oye", "abe", "kon", "kaun", "dikha", "bta", "bata", "krna",
 }
 
 

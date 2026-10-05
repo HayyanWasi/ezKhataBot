@@ -22,8 +22,8 @@ from app.services.replies import numbered, t
 
 @intent(
     "greeting",
-    "User says hello / salam or asks how the bot is.",
-    examples=["salam", "hello", "assalam o alaikum", "السلام علیکم"],
+    "User says hello / salam or chats: how is the bot, who is it, what is it doing (any spelling or tone).",
+    examples=["salam", "assalam o alaikum", "kia krra", "abe tu kya kr raha hai", "tm kon ho", "السلام علیکم"],
 )
 def greeting(ctx: Context, _) -> Outcome:
     business = ctx.business["name"] if ctx.business else "—"
@@ -32,8 +32,8 @@ def greeting(ctx: Context, _) -> Outcome:
 
 @intent(
     "help",
-    "User asks what the bot can do or how to use it.",
-    examples=["help", "madad chahiye", "tum kya kar sakte ho", "مدد"],
+    "User asks what the bot can do or how to use it, or complains about the bot.",
+    examples=["help", "madad chahiye", "tum kya kar sakte ho", "bekar bot hai", "مدد"],
 )
 def help_(ctx: Context, _) -> Outcome:
     return Outcome("help", t("help", ctx.language))
@@ -211,7 +211,7 @@ def _load_memories(ctx: Context) -> list[dict]:
 @intent(
     "list_memories",
     "User asks what the bot remembers / has saved.",
-    examples=["kya yaad hai", "what do you remember", "mere notes dikhao"],
+    examples=["kya kya yaad hai tmhe", "what do you remember", "mere notes dikhao"],
 )
 def list_memories(ctx: Context, _) -> Outcome:
     items = _load_memories(ctx)

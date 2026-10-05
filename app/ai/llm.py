@@ -28,10 +28,11 @@ class AIError(Exception):
 
 
 def _used_up(error: Exception) -> bool:
-    """Rate limited (429), no credits left (402), the model is not open to this key (404), or it is
-    busy (500 / 503). The next key is tried without counting it as a failure."""
+    """Rate limited (429), no credits left (402), the model is not open to this key (404), the request is
+    over this key's per-minute token limit (413, Groq free tier), or it is busy (500 / 503). The next key
+    is tried without counting it as a failure."""
     return isinstance(error, RateLimitError) or (
-        isinstance(error, APIStatusError) and error.status_code in (402, 404, 500, 503)
+        isinstance(error, APIStatusError) and error.status_code in (402, 404, 413, 500, 503)
     )
 
 

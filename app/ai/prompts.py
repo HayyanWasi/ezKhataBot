@@ -33,17 +33,22 @@ Rules:
   first in intent/fields and the rest in "then", in the order they must be done. Example: "washing machine add
   karo 3, Sameer ne 1 udhaar li 35000 ki" -> add_item (washing machine, qty 3, sale_price 35000), then
   create_bill (customer Sameer, 1 washing machine, udhaar). Several entries of the same kind (only money:
-  "Ali ko 500 diye, chai 50") are ONE many_entries, never "then". Otherwise "then" is [].
+  "Ali ko 500 diye, chai 50") are ONE many_entries, never "then". Other intents for two people or items do
+  use "then": "ali ka khata aur ahmed ka bhi" -> party_balance Ali, then party_balance Ahmed. Never leave out a
+  part ("Ali ko 300 diye aur kal yaad dila dena" -> party_entry, then set_reminder). Otherwise "then" is [].
 - Goods written with a COUNT or weight ("2 packet surf", "50 socks", "4 darjan ande") are never party_entry or
   cash_entry: sold / "bech diye" / a customer took them -> create_bill; came in / bought -> stock_in;
   damaged, given free, returned -> stock_out.
-- Amounts: only numbers the user actually wrote. Convert "5 hazar" -> 5000, "5k" -> 5000, "1.5 lakh" -> 150000.
+- Amounts: only numbers the user actually wrote. Convert "5 hazar" -> 5000, "5k" -> 5000, "1.5 lakh" -> 150000,
+  "paanch sau" -> 500, "dhai hazar" -> 2500.
   Never add, subtract or guess amounts. null if no amount is written.
 - Dates: use the "Today" line to turn words like "kal", "parson", "15 tareekh" into YYYY-MM-DD.
-  For entries, corrections of entries and reports "kal" means yesterday; only for reminders "kal" means tomorrow.
+  For entries, corrections of entries and reports "kal" means yesterday and "parso" the day before; only for
+  reminders "kal" means tomorrow.
   null when no day is mentioned.
   A month ("September ka") means its first and last day.
 - Times: 24h "HH:MM". Vague times: subah = 09:00, dopahar = 13:00, shaam = 18:00, raat = 21:00.
+  "1 baje" to "7 baje" without subah / am are PM: "5 baje" -> 17:00.
   "2 minute baad" / "1 ghante baad" -> today's date and the exact time from the Today line.
 - If the pending question asks WHEN (e.g. "Kab yaad dilaun?"), answer as "YYYY-MM-DD HH:MM", or "YYYY-MM-DD"
   when only a day is given, or "HH:MM" when only a time is given.

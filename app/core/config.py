@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     llm_reasoning_effort: str = "low"  # empty = don't send (for providers that reject it)
     llm_timeout_seconds: float = 20
     llm_max_tokens: int = 2500  # answer cap; without it providers reserve the whole context per call
-    llm_classify_max_tokens: int = 1200  # the classifier's JSON is short; Groq counts prompt + cap per minute
+    llm_classify_max_tokens: int = 1000  # the classifier's JSON is short; Groq counts prompt + cap per minute
     # Which providers answer AI calls: any of groq, openrouter, gemini (comma-separated; empty = all).
     # Calls take turns across every key of these providers, so no single key hits its per-minute limit.
     llm_providers: str = ""
