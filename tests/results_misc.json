@@ -1,0 +1,668 @@
+[
+ {
+  "id": "REM-01",
+  "feature": "Reminders/statement/memory",
+  "style": "Reminder",
+  "text": "Ali se paise lene hain kal yaad dila dena",
+  "session": "306",
+  "intent": "set_reminder",
+  "reply": "⏰ 6 Oct, 10:00 AM aur 06:00 PM yaad dilaunga: Ali se paise lene hain",
+  "cls": {
+   "intent": "set_reminder",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "text": "Ali se paise lene hain",
+    "date": "2026-10-06",
+    "time": null,
+    "party_name": "Ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "reminders": 1
+  },
+  "exp": {
+   "i": [
+    "set_reminder"
+   ],
+   "rx": "Ali|kal"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "REM-02",
+  "feature": "Reminders/statement/memory",
+  "style": "Reminder time",
+  "text": "kal 5 baje bijli ka bill yaad krwana",
+  "session": "306",
+  "intent": "set_reminder",
+  "reply": "⏰ 6 Oct, 05:00 AM yaad dilaunga: bijli ka bill",
+  "cls": {
+   "intent": "set_reminder",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "text": "bijli ka bill",
+    "date": "2026-10-06",
+    "time": "05:00",
+    "party_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "reminders": 1
+  },
+  "exp": {
+   "i": [
+    "set_reminder"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "REM-03",
+  "feature": "Reminders/statement/memory",
+  "style": "List",
+  "text": "reminders dikhao",
+  "session": "306",
+  "intent": "list_reminders",
+  "reply": "Aapki reminders:\n1) 6 Oct, 05:00 AM — bijli ka bill\n2) 6 Oct, 10:00 AM — Ali se paise lene hain",
+  "cls": {
+   "intent": "list_reminders",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "list_reminders"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "REM-04",
+  "feature": "Reminders/statement/memory",
+  "style": "Cancel vague",
+  "text": "reminder hata do",
+  "session": "306",
+  "intent": "cancel_reminder",
+  "reply": "Kaun si reminder?\n1) 6 Oct, 05:00 AM — bijli ka bill\n2) 6 Oct, 10:00 AM — Ali se paise lene hain",
+  "cls": {
+   "intent": "cancel_reminder",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "query": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "choose_reminder",
+  "delta": {},
+  "exp": {
+   "i": [
+    "cancel_reminder"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "STM-01",
+  "feature": "Reminders/statement/memory",
+  "style": "Statement",
+  "text": "ali ka statement bhej",
+  "session": "306",
+  "intent": "statement",
+  "reply": "📄 Ali ka statement (poora khata)\nAli se lene hain: Rs 500",
+  "cls": {
+   "intent": "statement",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "start_date": null,
+    "end_date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "statement"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "STM-02",
+  "feature": "Reminders/statement/memory",
+  "style": "Compressed",
+  "text": "ali ka pdf",
+  "session": "306",
+  "intent": "statement",
+  "reply": "📄 Ali ka statement (poora khata)\nAli se lene hain: Rs 500",
+  "cls": {
+   "intent": "statement",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "start_date": null,
+    "end_date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "statement"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "STM-03",
+  "feature": "Reminders/statement/memory",
+  "style": "All",
+  "text": "sab ka hisab pdf me do",
+  "session": "306",
+  "intent": "statement",
+  "reply": "📄 Sab parties ka statement (poora khata)\nKul lene hain: Rs 500\nKul dene hain: Rs 0",
+  "cls": {
+   "intent": "statement",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": null,
+    "start_date": null,
+    "end_date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "statement"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "MEM-01",
+  "feature": "Reminders/statement/memory",
+  "style": "Memory",
+  "text": "mera naam Hayyan hai yaad rakhna",
+  "session": "306",
+  "intent": "remember_user_fact",
+  "reply": "✅ Yaad rakh liya.",
+  "cls": {
+   "intent": "remember_user_fact",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "content": "mera naam Hayyan hai"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "remember_user_fact"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "MEM-02",
+  "feature": "Reminders/statement/memory",
+  "style": "Recall",
+  "text": "kya yaad hai tmhe",
+  "session": "306",
+  "intent": "list_memories",
+  "reply": "Mujhe yeh yaad hai:\n1) mera naam Hayyan hai",
+  "cls": {
+   "intent": "list_memories",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "list_memories"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "LNG-01",
+  "feature": "Reminders/statement/memory",
+  "style": "Language",
+  "text": "ab se english me baat karo",
+  "session": "306",
+  "intent": "set_language",
+  "reply": "✅ OK, I'll reply in English.",
+  "cls": {
+   "intent": "set_language",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "language": "en"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "set_language"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "LNG-02",
+  "feature": "Reminders/statement/memory",
+  "style": "Language back",
+  "text": "roman urdu me jawab do",
+  "session": "306",
+  "intent": "set_language",
+  "reply": "✅ Theek hai, ab Roman Urdu mein jawab dunga.",
+  "cls": {
+   "intent": "set_language",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "language": "roman_ur"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "set_language"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CAN-01",
+  "feature": "Cancel",
+  "style": "Start entry",
+  "text": "customer add krna hai",
+  "session": "306",
+  "intent": "add_party",
+  "reply": "Naam kya hai?",
+  "cls": {
+   "intent": "add_party",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": null,
+    "type": "customer",
+    "phone": null,
+    "opening_amount": null,
+    "opening_direction": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_party",
+  "delta": {},
+  "exp": {
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CAN-02",
+  "feature": "Cancel",
+  "style": "Follow-up name",
+  "text": "Zubair",
+  "session": "306",
+  "intent": "add_party",
+  "reply": "✅ Zubair customer add ho gaya",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "Zubair"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "entry_party",
+  "pend_after": null,
+  "delta": {
+   "accounts": 1
+  },
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'accounts': 1}; expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "CAN-03",
+  "feature": "Cancel",
+  "style": "Follow-up phone",
+  "text": "0333 7654321",
+  "session": "306",
+  "intent": "set_party_phone",
+  "reply": "✅ Zubair ka number save ho gaya",
+  "cls": {
+   "intent": "set_party_phone",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Zubair",
+    "phone": "0333 7654321"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was"
+ },
+ {
+  "id": "CAN-04",
+  "feature": "Cancel",
+  "style": "Start",
+  "text": "Ali ko 100 diye",
+  "session": "306",
+  "intent": "party_entry",
+  "reply": "Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 100,
+    "date": null,
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "opening_cash",
+  "delta": {},
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was"
+ },
+ {
+  "id": "CAN-05",
+  "feature": "Cancel",
+  "style": "Cancel phrase",
+  "text": "rehne do",
+  "session": "306",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "opening_cash",
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CAN-06",
+  "feature": "Cancel",
+  "style": "Change phrase",
+  "text": "change krdo",
+  "session": "306",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "ENG-01",
+  "feature": "Mixed English",
+  "style": "English",
+  "text": "show me ali's balance",
+  "session": "306",
+  "intent": "party_balance",
+  "reply": "*Ali (customer)* · 📞 923331234567\nAli se lene hain: Rs 500\n\n5 Oct · diye Rs 500 → lene Rs 500",
+  "cls": {
+   "intent": "party_balance",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "party_balance"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "ENG-02",
+  "feature": "Mixed English",
+  "style": "Hinglish",
+  "text": "ali ko 500 pay kardo",
+  "session": "306",
+  "intent": "party_entry",
+  "reply": "Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 500,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "opening_cash",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "ENG-03",
+  "feature": "Mixed English",
+  "style": "Hinglish",
+  "text": "bhai last week ka total expenses send krdo",
+  "session": "306",
+  "intent": "money_report",
+  "reply": "Abhi cash book mein koi entry nahi. Likhein: \"chai 200\" ya \"3000 aaye\"",
+  "cls": {
+   "intent": "money_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "account": null,
+    "start_date": "2026-09-28",
+    "end_date": "2026-10-04",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "money_report"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "ENG-04",
+  "feature": "Mixed English",
+  "style": "Hinglish",
+  "text": "kal ke bills show kro",
+  "session": "306",
+  "intent": "bill_report",
+  "reply": "🧾 *Bills* · 4 Oct\nKul sale: *Rs 0* (0 bills: Rs 0)\nIs dauran koi bill nahi.",
+  "cls": {
+   "intent": "bill_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "list",
+    "bill_no": null,
+    "customer_name": null,
+    "start_date": "2026-10-04",
+    "end_date": "2026-10-04",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "bill_report"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ }
+]

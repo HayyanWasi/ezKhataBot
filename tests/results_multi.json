@@ -1,0 +1,783 @@
+[
+ {
+  "id": "MUL-01",
+  "feature": "Multi-action",
+  "style": "Sale + expense",
+  "text": "2 charger 3000 ke sell kiye aur 500 delivery wale ko diye",
+  "session": "313",
+  "intent": "create_bill",
+  "reply": "Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya \"skip\" likhein.",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "charger",
+      "qty": 2,
+      "unit": null,
+      "rate": 1500
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": "cash",
+    "paid_amount": 3000,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": [
+    {
+     "intent": "cash_entry",
+     "fields": {
+      "direction": "out",
+      "amount": 500,
+      "date": "2026-10-05",
+      "note": "delivery wale",
+      "category_word": "delivery",
+      "is_sale": false,
+      "bank_name": null
+     }
+    }
+   ]
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "shop_details",
+  "delta": {},
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'2 charger 3000 ke sell kiye aur 500 delivery wale ko diye' -> Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya \"skip\" likhein.",
+   "'cash' -> 🧾 *Bill #2* · Walk-in · 5 Oct\n1) Charger 2 × Rs 1,500 = Rs 3,000\n*Kul: Rs 3,000*\n✅ Poore paise mil gae (Cash)\n📦 Charger: 18 pcs\n💵 Cash: Rs 4,050",
+   "'1' -> \"delivery\" kis category mein daalun?\n1) Delivery (nayi)\n2) Chai\nYa naya naam likhein.",
+   "'haan' -> ✅ Rs 1 gaye · Delivery (5 Oct)\n💵 Cash: Rs 4,049"
+  ]
+ },
+ {
+  "id": "MUL-01v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "aaj kya kya hua",
+  "session": "313",
+  "intent": "recent_entries",
+  "reply": "🕘 *Haaliya entries*\n• 5 Oct · Delivery · Rs 1\n• 5 Oct · Bill #2 · Walk-in · Rs 3,000 (Charger 2)\n• 5 Oct · Bill #1 · Walk-in · Rs 60 (Socks 2)\n• 5 Oct · Chai · Rs 10\n• 5 Oct · Shuru ka stock (Charger) · 20 pcs",
+  "cls": {
+   "intent": "recent_entries",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "limit": null,
+    "date": "2026-10-05",
+    "customers_only": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "500|[Dd]elivery",
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "MUL-02",
+  "feature": "Multi-action",
+  "style": "Party + udhaar",
+  "text": "Ahmed ko customer add karo aur uske account mein 2500 udhar likhdo",
+  "session": "313",
+  "intent": "add_party",
+  "reply": "✅ Ahmed customer add ho gaya\nAhmed se lene hain: Rs 2,500",
+  "cls": {
+   "intent": "add_party",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Ahmed",
+    "type": "customer",
+    "phone": null,
+    "opening_amount": 2500,
+    "opening_direction": "will_get"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "accounts": 1
+  },
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'Ahmed ko customer add karo aur uske account mein 2500 udhar likhdo' -> ✅ Ahmed customer add ho gaya\nAhmed se lene hain: Rs 2,500"
+  ]
+ },
+ {
+  "id": "MUL-02v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "ahmed ka khata",
+  "session": "313",
+  "intent": "party_balance",
+  "reply": "*Ahmed (customer)*\nAhmed se lene hain: Rs 2,500\n\n5 Oct · pehle ka Rs 2,500 → lene Rs 2,500",
+  "cls": {
+   "intent": "party_balance",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ahmed"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "2,?500",
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "MUL-03",
+  "feature": "Multi-action",
+  "style": "Sale + expense",
+  "text": "5000 sale add karo aur 1000 expense bhi daldo",
+  "session": "313",
+  "intent": "read_image",
+  "reply": "📝 2 entries mili:\nCash book:\n1) 5 Oct · Counter sale · Rs 5,000\n❓ 2) 5 Oct · Kharcha · expense · Rs 1,000 · kaunsi category? (baad mein poochunga)\nSave karun? haan/nahi",
+  "cls": {
+   "intent": "many_entries",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_image",
+  "delta": {},
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'5000 sale add karo aur 1000 expense bhi daldo' -> 📝 2 entries mili:\nCash book:\n1) 5 Oct · Counter sale · Rs 5,000\n❓ 2) 5 Oct · Kharcha · expense · Rs 1,000 · kaunsi category? (baad mein poochunga)\nSave karun? haan/nahi",
+   "'haan' -> ✅ 1 entries save ho gayin\n💵 Cash: Rs 9,049\n\n\"expense\" kis category mein daalun?\n1) Expense (nayi)\n2) Chai\n3) Delivery\nYa naya naam likhein.",
+   "'1' -> ✅ Rs 1,000 gaye · Expense (5 Oct)\n💵 Cash: Rs 8,049"
+  ]
+ },
+ {
+  "id": "MUL-03v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "aj ka hisab",
+  "session": "313",
+  "intent": "money_report",
+  "reply": "📒 Cash · 5 Oct\nShuru mein: Rs 0\nAaye: Rs 9,060\nGaye: Rs 1,011\nBaqi: Rs 8,049\n\nKharche:\n• Expense: Rs 1,000\n• Chai: Rs 10\n• Delivery: Rs 1",
+  "cls": {
+   "intent": "money_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "account": null,
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-05",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "6,?000|5,?000",
+   "w": "none"
+  },
+  "verdict": "FAIL",
+  "why": "reply missing /6,?000|5,?000/"
+ },
+ {
+  "id": "MUL-04",
+  "feature": "Multi-action",
+  "style": "Two parties",
+  "text": "Ali ko 100 diye aur Ahmed se 200 liye",
+  "session": "313",
+  "intent": "read_image",
+  "reply": "📝 2 entries mili:\nParty khata:\n1) 5 Oct · Ali ko Rs 100 diye\n2) 5 Oct · Ahmed se Rs 200 liye\nSave karun? haan/nahi",
+  "cls": {
+   "intent": "many_entries",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_image",
+  "delta": {},
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'Ali ko 100 diye aur Ahmed se 200 liye' -> 📝 2 entries mili:\nParty khata:\n1) 5 Oct · Ali ko Rs 100 diye\n2) 5 Oct · Ahmed se Rs 200 liye\nSave karun? haan/nahi",
+   "'haan' -> ✅ 2 entries save ho gayin\nAli se lene hain: Rs 100\nAhmed se lene hain: Rs 2,300"
+  ]
+ },
+ {
+  "id": "MUL-04v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "sab udhar dikhao",
+  "session": "313",
+  "intent": "list_parties",
+  "reply": "Kul lene hain: Rs 2,400\nKul dene hain: Rs 0\n\n1) Ahmed — lene Rs 2,300\n2) Ali — lene Rs 100",
+  "cls": {
+   "intent": "list_parties",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "type": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "Ali",
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "MUL-05",
+  "feature": "Multi-action",
+  "style": "Three lines",
+  "text": "chai 50 aur rickshaw 100 aur nashta 150",
+  "session": "313",
+  "intent": "read_image",
+  "reply": "📝 3 entries mili:\nCash book:\n1) 5 Oct · Kharcha · Chai · Rs 50\n❓ 2) 5 Oct · Kharcha · rickshaw · Rs 100 · kaunsi category? (baad mein poochunga)\n❓ 3) 5 Oct · Kharcha · nashta · Rs 150 · kaunsi category? (baad mein poochunga)\nSave karun? haan/nahi",
+  "cls": {
+   "intent": "many_entries",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_image",
+  "delta": {},
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'chai 50 aur rickshaw 100 aur nashta 150' -> 📝 3 entries mili:\nCash book:\n1) 5 Oct · Kharcha · Chai · Rs 50\n❓ 2) 5 Oct · Kharcha · rickshaw · Rs 100 · kaunsi category? (baad mein poochunga)\n❓ 3) 5 Oct · Kharcha · nashta · Rs 150 · kaunsi category? (baad mein poochunga)\nSave karun? haan/nahi",
+   "'1' -> Haan ya nahi likhein.",
+   "'1' -> Haan ya nahi likhein.",
+   "'1' -> Haan ya nahi likhein.",
+   "'haan' -> ✅ 1 entries save ho gayin\n💵 Cash: Rs 7,999\n\n\"rickshaw\" kis category mein daalun?\n1) Rickshaw (nayi)\n2) Chai\n3) Delivery\n4) Expense\nYa naya naam likhein."
+  ]
+ },
+ {
+  "id": "MUL-05v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "aj kya kya hua",
+  "session": "313",
+  "intent": "recent_entries",
+  "reply": "🕘 *Haaliya entries*\n• 5 Oct · Chai · Rs 50\n• 5 Oct · Ali · diye Rs 100\n• 5 Oct · Ahmed · liye Rs 200\n• 5 Oct · Expense · Rs 1,000\n• 5 Oct · Sale · Rs 5,000",
+  "cls": {
+   "intent": "recent_entries",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "limit": null,
+    "date": "2026-10-05",
+    "customers_only": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "50.*100|150",
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "MUL-06",
+  "feature": "Multi-action",
+  "style": "Party + phone",
+  "text": "Ali ko 500 diye aur uska number 03331239876 save kr lo",
+  "session": "313",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 500 diye (5 Oct)\nAli se lene hain: Rs 600\n💵 Cash: Rs 7,499",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 500,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": [
+    {
+     "intent": "set_party_phone",
+     "fields": {
+      "party_name": "Ali",
+      "phone": "03331239876"
+     }
+    }
+   ]
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'Ali ko 500 diye aur uska number 03331239876 save kr lo' -> ✅ Ali ko Rs 500 diye (5 Oct)\nAli se lene hain: Rs 600\n💵 Cash: Rs 7,499"
+  ]
+ },
+ {
+  "id": "MUL-06v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "ali ka khata",
+  "session": "313",
+  "intent": "party_balance",
+  "reply": "*Ali (customer)* · 📞 923331239876\nAli se lene hain: Rs 600\n\n5 Oct · diye Rs 500 → lene Rs 600\n5 Oct · diye Rs 100 → lene Rs 100",
+  "cls": {
+   "intent": "party_balance",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "9876|500",
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "MUL-07",
+  "feature": "Multi-action",
+  "style": "Stock + damage",
+  "text": "50 socks aye bilal se cash aur 5 kharab nikle",
+  "session": "313",
+  "intent": "stock_in",
+  "reply": "✅ Stock aa gaya (5 Oct)\n📦 Socks: +50 → 98 pcs\n💰 Kul: Rs 1,000\n💵 Cash: Rs 6,499",
+  "cls": {
+   "intent": "stock_in",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "items": [
+     {
+      "name": "socks",
+      "qty": 50,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "supplier_name": "bilal",
+    "paid_via": "cash",
+    "paid_amount": null,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": [
+    {
+     "intent": "stock_out",
+     "fields": {
+      "items": [
+       {
+        "name": "socks",
+        "qty": 5,
+        "unit": null,
+        "rate": null
+       }
+      ],
+      "reason": "kharab",
+      "date": "2026-10-05"
+     }
+    }
+   ]
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 2
+  },
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'50 socks aye bilal se cash aur 5 kharab nikle' -> ✅ Stock aa gaya (5 Oct)\n📦 Socks: +50 → 98 pcs\n💰 Kul: Rs 1,000\n💵 Cash: Rs 6,499"
+  ]
+ },
+ {
+  "id": "MUL-07v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "socks kitne hain",
+  "session": "313",
+  "intent": "stock_report",
+  "reply": "*Socks*\n📦 Stock: 93 pcs · Sale Rs 30 · Khareed Rs 20\n💰 Value: Rs 1,860\n\n5 Oct · Stock kam -5\n5 Oct · Khareeda +50\n5 Oct · Bill se bika -2\n5 Oct · Shuru ka stock +50",
+  "cls": {
+   "intent": "stock_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "item",
+    "item": "socks",
+    "start_date": null,
+    "end_date": null,
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "[0-9]",
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "MUL-08",
+  "feature": "Multi-action",
+  "style": "Two reports",
+  "text": "ali ka khata dikhao aur ahmed ka bhi",
+  "session": "313",
+  "intent": "party_balance",
+  "reply": "*Ali (customer)* · 📞 923331239876\nAli se lene hain: Rs 600\n\n5 Oct · diye Rs 500 → lene Rs 600\n5 Oct · diye Rs 100 → lene Rs 100",
+  "cls": {
+   "intent": "party_balance",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali"
+   },
+   "then": [
+    {
+     "intent": "party_balance",
+     "fields": {
+      "party_name": "ahmed"
+     }
+    }
+   ]
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'ali ka khata dikhao aur ahmed ka bhi' -> *Ali (customer)* · 📞 923331239876\nAli se lene hain: Rs 600\n\n5 Oct · diye Rs 500 → lene Rs 600\n5 Oct · diye Rs 100 → lene Rs 100"
+  ]
+ },
+ {
+  "id": "MUL-09",
+  "feature": "Multi-action",
+  "style": "Edit + phone",
+  "text": "Ali ka number update karo aur uski salary bhi 35k kar do",
+  "session": "313",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "set_party_phone",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "phone": null
+   },
+   "then": [
+    {
+     "intent": "remember_business_fact",
+     "fields": {
+      "content": "Ali ki salary 35000 hai"
+     }
+    }
+   ]
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'Ali ka number update karo aur uski salary bhi 35k kar do' -> Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon."
+  ]
+ },
+ {
+  "id": "MUL-10",
+  "feature": "Multi-action",
+  "style": "Supplier split",
+  "text": "10k aya 3k supplier ko diya baki cash me rakhdo",
+  "session": "313",
+  "intent": "read_image",
+  "reply": "📝 2 entries mili:\nCash book:\n1) 5 Oct · Cash jama · Rs 10,000\nParty khata:\n2) 5 Oct · supplier ko Rs 3,000 diye (naya)\nSave karun? haan/nahi",
+  "cls": {
+   "intent": "many_entries",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_image",
+  "delta": {},
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'10k aya 3k supplier ko diya baki cash me rakhdo' -> 📝 2 entries mili:\nCash book:\n1) 5 Oct · Cash jama · Rs 10,000\nParty khata:\n2) 5 Oct · supplier ko Rs 3,000 diye (naya)\nSave karun? haan/nahi",
+   "'haan' -> Naye naam: supplier\n1) Sab customer\n2) Sab supplier\n3) Inki entries chhor do",
+   "'1' -> ✅ 2 entries save ho gayin\n💵 Cash: Rs 16,499\nsupplier se lene hain: Rs 3,000"
+  ]
+ },
+ {
+  "id": "MUL-10v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "aj kya kya hua",
+  "session": "313",
+  "intent": "recent_entries",
+  "reply": "🕘 *Haaliya entries*\n• 5 Oct · Cash in · Rs 10,000\n• 5 Oct · Supplier · diye Rs 3,000\n• 5 Oct · Stock out (Socks) · 5 pcs\n• 5 Oct · Khareed (Socks) · Rs 1,000\n• 5 Oct · Ali · diye Rs 500",
+  "cls": {
+   "intent": "recent_entries",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "limit": null,
+    "date": "2026-10-05",
+    "customers_only": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "10,?000|3,?000",
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "MUL-11",
+  "feature": "Multi-action",
+  "style": "Add item + stock",
+  "text": "socks ka rate 35 kar do aur charger ka 1600",
+  "session": "313",
+  "intent": "edit_item",
+  "reply": "*Socks* mein yeh badlun?\nSale rate: Rs 30 → Rs 35\n(haan/nahi)",
+  "cls": {
+   "intent": "edit_item",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "item": "socks",
+    "new_name": null,
+    "unit": null,
+    "category": null,
+    "sale_price": 35,
+    "purchase_price": null,
+    "low_stock_level": null
+   },
+   "then": [
+    {
+     "intent": "edit_item",
+     "fields": {
+      "item": "charger",
+      "new_name": null,
+      "unit": null,
+      "category": null,
+      "sale_price": 1600,
+      "purchase_price": null,
+      "low_stock_level": null
+     }
+    }
+   ]
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_edit_item",
+  "delta": {},
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'socks ka rate 35 kar do aur charger ka 1600' -> *Socks* mein yeh badlun?\nSale rate: Rs 30 → Rs 35\n(haan/nahi)",
+   "'haan' -> ✏️ *Socks* update ho gaya\n📦 Stock: 93 pcs · Sale Rs 35 · Khareed Rs 20"
+  ]
+ },
+ {
+  "id": "MUL-11v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "rate list dikhao",
+  "session": "313",
+  "intent": "stock_report",
+  "reply": "🏷️ *Rate list*\n1) Charger — sale Rs 1,500 · khareed Rs 1,000\n2) Socks — sale Rs 35 · khareed Rs 20",
+  "cls": {
+   "intent": "stock_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "rates",
+    "item": null,
+    "start_date": null,
+    "end_date": null,
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "35.*1,?600|1,?600",
+   "w": "none"
+  },
+  "verdict": "FAIL",
+  "why": "reply missing /35.*1,?600|1,?600/"
+ },
+ {
+  "id": "MUL-12",
+  "feature": "Multi-action",
+  "style": "Reminder + entry",
+  "text": "Ali ko 300 diye aur kal yaad dila dena paise lene hain",
+  "session": "313",
+  "intent": "set_reminder",
+  "reply": "⏰ 6 Oct, 10:00 AM aur 06:00 PM yaad dilaunga: paise lene hain",
+  "cls": {
+   "intent": "set_reminder",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "text": "paise lene hain",
+    "date": "2026-10-06",
+    "time": null,
+    "party_name": "Ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "reminders": 1
+  },
+  "exp": {},
+  "verdict": "PASS",
+  "why": "",
+  "chain": [
+   "'Ali ko 300 diye aur kal yaad dila dena paise lene hain' -> ⏰ 6 Oct, 10:00 AM aur 06:00 PM yaad dilaunga: paise lene hain"
+  ]
+ },
+ {
+  "id": "MUL-12v",
+  "feature": "Multi-action",
+  "style": "Check state",
+  "text": "reminders dikhao",
+  "session": "313",
+  "intent": "list_reminders",
+  "reply": "Aapki reminders:\n1) 6 Oct, 10:00 AM — paise lene hain",
+  "cls": {
+   "intent": "list_reminders",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "rx": "Ali|paise",
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ }
+]

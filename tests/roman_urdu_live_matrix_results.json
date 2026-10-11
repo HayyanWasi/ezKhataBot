@@ -1,0 +1,1251 @@
+{
+  "run_at": "2026-10-05T12:00:00+05:00",
+  "case_count": 60,
+  "summary": {
+    "PASS": 32,
+    "PARTIAL": 1,
+    "FAIL": 5
+  },
+  "results": [
+    {
+      "test_id": "RU-001",
+      "feature": "Conversation",
+      "style": "Normal Roman Urdu",
+      "user_message": "kya kar rahe ho?",
+      "expected_intent": [
+        "greeting"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Greet or explain the bot's purpose in Roman Urdu.",
+      "actual_classifier_response": {
+        "intent": "greeting",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.81
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-002",
+      "feature": "Conversation",
+      "style": "Missing vowels",
+      "user_message": "kya kr rhy",
+      "expected_intent": [
+        "greeting"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Understand the compressed question as conversational.",
+      "actual_classifier_response": {
+        "intent": "greeting",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.08
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-004",
+      "feature": "Conversation",
+      "style": "Karachi casual",
+      "user_message": "mere bhai tum kiya karhe ho",
+      "expected_intent": [
+        "greeting"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Respond conversationally without treating the phrase as a bookkeeping transaction.",
+      "actual_classifier_response": {
+        "intent": "greeting",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.42
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-016",
+      "feature": "Memory",
+      "style": "Different spelling",
+      "user_message": "ali wali bat bhool jao",
+      "expected_intent": [
+        "forget_memory"
+      ],
+      "expected_entities": {
+        "query": "ali"
+      },
+      "expected_behavior": "Find the relevant saved note or ask which one.",
+      "actual_classifier_response": {
+        "intent": "forget_memory",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "query": "Ali"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.4
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-017",
+      "feature": "Party khata",
+      "style": "Normal Roman Urdu",
+      "user_message": "Ali ko 500 udhar diye",
+      "expected_intent": [
+        "party_entry"
+      ],
+      "expected_entities": {
+        "party_name": "Ali",
+        "direction": "gave",
+        "amount": 500
+      },
+      "expected_behavior": "Prepare an Ali party debit entry, with no invented details.",
+      "actual_classifier_response": {
+        "intent": "party_entry",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "party_name": "Ali",
+          "party_type": null,
+          "direction": "gave",
+          "amount": 500,
+          "date": null,
+          "note": null,
+          "paid_via": null,
+          "bank_name": null,
+          "question": false
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.08
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-019",
+      "feature": "Party khata",
+      "style": "English mixed Urdu",
+      "user_message": "add customer Sana number 03001234567",
+      "expected_intent": [
+        "add_party"
+      ],
+      "expected_entities": {
+        "name": "Sana",
+        "type": "customer",
+        "phone": "03001234567"
+      },
+      "expected_behavior": "Add Sana as a customer or start the safe add flow.",
+      "actual_classifier_response": {
+        "intent": "add_party",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "name": "Sana",
+          "type": "customer",
+          "phone": "03001234567",
+          "opening_amount": null,
+          "opening_direction": null
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.99
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-023",
+      "feature": "Party khata",
+      "style": "Correction",
+      "user_message": "Ali wali entry 500 nahi 650 thi",
+      "expected_intent": [
+        "edit_entry"
+      ],
+      "expected_entities": {
+        "party_name": "Ali",
+        "amount": 500,
+        "new_amount": 650
+      },
+      "expected_behavior": "Find and correct the specified entry; do not create another transaction.",
+      "actual_classifier_response": {
+        "intent": "edit_entry",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "party_name": "Ali",
+          "item": null,
+          "amount": 500,
+          "new_amount": 650,
+          "new_date": null,
+          "new_note": null,
+          "new_qty": null
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.43
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-027",
+      "feature": "Cash book",
+      "style": "Normal Roman Urdu",
+      "user_message": "chai pe 200 kharch hogaye",
+      "expected_intent": [
+        "cash_entry"
+      ],
+      "expected_entities": {
+        "direction": "out",
+        "amount": 200
+      },
+      "expected_behavior": "Prepare a cash expense, asking necessary opening cash/category questions.",
+      "actual_classifier_response": {
+        "intent": "cash_entry",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "direction": "out",
+          "amount": 200,
+          "date": null,
+          "note": null,
+          "category_word": "chai",
+          "is_sale": false,
+          "bank_name": null
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.36
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-031",
+      "feature": "Money transfer",
+      "style": "Roman Urdu",
+      "user_message": "cash se JazzCash me 3000 bhej do",
+      "expected_intent": [
+        "transfer_money"
+      ],
+      "expected_entities": {
+        "amount": 3000,
+        "direction": "to_bank",
+        "bank_name": "JazzCash"
+      },
+      "expected_behavior": "Prepare a cash-to-JazzCash transfer.",
+      "actual_classifier_response": {
+        "intent": "transfer_money",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "direction": "to_bank",
+          "bank_name": "JazzCash",
+          "amount": 3000,
+          "date": "2026-10-05"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.19
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-033",
+      "feature": "Stock",
+      "style": "Direct command",
+      "user_message": "socks add karo 30 sale rate 20 cost 100 pieces",
+      "expected_intent": [
+        "add_item"
+      ],
+      "expected_entities": {
+        "name": "socks",
+        "sale_price": 30,
+        "purchase_price": 20,
+        "qty": 100
+      },
+      "expected_behavior": "Add item with correct prices and opening quantity.",
+      "actual_classifier_response": {
+        "intent": "add_item",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "name": "socks",
+          "unit": "pieces",
+          "category": null,
+          "sale_price": 30,
+          "purchase_price": 100,
+          "qty": null,
+          "low_stock_level": null
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.23
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": false,
+      "status": "PARTIAL",
+      "severity": "Medium",
+      "failure_explanation": "fields.purchase_price 100; expected 20; fields.qty None; expected 100",
+      "suggested_fix": "Add this labelled Roman Urdu phrasing to evaluation examples and tune routing/extraction."
+    },
+    {
+      "test_id": "RU-034",
+      "feature": "Stock",
+      "style": "Karachi casual",
+      "user_message": "bhai 50 socks aaye hain Bilal se",
+      "expected_intent": [
+        "stock_in"
+      ],
+      "expected_entities": {
+        "items": [
+          {
+            "name": "socks",
+            "qty": 50,
+            "unit": null,
+            "rate": null
+          }
+        ],
+        "supplier_name": "Bilal"
+      },
+      "expected_behavior": "Prepare stock-in for 50 socks from Bilal.",
+      "actual_classifier_response": {
+        "intent": "stock_in",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "items": [
+            {
+              "name": "socks",
+              "qty": 50,
+              "unit": null,
+              "rate": null
+            }
+          ],
+          "supplier_name": "Bilal",
+          "paid_via": null,
+          "paid_amount": null,
+          "bank_name": null,
+          "date": null
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.12
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-040",
+      "feature": "Billing",
+      "style": "Normal Roman Urdu",
+      "user_message": "Rohaan ka bill banao 2 socks 30 ke aur 1 belt 250 ki cash",
+      "expected_intent": [
+        "create_bill"
+      ],
+      "expected_entities": {
+        "customer_name": "Rohaan",
+        "paid_via": "cash"
+      },
+      "expected_behavior": "Prepare Rohaan's bill with both line items and cash payment.",
+      "actual_classifier_response": {
+        "intent": "create_bill",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "customer_name": "Rohaan",
+          "items": [
+            {
+              "name": "socks",
+              "qty": 2,
+              "unit": null,
+              "rate": 30
+            },
+            {
+              "name": "belt",
+              "qty": 1,
+              "unit": null,
+              "rate": 250
+            }
+          ],
+          "discount_percent": null,
+          "discount_amount": null,
+          "tax_percent": null,
+          "tax_amount": null,
+          "paid_via": "cash",
+          "paid_amount": null,
+          "bank_name": null,
+          "date": "2026-10-05"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.17
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-042",
+      "feature": "Billing",
+      "style": "Polite request",
+      "user_message": "bill number 3 bhej dein",
+      "expected_intent": [
+        "bill_report"
+      ],
+      "expected_entities": {
+        "bill_no": 3
+      },
+      "expected_behavior": "Retrieve bill 3.",
+      "actual_classifier_response": {
+        "intent": "bill_report",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "kind": "one",
+          "bill_no": 3,
+          "customer_name": null,
+          "start_date": null,
+          "end_date": null,
+          "pdf": false
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.71
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-046",
+      "feature": "Reminders",
+      "style": "Normal Roman Urdu",
+      "user_message": "kal subah 10 baje Ali ko paise dene yaad dila dena",
+      "expected_intent": [
+        "set_reminder"
+      ],
+      "expected_entities": {
+        "party_name": "Ali"
+      },
+      "expected_behavior": "Schedule a future reminder with the stated recipient and time.",
+      "actual_classifier_response": {
+        "intent": "set_reminder",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "text": "Ali ko paise dene",
+          "date": "2026-10-06",
+          "time": "10:00",
+          "party_name": "Ali"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.25
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-049",
+      "feature": "Employees",
+      "style": "Direct command",
+      "user_message": "employee add karo Ali 03001234567",
+      "expected_intent": [
+        "add_employee"
+      ],
+      "expected_entities": {
+        "name": "Ali",
+        "phone": "03001234567"
+      },
+      "expected_behavior": "Ask owner confirmation before creating Ali as an employee.",
+      "actual_classifier_response": {
+        "intent": "add_employee",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "name": "Ali",
+          "phone": "03001234567"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.43
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-055",
+      "feature": "Employees",
+      "style": "Very short",
+      "user_message": "staff dikhao",
+      "expected_intent": [
+        "list_employees"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "List employees.",
+      "actual_classifier_response": {
+        "intent": "list_employees",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.95
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-057",
+      "feature": "Multiple actions",
+      "style": "Natural long message",
+      "user_message": "Ali ko 500 diye aur chai 100 ka kharcha likh do",
+      "expected_intent": [
+        "many_entries"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Create two separate entries, preserving Ali, 500, Chai and 100.",
+      "actual_classifier_response": {
+        "intent": "party_entry",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "party_name": "Ali",
+          "party_type": null,
+          "direction": "gave",
+          "amount": 500,
+          "date": null,
+          "note": null,
+          "paid_via": "cash",
+          "bank_name": null,
+          "question": false
+        },
+        "then": [
+          {
+            "intent": "cash_entry",
+            "fields": {
+              "direction": "out",
+              "amount": 100,
+              "date": null,
+              "note": null,
+              "category_word": "chai",
+              "is_sale": false,
+              "bank_name": null
+            }
+          }
+        ],
+        "error": null,
+        "elapsed_seconds": 1.18
+      },
+      "intent_understood": false,
+      "entities_extracted_correctly": true,
+      "status": "FAIL",
+      "severity": "High",
+      "failure_explanation": "intent 'party_entry'; expected one of ['many_entries']",
+      "suggested_fix": "Add this labelled Roman Urdu phrasing to evaluation examples and tune routing/extraction."
+    },
+    {
+      "test_id": "RU-035",
+      "feature": "Stock",
+      "style": "Informal grammar",
+      "user_message": "5 socks kharab hogye",
+      "expected_intent": [
+        "stock_out"
+      ],
+      "expected_entities": {
+        "items": [
+          {
+            "name": "socks",
+            "qty": 5,
+            "unit": null,
+            "rate": null
+          }
+        ]
+      },
+      "expected_behavior": "Reduce stock as damaged.",
+      "actual_classifier_response": {
+        "intent": "stock_out",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "items": [
+            {
+              "name": "socks",
+              "qty": 5,
+              "unit": null,
+              "rate": null
+            }
+          ],
+          "reason": "kharab hogye",
+          "date": null
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.37
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-059",
+      "feature": "Pending answer",
+      "style": "Roman Urdu confirmation",
+      "user_message": "haan ji",
+      "expected_intent": [
+        "pending_answer"
+      ],
+      "expected_entities": {
+        "answer": "yes"
+      },
+      "expected_behavior": "Treat this as the answer to the pending employee confirmation.",
+      "actual_classifier_response": {
+        "intent": "pending_answer",
+        "language": "roman_ur",
+        "answers_pending": true,
+        "fields": {
+          "answer": "yes"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.86
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-003",
+      "feature": "Conversation",
+      "style": "Repeated letters",
+      "user_message": "kyaa kr rhe ho",
+      "expected_intent": [
+        "greeting"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Respond conversationally in Roman Urdu.",
+      "actual_classifier_response": {
+        "intent": "greeting",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.1
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-005",
+      "feature": "Conversation",
+      "style": "Rough tone",
+      "user_message": "oye tou kya karha hai",
+      "expected_intent": [
+        "greeting",
+        "help"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Keep a calm helpful tone and offer greeting or help.",
+      "actual_classifier_response": {
+        "intent": "greeting",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.87
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-006",
+      "feature": "Conversation",
+      "style": "Very compressed WhatsApp",
+      "user_message": "kia krra",
+      "expected_intent": [
+        "greeting"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Recognize a casual conversational question.",
+      "actual_classifier_response": {
+        "intent": "unknown",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.77
+      },
+      "intent_understood": false,
+      "entities_extracted_correctly": true,
+      "status": "FAIL",
+      "severity": "High",
+      "failure_explanation": "intent 'unknown'; expected one of ['greeting']",
+      "suggested_fix": "Add this labelled Roman Urdu phrasing to evaluation examples and tune routing/extraction."
+    },
+    {
+      "test_id": "RU-007",
+      "feature": "Conversation",
+      "style": "Slang",
+      "user_message": "bhai kya scene hai bot ka",
+      "expected_intent": [
+        "greeting",
+        "help"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Explain what the bot can do.",
+      "actual_classifier_response": {
+        "intent": "help",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.14
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-008",
+      "feature": "Conversation",
+      "style": "Polite request",
+      "user_message": "aap kya kya help kar sakte hain please",
+      "expected_intent": [
+        "help"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Show supported actions.",
+      "actual_classifier_response": {
+        "intent": "help",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.27
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-009",
+      "feature": "Language",
+      "style": "Urdu mixed English",
+      "user_message": "mujhse English mein baat karo",
+      "expected_intent": [
+        "set_language"
+      ],
+      "expected_entities": {
+        "language": "en"
+      },
+      "expected_behavior": "Set English reply preference.",
+      "actual_classifier_response": {
+        "intent": "set_language",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "language": "en"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.93
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-010",
+      "feature": "Language",
+      "style": "English mixed Urdu",
+      "user_message": "roman urdu me reply krdo",
+      "expected_intent": [
+        "set_language"
+      ],
+      "expected_entities": {
+        "language": "roman_ur"
+      },
+      "expected_behavior": "Set Roman Urdu reply preference.",
+      "actual_classifier_response": {
+        "intent": "set_language",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "language": "roman_ur"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.85
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-011",
+      "feature": "Shop selection",
+      "style": "Direct command",
+      "user_message": "meri konsi dukan active hai",
+      "expected_intent": [
+        "which_business"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Show current shop.",
+      "actual_classifier_response": {
+        "intent": "which_business",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.81
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-012",
+      "feature": "Shop selection",
+      "style": "Karachi casual",
+      "user_message": "bhai dusri shop pe le chalo",
+      "expected_intent": [
+        "switch_business"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Ask which shop or change the active one.",
+      "actual_classifier_response": {
+        "intent": "switch_business",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "business_name": null
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 3.75
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-013",
+      "feature": "Memory",
+      "style": "Polite Roman Urdu",
+      "user_message": "yaad rakhna mujhe Hayyan bhai kehna",
+      "expected_intent": [
+        "remember_user_fact"
+      ],
+      "expected_entities": {
+        "content": "Hayyan bhai kehna"
+      },
+      "expected_behavior": "Save a user preference.",
+      "actual_classifier_response": {
+        "intent": "remember_user_fact",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "content": "Hayyan bhai kehna"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 2.7
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-014",
+      "feature": "Memory",
+      "style": "Informal grammar",
+      "user_message": "ali rohaan ka bhai hai yaad rakh",
+      "expected_intent": [
+        "remember_business_fact"
+      ],
+      "expected_entities": {
+        "content": "ali rohaan ka bhai hai"
+      },
+      "expected_behavior": "Save the shop-related note.",
+      "actual_classifier_response": {
+        "intent": "remember_business_fact",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "content": "ali rohaan ka bhai hai"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.0
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-018",
+      "feature": "Party khata",
+      "style": "Missing vowels",
+      "user_message": "bilal sy 1200 mily aj",
+      "expected_intent": [
+        "party_entry"
+      ],
+      "expected_entities": {
+        "party_name": "bilal",
+        "direction": "got",
+        "amount": 1200
+      },
+      "expected_behavior": "Record or guide a received payment from Bilal.",
+      "actual_classifier_response": {
+        "intent": "party_entry",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "party_name": "bilal",
+          "party_type": null,
+          "direction": "got",
+          "amount": 1200,
+          "date": "2026-10-05",
+          "note": null,
+          "paid_via": "cash",
+          "bank_name": null,
+          "question": false
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.26
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-015",
+      "feature": "Memory",
+      "style": "Short message",
+      "user_message": "kya kya yaad hai tmhe",
+      "expected_intent": [
+        "list_memories"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "List saved notes.",
+      "actual_classifier_response": {
+        "intent": "list_reminders",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {},
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 3.76
+      },
+      "intent_understood": false,
+      "entities_extracted_correctly": true,
+      "status": "FAIL",
+      "severity": "High",
+      "failure_explanation": "intent 'list_reminders'; expected one of ['list_memories']",
+      "suggested_fix": "Add this labelled Roman Urdu phrasing to evaluation examples and tune routing/extraction."
+    },
+    {
+      "test_id": "RU-020",
+      "feature": "Party khata",
+      "style": "Direct command",
+      "user_message": "Ali ka phone 03001234567 laga do",
+      "expected_intent": [
+        "set_party_phone"
+      ],
+      "expected_entities": {
+        "party_name": "Ali",
+        "phone": "03001234567"
+      },
+      "expected_behavior": "Set Ali's party phone.",
+      "actual_classifier_response": {
+        "intent": "set_party_phone",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "party_name": "Ali",
+          "phone": "03001234567"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.65
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-022",
+      "feature": "Party khata",
+      "style": "Very short",
+      "user_message": "sab udhar dikhao",
+      "expected_intent": [
+        "list_parties"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "List party balances.",
+      "actual_classifier_response": {
+        "intent": "statement",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "party_name": null,
+          "start_date": null,
+          "end_date": null
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.17
+      },
+      "intent_understood": false,
+      "entities_extracted_correctly": true,
+      "status": "FAIL",
+      "severity": "High",
+      "failure_explanation": "intent 'statement'; expected one of ['list_parties']",
+      "suggested_fix": "Add this labelled Roman Urdu phrasing to evaluation examples and tune routing/extraction."
+    },
+    {
+      "test_id": "RU-024",
+      "feature": "Party khata",
+      "style": "Context dependent",
+      "user_message": "wo last wali entry undo krdo",
+      "expected_intent": [
+        "delete_entry"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Ask for clarification or undo the user's last eligible entry safely.",
+      "actual_classifier_response": {
+        "intent": "delete_entry",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "party_name": null,
+          "item": null,
+          "amount": null
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.82
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-025",
+      "feature": "Party khata",
+      "style": "Polite request",
+      "user_message": "Ali ka September wala statement bhej dein",
+      "expected_intent": [
+        "statement"
+      ],
+      "expected_entities": {
+        "party_name": "Ali"
+      },
+      "expected_behavior": "Generate or guide a statement request for Ali.",
+      "actual_classifier_response": {
+        "intent": "statement",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "party_name": "Ali",
+          "start_date": "2026-09-01",
+          "end_date": "2026-09-30"
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 1.06
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-029",
+      "feature": "Cash book",
+      "style": "Direct question",
+      "user_message": "galle me kitna cash h",
+      "expected_intent": [
+        "money_report"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Show current cash report.",
+      "actual_classifier_response": {
+        "intent": "money_report",
+        "language": "roman_ur",
+        "answers_pending": false,
+        "fields": {
+          "account": "cash",
+          "start_date": null,
+          "end_date": null,
+          "pdf": false
+        },
+        "then": [],
+        "error": null,
+        "elapsed_seconds": 0.59
+      },
+      "intent_understood": true,
+      "entities_extracted_correctly": true,
+      "status": "PASS",
+      "severity": "None",
+      "failure_explanation": null,
+      "suggested_fix": null
+    },
+    {
+      "test_id": "RU-036",
+      "feature": "Stock",
+      "style": "Very short",
+      "user_message": "stock dikha",
+      "expected_intent": [
+        "stock_report"
+      ],
+      "expected_entities": {},
+      "expected_behavior": "Show stock list.",
+      "actual_classifier_response": {
+        "intent": null,
+        "language": null,
+        "answers_pending": null,
+        "fields": {},
+        "then": [],
+        "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kzn266qme10rsxkkjw4k34bn` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 2320, Requested 7393. Please try again in 12.8475s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "elapsed_seconds": 0.62
+      },
+      "intent_understood": false,
+      "entities_extracted_correctly": true,
+      "status": "FAIL",
+      "severity": "Critical",
+      "failure_explanation": "Live AI classifier error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kzn266qme10rsxkkjw4k34bn` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 2320, Requested 7393. Please try again in 12.8475s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "suggested_fix": "Add this labelled Roman Urdu phrasing to evaluation examples and tune routing/extraction."
+    }
+  ]
+}

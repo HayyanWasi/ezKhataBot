@@ -1,0 +1,134 @@
+[EMP-01] PASS    'employee add karo Ali 03331000001' -> add_employee pend=confirm_add_employee d={}
+      *Ali* (0333-1000001) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-01c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Ali* (0333-1000001) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-02] PASS    'add employee Asif 03331000002' -> add_employee pend=confirm_add_employee d={}
+      *Asif* (0333-1000002) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-02c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Asif* (0333-1000002) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-03] PASS    'Danish ko add kardo number 03331000004' -> add_employee pend=confirm_add_employee d={}
+      *Danish* (0333-1000004) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-03c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Danish* (0333-1000004) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-04] PASS    'Farhan add krdo iska number ye hai 03331000005' -> add_employee pend=confirm_add_employee d={}
+      *Farhan* (0333-1000005) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-04c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Farhan* (0333-1000005) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-05] PASS    'kamran 03331000006 add' -> add_employee pend=confirm_add_employee d={}
+      *Kamran* (0333-1000006) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-05c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Kamran* (0333-1000006) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-06] PASS    'bhai sajid ko employee mein daldo 03331000007' -> add_employee pend=confirm_add_employee d={}
+      *Sajid* (0333-1000007) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-06c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Sajid* (0333-1000007) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-07] PASS    'oye imran ko add kr iska number 03331000008' -> add_employee pend=confirm_add_employee d={}
+      *Imran* (0333-1000008) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-07c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Imran* (0333-1000008) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-08] PASS    'employee tariq 03331000009' -> add_employee pend=confirm_add_employee d={}
+      *Tariq* (0333-1000009) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-08c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Tariq* (0333-1000009) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-09] PASS    'zubair dal 03331000012' -> add_employee pend=confirm_add_employee d={}
+      *Zubair* (0333-1000012) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-09c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Zubair* (0333-1000012) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-10] PASS    'Hamza ko staff add karo 0333 1000013' -> add_employee pend=confirm_add_employee d={}
+      *Hamza* (0333-1000013) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-10c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Hamza* (0333-1000013) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-11] PASS    'naveed ko employee rakh lo +92 333 1000014' -> add_employee pend=confirm_add_employee d={}
+      *Naveed* (0333-1000014) ko *QA Employee Shop* mein employee add karun? haan/nahi
+[EMP-11c] PASS    'haan' -> add_employee pend=None d={'emps': 1}
+      ✅ *Naveed* (0333-1000014) employee ban gaye. Woh isi number se bot ko message kar sakte hain.
+[EMP-12] FAIL    'usman ko staff me dal' -> add_employee pend=None d={}
+      Employee ka naam aur WhatsApp number likhein, jaise: "Bilal ko employee add karo 03001234567"
+[EMP-13] FAIL    '03331000015' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[EMP-14] FAIL    'waqas staff add kr' -> add_employee pend=None d={}
+      Employee ka naam aur WhatsApp number likhein, jaise: "Bilal ko employee add karo 03001234567"
+[EMP-15] FAIL    'employee add krdo' -> add_employee pend=None d={}
+      Employee ka naam aur WhatsApp number likhein, jaise: "Bilal ko employee add karo 03001234567"
+[EMP-16] FAIL    'Rizwan' -> unknown pend=None d={}
+      Sorry, I didn't understand. Send /help to see what I can do.
+[EMP-17] FAIL    '03331000016' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[EMP-18] FAIL    'Rizwan ko employee add karo 03331000017 aur uski salary 30000 rakhdo' -> add_employee pend=confirm_add_employee d={}
+      *Rizwan* (0333-1000017) ko *QA Employee Shop* mein employee add karun? haan/nahi
+invalid fields for set_party_phone: 1 validation error for SetPartyPhoneFields
+phone
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.13/v/string_type
+[EMP-19] FAIL    'Ali ka number update karo aur uski salary bhi 35k kar do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[EMP-20] PASS    'employees dikhao' -> list_employees pend=None d={}
+      👥 *Employees* (11)
+      1) Ali · 0333-1000001
+      2) Asif · 0333-1000002
+      3) Danish · 0333-1000004
+      4) Farhan · 0333-1000005
+      5) Hamza · 0333-1000013
+      6) Imran · 0333-1000008
+      7) Kamran · 0333-1000006
+      8) Naveed · 0333-1000014
+      9) Sajid · 0333-1000007
+      10) Tariq · 0333-1000009
+      11) Zubair · 0333-1000012
+[EMP-21] PASS    'staff list bta' -> list_employees pend=None d={}
+      👥 *Employees* (11)
+      1) Ali · 0333-1000001
+      2) Asif · 0333-1000002
+      3) Danish · 0333-1000004
+      4) Farhan · 0333-1000005
+      5) Hamza · 0333-1000013
+      6) Imran · 0333-1000008
+      7) Kamran · 0333-1000006
+      8) Naveed · 0333-1000014
+      9) Sajid · 0333-1000007
+      10) Tariq · 0333-1000009
+      11) Zubair · 0333-1000012
+[EMP-22] PASS    'mere paas kitne banday kaam kr rhe hain' -> list_employees pend=None d={}
+      👥 *Employees* (11)
+      1) Ali · 0333-1000001
+      2) Asif · 0333-1000002
+      3) Danish · 0333-1000004
+      4) Farhan · 0333-1000005
+      5) Hamza · 0333-1000013
+      6) Imran · 0333-1000008
+      7) Kamran · 0333-1000006
+      8) Naveed · 0333-1000014
+      9) Sajid · 0333-1000007
+      10) Tariq · 0333-1000009
+      11) Zubair · 0333-1000012
+[EMP-23] PASS    'emp kon kon hain' -> list_employees pend=None d={}
+      👥 *Employees* (11)
+      1) Ali · 0333-1000001
+      2) Asif · 0333-1000002
+      3) Danish · 0333-1000004
+      4) Farhan · 0333-1000005
+      5) Hamza · 0333-1000013
+      6) Imran · 0333-1000008
+      7) Kamran · 0333-1000006
+      8) Naveed · 0333-1000014
+      9) Sajid · 0333-1000007
+      10) Tariq · 0333-1000009
+      11) Zubair · 0333-1000012
+[EMP-24] PASS    'employee add karo Ali 03331000001' -> add_employee pend=None d={}
+      *Ali* pehle se yahan employee hain.
+[EMP-25] PASS    'asif ko hata do bhai' -> remove_employee pend=confirm_remove_employee d={}
+      *Asif* ko *QA Employee Shop* se hata dun? Woh is dukaan ke liye bot use nahi kar sakenge. haan/nahi
+[EMP-25b] PASS    'nai' -> remove_employee pend=None d={}
+      Theek hai, cancel kar diya.
+[EMP-26] PASS    'usko nikal do' -> remove_employee pend=confirm_remove_employee d={}
+      *Asif* ko *QA Employee Shop* se hata dun? Woh is dukaan ke liye bot use nahi kar sakenge. haan/nahi
+[EMP-27] PASS    'farzana ko employee se hata do' -> remove_employee pend=None d={}
+      farzana naam ka koi employee nahi. List ke liye "employees dikhao" likhein.
+[EMP-28] FAIL    '03331000020 add kr employee me' -> add_employee pend=None d={}
+      Employee ka naam aur WhatsApp number likhein, jaise: "Bilal ko employee add karo 03001234567"
+[EMP-29] PASS    'please add Sarmad as staff member his no is 03331000021' -> add_employee pend=confirm_add_employee d={}
+      Add *Sarmad* (0333-1000021) as an employee of *QA Employee Shop*? yes/no
+[EMP-29b] PASS    'ji' -> add_employee pend=None d={'emps': 1}
+      ✅ *Sarmad* (0333-1000021) is now an employee. They can message the bot from that number.
+[EMP-30] PASS    'haan' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.

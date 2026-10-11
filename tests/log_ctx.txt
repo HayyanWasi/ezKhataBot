@@ -1,0 +1,186 @@
+D:\Hayyan\Projects\ezKhataBot\tests\qa_battery.py:454: SyntaxWarning: invalid escape sequence '\.'
+  T(s, "ACC-04", F, "Decimal", "Ali ko 500.50 diye", i=["party_entry"], rx="500\.5")
+[CTX-10] PASS    'expense add kr' -> cash_entry pend=cash_amount d={}
+      Kitne paise?
+[CTX-11] PASS    '500' -> cash_entry pend=cash_direction d={}
+      Rs 500:
+      1) Aaye (cash in)
+      2) Gaye (cash out)
+[CTX-12] FAIL    'chai' -> cash_entry pend=cash_amount d={}
+      Kitne paise?
+[CTX-13] PASS    'chai ka kharcha likh do' -> cash_entry pend=cash_amount d={}
+      Kitne paise?
+[CTX-14] FAIL    '2 hazar' -> cash_entry pend=choose_category d={}
+      "chai" kis category mein daalun?
+      1) Chai (nayi)
+      Ya naya naam likhein.
+[CTX-15] PASS    'Ali 500' -> party_entry pend=entry_direction d={}
+      Rs 500:
+      1) Ali ko diye
+      2) Ali se liye
+[CTX-16] PASS    'pehla wala' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 500 diye (5 Oct)
+      Ali se lene hain: Rs 500
+[CTX-17] PASS    'Ali 700' -> party_entry pend=entry_direction d={}
+      Rs 700:
+      1) Ali ko diye
+      2) Ali se liye
+[CTX-18] PASS    'liye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali se Rs 700 liye (5 Oct)
+      Ali ko dene hain: Rs 200
+[CTX-19] PASS    'Ali 900' -> party_entry pend=entry_direction d={}
+      Rs 900:
+      1) Ali ko diye
+      2) Ali se liye
+[CTX-20] PASS    'han' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-21] PASS    'Ali 100' -> party_entry pend=entry_direction d={}
+      Rs 100:
+      1) Ali ko diye
+      2) Ali se liye
+[CTX-22] PASS    'rehne do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-23] PASS    'Zeeshan ko 700 diye' -> party_entry pend=new_party_type d={}
+      Zeeshan naya hai.
+      1) Customer
+      2) Supplier
+[CTX-24] PASS    'nahi supplier hai' -> party_entry pend=None d={'txn': 1, 'accounts': 1}
+      ✅ Zeeshan ko Rs 700 diye (5 Oct)
+      Zeeshan se lene hain: Rs 700
+      💵 Cash: Rs 300
+[CTX-25] PASS    'Waqar ko 300 udhaar diye' -> party_entry pend=new_party_type d={}
+      Waqar naya hai.
+      1) Customer
+      2) Supplier
+[CTX-26] PASS    'nai' -> party_entry pend=new_party_type d={}
+      Waqar naya hai.
+      1) Customer
+      2) Supplier
+[CTX-27] UNSAFE  '50 socks aye bilal se' -> stock_in pend=None d={'txn': 1}
+      ✅ Stock aa gaya (5 Oct)
+      📦 Socks: +50 → 60 pcs
+      💰 Kul: Rs 1,000
+      Bilal ko dene hain: Rs 1,000
+[CTX-28] FAIL    'udhar' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-29] PASS    '10 socks aye' -> stock_in pend=stock_pay d={}
+      10 pcs Socks: paise kaise diye?
+      1) Udhaar
+      2) Cash
+      3) Online (bank)
+      4) Sirf stock, paison ka hisaab nahi
+[CTX-30] PASS    'cash se' -> stock_in pend=None d={'txn': 1}
+      ✅ Stock aa gaya (5 Oct)
+      📦 Socks: +10 → 70 pcs
+      💰 Kul: Rs 200
+      💵 Cash: Rs 100
+[CTX-31] PASS    'customer add krna hai' -> add_party pend=entry_party d={}
+      Naam kya hai?
+[CTX-32] PASS    'ali ka khata dikha' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali ko dene hain: Rs 200
+      
+      5 Oct · liye Rs 700 → dene Rs 200
+      5 Oct · diye Rs 500 → lene Rs 500
+[CTX-33] PASS    'Ahmed' -> party_balance pend=None d={}
+      Ahmed naam ki koi party nahi mili.
+[CTX-34] PASS    'ali' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali ko dene hain: Rs 200
+      
+      5 Oct · liye Rs 700 → dene Rs 200
+      5 Oct · diye Rs 500 → lene Rs 500
+[CTX-35] PASS    '500' -> party_entry pend=entry_direction d={}
+      Rs 500:
+      1) Ali ko diye
+      2) Ali se liye
+[CTX-36] PASS    'han' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-37] PASS    'nai' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-38] PASS    'woh wala' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-39] PASS    'cash' -> unknown pend=None d={}
+      Sorry, I didn't understand. Send /help to see what I can do.
+[CTX-40] PASS    '03331234567' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-41] PASS    '2 hazar' -> cash_entry pend=cash_direction d={}
+      Rs 2,000:
+      1) Aaye (cash in)
+      2) Gaye (cash out)
+[CTX-42] PASS    'uska' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-43] PASS    'same' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-44] PASS    'rehne do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-45] PASS    'change krdo' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-46] PASS    'kal' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CTX-47] PASS    'theek hai' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CMP-01] PASS    'ali add kr' -> add_party pend=new_party_type d={}
+      Ali naya hai.
+      1) Customer
+      2) Supplier
+[CMP-02] PASS    'ali ko dal' -> add_party pend=new_party_type d={}
+      Ali naya hai.
+      1) Customer
+      2) Supplier
+[CMP-03] PASS    '500 udhr' -> party_entry pend=entry_party d={}
+      Kis ka hisaab hai? Naam likhein.
+[CMP-04] PASS    '2k ali' -> party_entry pend=entry_direction d={}
+      Rs 2,000:
+      1) Ali ko diye
+      2) Ali se liye
+[CMP-05] PASS    'kitna bnta' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali ko dene hain: Rs 200
+      
+      5 Oct · liye Rs 700 → dene Rs 200
+      5 Oct · diye Rs 500 → lene Rs 500
+[CMP-06] PASS    'usko 500 de' -> party_entry pend=entry_party d={}
+      Kis ka hisaab hai? Naam likhein.
+[CMP-07] PASS    'add kr 03331239999 hamid' -> add_party pend=new_party_type d={}
+      Hamid naya hai.
+      1) Customer
+      2) Supplier
+[CMP-08] PASS    'ali ko 3k udhr de dia' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 3,000 diye (5 Oct)
+      Ali se lene hain: Rs 2,800
+[CMP-09] FAIL    'kl ki sale' -> profit_report pend=None d={}
+      4 Oct ko koi bikri nahi hui.
+[CMP-10] PASS    'cash kitna' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 1,000
+      Gaye: Rs 900
+      Baqi: Rs 100
+[CMP-11] UNSAFE  '5k aya' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 5,000 aaye (5 Oct)
+      💵 Cash: Rs 5,100
+[CMP-12] UNSAFE  '3k gya' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 3,000 gaye (5 Oct)
+      💵 Cash: Rs 2,100
+[DUP-10] PASS    'Ali ko 450 diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 450 diye (5 Oct)
+      Ali se lene hain: Rs 3,250
+[DUP-11] PASS    'Ali ko 450 diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 450 diye (5 Oct)
+      Ali se lene hain: Rs 3,700
+      💵 Cash: Rs 1,650
+[DUP-12] PASS    'sorry 540 the' -> edit_entry pend=confirm_edit d={}
+      Ali wali entry (5 Oct): Rs 450 → Rs 540. Theek hai? haan/nahi
+[ACC-01] UNSAFE  'Ali ko 5000000 diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 5,000,000 diye (5 Oct)
+      Ali se lene hain: Rs 5,003,700
+      ⚠️ Cash: -Rs 4,998,350
+[ACC-02] PASS    'Ali ko 0 diye' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[ACC-03] PASS    'Ali ko -500 diye' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[ACC-04] PASS    'Ali ko 500.50 diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 500.50 diye (5 Oct)
+      Ali se lene hain: Rs 5,004,200.50
+      ⚠️ Cash: -Rs 4,998,850.50

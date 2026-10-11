@@ -1,0 +1,190 @@
+[CSH-01] FAIL    'rickshaw 300' -> cash_entry pend=choose_category d={}
+      Which category for "rickshaw"?
+      1) Rickshaw (new)
+      Or send a new name.
+[CSH-02] FAIL    '300 chai' -> cash_entry pend=choose_category d={}
+      "chai" kis category mein daalun?
+      1) Chai (nayi)
+      Ya naya naam likhein.
+[CSH-03] FAIL    'bijli ka bill 3500 bhara' -> cash_entry pend=choose_category d={}
+      "bijli" kis category mein daalun?
+      1) Bijli (nayi)
+      Ya naya naam likhein.
+[CSH-04] FAIL    'kiraya 15k diya' -> cash_entry pend=choose_category d={}
+      "kiraya" kis category mein daalun?
+      1) Kiraya (nayi)
+      Ya naya naam likhein.
+[CSH-05] FAIL    'ek hazar kharcha nashta ka' -> cash_entry pend=cash_amount d={}
+      Kitne paise?
+[CSH-06] PASS    '500 out' -> cash_entry pend=None d={'txn': 1}
+      ✅ Out: Rs 500 (5 Oct)
+      💵 Cash: Rs 2,500
+[CSH-07] PASS    'aaj 2000 ki sale hui' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 2,000 ki sale (5 Oct)
+      💵 Cash: Rs 4,500
+[CSH-08] PASS    'expense daldo' -> cash_entry pend=cash_amount d={}
+      Kitne paise?
+[CSH-09] PASS    'expense add kr' -> cash_entry pend=cash_amount d={}
+      Kitne paise?
+[CSH-09b] UNSAFE  '500' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 500 gaye (5 Oct)
+      💵 Cash: Rs 4,000
+[CSH-10] PASS    'kharcha kia' -> cash_entry pend=cash_amount d={}
+      Kitne paise?
+[CSH-11] FAIL    'salary 20000 di' -> cash_entry pend=choose_category d={}
+      "salary" kis category mein daalun?
+      1) Salary (nayi)
+      Ya naya naam likhein.
+[CSH-12] FAIL    '5000 sale add karo aur 1000 expense bhi daldo' -> read_image pend=confirm_image d={}
+      📝 2 entries mili:
+      Cash book:
+      1) 5 Oct · Counter sale · Rs 5,000
+      ❓ 2) 5 Oct · Kharcha · expense · Rs 1,000 · kaunsi category? (baad mein poochunga)
+      Save karun? haan/nahi
+[CSH-13] PASS    '10k aya 3k supplier ko diya baki cash me rakhdo' -> cash_entry pend=new_party_type d={'txn': 1}
+      ✅ Rs 10,000 aaye (5 Oct)
+      💵 Cash: Rs 14,000
+[RPT-01] PASS    'aj ka hisab' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-02] PASS    'cash kitna' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-03] PASS    'aj kya hua' -> recent_entries pend=None d={}
+      🕘 *Haaliya entries*
+      • 5 Oct · Cash in · Rs 10,000
+      • 5 Oct · Cash out · Rs 500
+      • 5 Oct · Sale · Rs 2,000
+      • 5 Oct · Cash out · Rs 500
+      • 5 Oct · Cash in · Rs 3,000
+[RPT-04] PASS    'aj ka scene bta' -> recent_entries pend=None d={}
+      🕘 *Haaliya entries*
+      • 5 Oct · Cash in · Rs 10,000
+      • 5 Oct · Cash out · Rs 500
+      • 5 Oct · Sale · Rs 2,000
+      • 5 Oct · Cash out · Rs 500
+      • 5 Oct · Cash in · Rs 3,000
+[RPT-05] PASS    'aj kitna bana' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-06] PASS    'aj kitna aya' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-07] PASS    'kitna gaya' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-08] PASS    'mera kya hisab hai' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-09] PASS    'kal ka bata' -> money_report pend=None d={}
+      📒 Cash · 4 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 0
+      Gaye: Rs 0
+      Baqi: Rs 0
+[RPT-10] PASS    'pichle hafte ka scene' -> money_report pend=None d={}
+      📒 Cash · 28 Sep – 4 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 0
+      Gaye: Rs 0
+      Baqi: Rs 0
+[RPT-11] PASS    'sale kitni hui' -> bill_report pend=None d={}
+      🧾 *Bills* · 1 Oct – 5 Oct
+      Kul sale: *Rs 2,000* (0 bills: Rs 0)
+      + baghair bill ki cash sale: Rs 2,000
+      Is dauran koi bill nahi.
+[RPT-12] PASS    'kharcha kitna hua' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-13] PASS    'is month ka kya scene hai' -> money_report pend=None d={}
+      📒 Cash · 1 Oct – 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-14] PASS    'kl ki sale' -> bill_report pend=None d={}
+      🧾 *Bills* · 4 Oct
+      Kul sale: *Rs 0* (0 bills: Rs 0)
+      Is dauran koi bill nahi.
+[RPT-15] PASS    'aj report' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-16] PASS    'kl wala dikha' -> money_report pend=None d={}
+      📒 Cash · 4 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 0
+      Gaye: Rs 0
+      Baqi: Rs 0
+[RPT-17] PASS    'kal ki sale dikhao aur aj ka expense bhi batao' -> profit_report pend=None d={}
+      4 Oct ko koi bikri nahi hui.
+[RPT-18] FAIL    'bro aaj ki sale kitni hui' -> profit_report pend=None d={}
+      📈 *Faida* · 5 Oct
+      Is ke ilawa Rs 2,000 ki sale bina items ke (laagat pata nahi, faide mein shamil nahi)
+[RPT-19] PASS    'yaar cash in hand kitna h' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-20] PASS    'cash book ki pdf bhejo' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 15,000
+      Gaye: Rs 1,000
+      Baqi: Rs 14,000
+[RPT-21] PASS    'boss kal ka profit?' -> profit_report pend=None d={}
+      📈 *Faida* · 5 Oct
+      Is ke ilawa Rs 2,000 ki sale bina items ke (laagat pata nahi, faide mein shamil nahi)
+[RPT-22] PASS    'aj kitna munafa hua' -> profit_report pend=None d={}
+      📈 *Faida* · 5 Oct
+      Is ke ilawa Rs 2,000 ki sale bina items ke (laagat pata nahi, faide mein shamil nahi)
+[BNK-01] PASS    'JazzCash add kr' -> add_bank pend=None d={'accounts': 1}
+      ✅ JazzCash add ho gaya
+      🏦 JazzCash: Rs 0
+[BNK-02] PASS    'bank mein 1000 jama karaye jazzcash' -> transfer_money pend=None d={'txn': 1}
+      ✅ Rs 1,000: Cash → JazzCash (5 Oct)
+      💵 Cash: Rs 13,000
+      🏦 JazzCash: Rs 1,000
+[BNK-03] PASS    '5k jazzcash me aye' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 5,000 aaye (5 Oct)
+      🏦 JazzCash: Rs 6,000
+[COR-20] FAIL    'chai wali 300 entry 350 thi' -> edit_entry pend=None d={}
+      Aisi koi entry nahi mili.
+[COR-20b] FAIL    'haan' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[COR-21] PASS    'pichli entry hata do' -> delete_entry pend=confirm_delete d={}
+      Cash in ki Rs 5,000 wali entry (5 Oct) delete karun? haan/nahi
+[COR-21b] PASS    'nai' -> delete_entry pend=None d={}
+      Theek hai, entry nahi hati.
+[DUP-01] FAIL    'rickshaw 100' -> cash_entry pend=choose_category d={}
+      "rickshaw" kis category mein daalun?
+      1) Rickshaw (nayi)
+      Ya naya naam likhein.
+[DUP-02] PASS    'rickshaw 100' -> cash_entry pend=choose_category d={}
+      "rickshaw" kis category mein daalun?
+      1) Rickshaw (nayi)
+      Ya naya naam likhein.

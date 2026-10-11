@@ -1,0 +1,663 @@
+[
+ {
+  "id": "BIL-01",
+  "feature": "Stock/bills",
+  "style": "Sale",
+  "text": "3 socks bech diye",
+  "session": "310",
+  "intent": "create_bill",
+  "reply": "Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya \"skip\" likhein.",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "socks",
+      "qty": 3,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "shop_details",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some",
+   "rx": "90"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was; reply missing /90/"
+ },
+ {
+  "id": "BIL-02",
+  "feature": "Stock/bills",
+  "style": "Counter",
+  "text": "counter sale 1 charger",
+  "session": "310",
+  "intent": "create_bill",
+  "reply": "For your bills (asked once): write the shop's address and phone number. Or \"skip\".",
+  "cls": {
+   "intent": "create_bill",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "charger",
+      "qty": 1,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "shop_details",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some",
+   "rx": "1,?500"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was; reply missing /1,?500/"
+ },
+ {
+  "id": "BIL-03",
+  "feature": "Stock/bills",
+  "style": "Multi sale+expense",
+  "text": "2 charger 3000 ke sell kiye aur 500 delivery wale ko diye",
+  "session": "310",
+  "intent": "create_bill",
+  "reply": "Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya \"skip\" likhein.",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "charger",
+      "qty": 2,
+      "unit": null,
+      "rate": 1500
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "date": "2026-10-05"
+   },
+   "then": [
+    {
+     "intent": "cash_entry",
+     "fields": {
+      "direction": "out",
+      "amount": 500,
+      "date": "2026-10-05",
+      "note": "delivery wala",
+      "category_word": "delivery",
+      "is_sale": false,
+      "bank_name": null
+     }
+    }
+   ]
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "shop_details",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some",
+   "rx": "500"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was; reply missing /500/"
+ },
+ {
+  "id": "BIL-04",
+  "feature": "Stock/bills",
+  "style": "Customer udhaar",
+  "text": "Ali ko 2 socks udhaar diye",
+  "session": "310",
+  "intent": "create_bill",
+  "reply": "Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya \"skip\" likhein.",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": "Ali",
+    "items": [
+     {
+      "name": "socks",
+      "qty": 2,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": "udhaar",
+    "paid_amount": null,
+    "bank_name": null,
+    "date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "shop_details",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some",
+   "rx": "Ali"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was; reply missing /Ali/"
+ },
+ {
+  "id": "BIL-07",
+  "feature": "Stock/bills",
+  "style": "Cancel bill",
+  "text": "bill 1 cancel kr do",
+  "session": "310",
+  "intent": "cancel_bill",
+  "reply": "Bill #1 (Walk-in, Rs 60) cancel karun? Stock, cash aur khata wapas ho jaenge. (haan/nahi)",
+  "cls": {
+   "intent": "cancel_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "bill_no": 1
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_cancel_bill",
+  "delta": {},
+  "exp": {
+   "i": [
+    "cancel_bill"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-07b",
+  "feature": "Stock/bills",
+  "style": "Cancel",
+  "text": "chor do",
+  "session": "310",
+  "intent": "cancel_bill",
+  "reply": "Theek hai, entry nahi hati.",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "nahi"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_cancel_bill",
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-08",
+  "feature": "Stock/bills",
+  "style": "Sales total",
+  "text": "aj ki sale",
+  "session": "310",
+  "intent": "bill_report",
+  "reply": "🧾 *Bills* · 5 Oct\nKul sale: *Rs 60* (1 bills: Rs 60)\n#1 · 5 Oct · Walk-in · Rs 60",
+  "cls": {
+   "intent": "bill_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "list",
+    "bill_no": null,
+    "customer_name": null,
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-05",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "bill_report"
+   ],
+   "w": "none",
+   "rx": "Rs [1-9]"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-09",
+  "feature": "Stock/bills",
+  "style": "Profit",
+  "text": "munafa kitna hua aaj",
+  "session": "310",
+  "intent": "profit_report",
+  "reply": "📈 *Faida* · 5 Oct\nBikri (items): Rs 60\nMaal ki laagat: −Rs 40\n*Faida: Rs 20*",
+  "cls": {
+   "intent": "profit_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "profit_report"
+   ],
+   "w": "none",
+   "rx": "Rs"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-10",
+  "feature": "Stock/bills",
+  "style": "Profit kal slang",
+  "text": "aj kitna bana",
+  "session": "310",
+  "intent": "profit_report",
+  "reply": "📈 *Faida* · 5 Oct\nBikri (items): Rs 60\nMaal ki laagat: −Rs 40\n*Faida: Rs 20*",
+  "cls": {
+   "intent": "profit_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "rx": "Rs [1-9]"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-11",
+  "feature": "Stock/bills",
+  "style": "Mixed",
+  "text": "sir 3 socks aur 1 charger ka bill bana do cash",
+  "session": "310",
+  "intent": "create_bill",
+  "reply": "Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya \"skip\" likhein.",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "socks",
+      "qty": 3,
+      "unit": null,
+      "rate": null
+     },
+     {
+      "name": "charger",
+      "qty": 1,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": "cash",
+    "paid_amount": null,
+    "date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "shop_details",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was"
+ },
+ {
+  "id": "BIL-13",
+  "feature": "Stock/bills",
+  "style": "Compressed price",
+  "text": "2 socks 60 me bech de",
+  "session": "310",
+  "intent": "create_bill",
+  "reply": "Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya \"skip\" likhein.",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "socks",
+      "qty": 2,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": "cash",
+    "paid_amount": 60,
+    "bank_name": null,
+    "date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "shop_details",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was"
+ },
+ {
+  "id": "BIL-15",
+  "feature": "Stock/bills",
+  "style": "Discount",
+  "text": "10 charger ka bill 10% discount ke sath",
+  "session": "310",
+  "intent": "create_bill",
+  "reply": "Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya \"skip\" likhein.",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "charger",
+      "qty": 10,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": 10,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "shop_details",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-16",
+  "feature": "Stock/bills",
+  "style": "Casual cust",
+  "text": "ali ko 5 socks de diye 150 ke",
+  "session": "310",
+  "intent": "create_bill",
+  "reply": "Bill Rs 750: paise kaise mile?\n1) Cash\n2) Online (bank)\n3) Udhaar",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": "Ali",
+    "items": [
+     {
+      "name": "socks",
+      "qty": 5,
+      "unit": null,
+      "rate": 150
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "bill_pay",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-17",
+  "feature": "Stock/bills",
+  "style": "Bill show",
+  "text": "bill 2 dikhao",
+  "session": "310",
+  "intent": "bill_report",
+  "reply": "Bill #2 nahi mila.",
+  "cls": {
+   "intent": "bill_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "one",
+    "bill_no": 2,
+    "customer_name": null,
+    "start_date": null,
+    "end_date": null,
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "bill_report"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-18",
+  "feature": "Stock/bills",
+  "style": "Bill list compressed",
+  "text": "aaj ke bills",
+  "session": "310",
+  "intent": "bill_report",
+  "reply": "🧾 *Bills* · 5 Oct\nKul sale: *Rs 60* (1 bills: Rs 60)\n#1 · 5 Oct · Walk-in · Rs 60",
+  "cls": {
+   "intent": "bill_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "list",
+    "bill_no": null,
+    "customer_name": null,
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-05",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "bill_report"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-19",
+  "feature": "Stock/bills",
+  "style": "Stock after",
+  "text": "socks kitne bache",
+  "session": "310",
+  "intent": "stock_report",
+  "reply": "*Socks*\n📦 Stock: 48 pcs · Sale Rs 30 · Khareed Rs 20\n💰 Value: Rs 960\n\n5 Oct · Bill se bika -2\n5 Oct · Shuru ka stock +50",
+  "cls": {
+   "intent": "stock_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "item",
+    "item": "socks",
+    "start_date": null,
+    "end_date": null,
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "stock_report"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ }
+]

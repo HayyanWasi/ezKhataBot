@@ -1,0 +1,127 @@
+D:\Hayyan\Projects\ezKhataBot\tests\qa_battery.py:458: SyntaxWarning: invalid escape sequence '\.'
+  T(s, "ACC-04", F, "Decimal", "Ali ko 500.50 diye", i=["party_entry"], rx="500\.5")
+[VAR-01] PASS    'ali ne paise de diye' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[VAR-02] PASS    'Ali se 500 mile' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali se Rs 500 liye (5 Oct)
+      Ali se lene hain: Rs 500
+[VAR-03] PASS    'ali ne 500 bheje jazzcash pe' -> party_entry pend=confirm_new_bank d={}
+      JazzCash naya account hai, add karun? haan/nahi
+[VAR-04] PASS    'Ali ka 500 baqi hai' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali se lene hain: Rs 500
+      
+      5 Oct · liye Rs 500 → lene Rs 500
+      5 Oct · diye Rs 1,000 → lene Rs 1,000
+[VAR-05] PASS    'Ali k 500 likh lo' -> party_entry pend=entry_direction d={}
+      Rs 500:
+      1) Ali ko diye
+      2) Ali se liye
+[VAR-06] PASS    'ali sey 500 lenay hain' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 500 diye (5 Oct)
+      Ali se lene hain: Rs 1,000
+[VAR-07] PASS    'ali nay 500 rupay dey diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali se Rs 500 liye (5 Oct)
+      Ali se lene hain: Rs 500
+      💵 Cash: Rs 1,500
+[VAR-08] UNSAFE  '500rs ali ko' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 500 diye (5 Oct)
+      Ali se lene hain: Rs 1,000
+[VAR-09] UNSAFE  'ali ne kaha kal dega' -> set_reminder pend=None d={'reminders': 1}
+      ⏰ 6 Oct, 10:00 AM aur 06:00 PM yaad dilaunga: Ali payment dega
+[VAR-10] PASS    'ali kitne ka hai' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali se lene hain: Rs 1,000
+      
+      5 Oct · diye Rs 500 → lene Rs 1,000
+      5 Oct · liye Rs 500 → lene Rs 500
+      5 Oct · diye Rs 500 → lene Rs 1,000
+      5 Oct · liye Rs 500 → lene Rs 500
+      5 Oct · diye Rs 1,000 → lene Rs 1,000
+[VAR-11] PASS    'ali ka hisab saaf kr do' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[VAR-12] PASS    'ali se sare paise le liye' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[VAR-13] PASS    'bijli ka bill aya hai 4000 ka' -> cash_entry pend=choose_category d={}
+      "bijli" kis category mein daalun?
+      1) Bijli (nayi)
+      Ya naya naam likhein.
+[VAR-14] PASS    'kal 3000 ki sale hui thi' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 3,000 ki sale (4 Oct)
+      💵 Cash: Rs 4,500
+[VAR-15] UNSAFE  'chai wale ko 200 de diye' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 200 gaye · chai wale (5 Oct)
+      💵 Cash: Rs 4,300
+[VAR-16] UNSAFE  'paise nikaale 1000 ghar ke liye' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 1,000 gaye · ghar ke liye (5 Oct)
+      💵 Cash: Rs 3,300
+[VAR-17] PASS    'ali ko 500 aur ahmed ko 300 de diye' -> read_image pend=confirm_image d={}
+      📝 2 entries mili:
+      Party khata:
+      1) 5 Oct · Ali ko Rs 500 diye
+      2) 5 Oct · Ahmed ko Rs 300 diye
+      Save karun? haan/nahi
+[VAR-18] PASS    'kal wali sale delete kr do' -> delete_entry pend=confirm_delete d={}
+      sale ki Rs 3,000 wali entry (4 Oct) delete karun? haan/nahi
+[VAR-19] PASS    'sab kuch delete kr do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[VAR-20] PASS    'mera sara record mita do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[VAR-21] PASS    'ali ko hata do' -> delete_entry pend=confirm_delete d={}
+      Ali ki Rs 500 wali entry (5 Oct) delete karun? haan/nahi
+[VAR-22] PASS    'ali ka account band kr do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[VAR-23] PASS    '500 ali ko diye the wapas kr do' -> delete_entry pend=confirm_delete d={}
+      Ali ki Rs 500 wali entry (5 Oct) delete karun? haan/nahi
+[VAR-24] PASS    'aly ko 500 diye' -> party_entry pend=new_party_type d={}
+      Aly naya hai.
+      1) Customer
+      2) Supplier
+[VAR-25] PASS    'alii ko 500 dye' -> party_entry pend=new_party_type d={}
+      Alii naya hai.
+      1) Customer
+      2) Supplier
+[VAR-26] PASS    'ALI KO 200 UDHAAR DIYE' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 200 diye (5 Oct)
+      Ali se lene hain: Rs 1,200
+[VAR-27] PASS    'Kokab ko 300 diye' -> party_entry pend=new_party_type d={}
+      Kokab naya hai.
+      1) Customer
+      2) Supplier
+[VAR-28] PASS    'ali ka number 0333-1234567' -> set_party_phone pend=None d={}
+      ✅ Ali ka number save ho gaya
+[VAR-29] PASS    'ali ka number 0333123' -> set_party_phone pend=None d={}
+      Number theek nahi. Aise likhein: 03001234567
+[VAR-30] PASS    'ahmed ka nbr +923331234567' -> set_party_phone pend=None d={}
+      ✅ Ahmed ka number save ho gaya
+[VAR-31] PASS    'ahmed ka num 3331234568' -> set_party_phone pend=None d={}
+      ✅ Ahmed ka number save ho gaya
+[VAR-32] PASS    'employee add karo Zain 12345' -> add_employee pend=None d={}
+      Number theek nahi. Aise likhein: 03001234567
+[VAR-33] FAIL    'Ali ko teen hazar diye' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[VAR-34] FAIL    'Ali ko do sau diye' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[VAR-35] PASS    'ali ko 1.5k udhaar de diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 1,500 diye (5 Oct)
+      Ali se lene hain: Rs 2,700
+[VAR-36] PASS    'ali ko 1 lakh diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 100,000 diye (5 Oct)
+      Ali se lene hain: Rs 102,700
+      ⚠️ Cash: -Rs 96,700
+[VAR-37] PASS    'Ali ko 5 hazar rupay diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 5,000 diye (5 Oct)
+      Ali se lene hain: Rs 107,700
+      ⚠️ Cash: -Rs 101,700
+[VAR-38] PASS    'parso Ali ko 400 diye the' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 400 diye (3 Oct)
+      Ali se lene hain: Rs 108,100
+      ⚠️ Cash: -Rs 102,100
+[VAR-39] PASS    'pichle mangal ko Ali ne 300 diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali se Rs 300 liye (29 Sep)
+      Ali se lene hain: Rs 107,800
+      ⚠️ Cash: -Rs 101,800
+[VAR-40] UNSAFE  'bhai ali ka kaam tamam 200 aaye hain' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali se Rs 200 liye (5 Oct)
+      Ali se lene hain: Rs 107,600
+      ⚠️ Cash: -Rs 101,600

@@ -1,0 +1,82 @@
+D:\Hayyan\Projects\ezKhataBot\tests\qa_battery.py:458: SyntaxWarning: invalid escape sequence '\.'
+  T(s, "ACC-04", F, "Decimal", "Ali ko 500.50 diye", i=["party_entry"], rx="500\.5")
+[BIL-00] PASS    'Shop 5 Gulshan Karachi 03211234567' -> create_bill pend=None d={'txn': 1, 'bills': 1}
+      🧾 *Bill #1* · Walk-in · 5 Oct
+      1) Socks 2 × Rs 30 = Rs 60
+      *Kul: Rs 60*
+      ✅ Poore paise mil gae (Cash)
+      📦 Socks: 48 pcs
+      💵 Cash: Rs 1,060
+[BIL-01] PASS    '3 socks bech diye' -> create_bill pend=None d={'txn': 1, 'bills': 1}
+      🧾 *Bill #2* · Walk-in · 5 Oct
+      1) Socks 3 × Rs 30 = Rs 90
+      *Kul: Rs 90*
+      ✅ Poore paise mil gae (Cash)
+      📦 Socks: 45 pcs
+      💵 Cash: Rs 1,150
+[BIL-02] PASS    'counter sale 1 charger' -> create_bill pend=None d={'txn': 1, 'bills': 1}
+      🧾 *Bill #3* · Walk-in · 5 Oct
+      1) Charger 1 × Rs 1,500 = Rs 1,500
+      *Kul: Rs 1,500*
+      ✅ Poore paise mil gae (Cash)
+      📦 Charger: 19 pcs
+      💵 Cash: Rs 2,650
+[BIL-03] FAIL    '2 charger 3000 ke sell kiye aur 500 delivery wale ko diye' -> create_bill pend=bill_customer d={}
+      Udhaar ke liye naam chahiye: kis customer ka bill hai?
+[BIL-04] PASS    'Ali ko 2 socks udhaar diye' -> create_bill pend=None d={'txn': 1, 'bills': 1}
+      🧾 *Bill #4* · Ali · 5 Oct
+      1) Socks 2 × Rs 30 = Rs 60
+      *Kul: Rs 60*
+      Mila: Rs 0 · Baqi: Rs 60
+      📦 Socks: 43 pcs
+      Ali se lene hain: Rs 60
+[BIL-11] PASS    'sir 3 socks aur 1 charger ka bill bana do cash' -> create_bill pend=None d={'txn': 1, 'bills': 1}
+      🧾 *Bill #5* · Walk-in · 5 Oct
+      1) Socks 3 × Rs 30 = Rs 90
+      2) Charger 1 × Rs 1,500 = Rs 1,500
+      *Kul: Rs 1,590*
+      ✅ Poore paise mil gae (Cash)
+      📦 Socks: 40 pcs
+      📦 Charger: 18 pcs
+      💵 Cash: Rs 4,240
+[BIL-13] PASS    '2 socks 60 me bech de' -> create_bill pend=None d={'txn': 1, 'bills': 1}
+      🧾 *Bill #6* · Walk-in · 5 Oct
+      1) Socks 2 × Rs 30 = Rs 60
+      *Kul: Rs 60*
+      ✅ Poore paise mil gae (Cash)
+      📦 Socks: 38 pcs
+      💵 Cash: Rs 4,300
+[BIL-15] PASS    '10 charger ka bill 10% discount ke sath' -> create_bill pend=None d={'txn': 1, 'bills': 1}
+      🧾 *Bill #7* · Walk-in · 5 Oct
+      1) Charger 10 × Rs 1,500 = Rs 15,000
+      Total: Rs 15,000
+      Discount 10%: -Rs 1,500
+      *Kul: Rs 13,500*
+      ✅ Poore paise mil gae (Cash)
+      📦 Charger: 8 pcs
+      💵 Cash: Rs 17,800
+[BIL-16] PASS    'ali ko 5 socks de diye 150 ke' -> create_bill pend=bill_pay d={}
+      Bill Rs 150: paise kaise mile?
+      1) Cash
+      2) Online (bank)
+      3) Udhaar
+[BIL-16b] PASS    'udhaar' -> create_bill pend=None d={'txn': 1, 'bills': 1}
+      🧾 *Bill #8* · Ali · 5 Oct
+      1) Socks 5 × Rs 30 = Rs 150
+      *Kul: Rs 150*
+      Mila: Rs 0 · Baqi: Rs 150
+      📦 Socks: 33 pcs
+      Ali se lene hain: Rs 210
+[BIL-17] PASS    'bill 2 dikhao' -> bill_report pend=None d={}
+      🧾 *Bill #2* · Walk-in · 5 Oct
+      1) Socks 3 × Rs 30 = Rs 90
+      *Kul: Rs 90*
+      ✅ Poore paise mil gae (Cash)
+[BIL-20] PASS    'bill 2 cancel kr do' -> cancel_bill pend=confirm_cancel_bill d={}
+      Bill #2 (Walk-in, Rs 90) cancel karun? Stock, cash aur khata wapas ho jaenge. (haan/nahi)
+[BIL-20b] FAIL    'ji haan' -> cancel_bill pend=None d={'txn': -1}
+      ❌ Bill #2 cancel ho gaya
+      📦 Socks: 36 pcs
+      💵 Cash: Rs 17,710
+[BIL-21] FAIL    'teen socks aur do charger bech diye' -> create_bill pend=stock_qty d={}
+      *Socks* kitne pcs?

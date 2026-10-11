@@ -1,0 +1,736 @@
+﻿{
+  "summary": {
+    "PASS": 74,
+    "FAIL": 17
+  },
+  "results": [
+    {
+      "group": "language",
+      "text": "kiya kar rha hai tou?",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "kya krrhe ho aap?",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "kya krrhe ho tum?",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "mere bhai tum kiya kaarhe ho?",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "mere bhi tum kiya karrhe ho?",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "oye tou kya karha hai?",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "kya kr rhy ho?",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "kia kar rahay ho?",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "kya kar rahe ho?",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "ap kia kr rahe hain",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "tm kya krre ho",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "tum kia krrhy ho",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "oy kya scene hai",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "abe kya kr rha",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "assalam o alaikum",
+      "expected": "roman_ur",
+      "actual": "en",
+      "status": "FAIL",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "salam bhai",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "yaar tu kya karta hai",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "employee add karo Ali 03001234567",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "add employee ali 03331234567",
+      "expected": "roman_ur",
+      "actual": "en",
+      "status": "FAIL",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "ali ko add kardo 03331234567",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "ali ko add kr oska number ye hai 03331234567",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "ali ko staff mein rakh lo 03331234567",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "mre mulazim ali ko add krdo 03331234567",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "oye ali ko employee add kr 03331234567",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "bhai ali ka number 03331234567 add krdo",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "Ali ko add karo 03323",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "add ali number",
+      "expected": "roman_ur",
+      "actual": "en",
+      "status": "FAIL",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "employee add krna hai",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "Ali ko 500 diye",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "ali sy 300 ly liye",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "ali se paisay milay 500",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "kal ki sale 5000 thi",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "aaj ka cash dikhao",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "udhar walon ka hisab btao",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "rohaan ki baki rakam kitni",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "kya tum mera hisaab bata skte ho",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "oye 2 socks bech diye",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "bhai 3 hazar jama krdo",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "meray staff ko dikhao",
+      "expected": "roman_ur",
+      "actual": "roman_ur",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "mujhse roman urdu me baat kro",
+      "expected": "roman_ur",
+      "actual": "en",
+      "status": "FAIL",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "add employee Ali 03331234567",
+      "expected": "en",
+      "actual": "en",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "show today's cash",
+      "expected": "en",
+      "actual": "en",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "how are you doing?",
+      "expected": "en",
+      "actual": "en",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "what can you do?",
+      "expected": "en",
+      "actual": "en",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "language",
+      "text": "remove employee Ali",
+      "expected": "en",
+      "actual": "en",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "phone",
+      "text": "03001234567",
+      "expected": "923001234567",
+      "actual": "923001234567",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "phone",
+      "text": "+92 300 1234567",
+      "expected": "923001234567",
+      "actual": "923001234567",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "phone",
+      "text": "00923001234567",
+      "expected": "923001234567",
+      "actual": "923001234567",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "phone",
+      "text": "0333-1234567",
+      "expected": "923331234567",
+      "actual": "923331234567",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "phone",
+      "text": "03323",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "phone",
+      "text": "0333",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "phone",
+      "text": "abc",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "phone",
+      "text": "1234567890",
+      "expected": "INVALID",
+      "actual": "1234567890",
+      "status": "FAIL",
+      "note": ""
+    },
+    {
+      "group": "phone",
+      "text": "999999999999999",
+      "expected": "INVALID",
+      "actual": "999999999999999",
+      "status": "FAIL",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "haan",
+      "expected": true,
+      "actual": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "han",
+      "expected": true,
+      "actual": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "haa",
+      "expected": true,
+      "actual": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "ji",
+      "expected": true,
+      "actual": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "jee",
+      "expected": true,
+      "actual": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "theek",
+      "expected": true,
+      "actual": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "hanji",
+      "expected": true,
+      "actual": null,
+      "status": "FAIL",
+      "note": "None means the bot asks again"
+    },
+    {
+      "group": "confirmation",
+      "text": "haan ji",
+      "expected": true,
+      "actual": null,
+      "status": "FAIL",
+      "note": "None means the bot asks again"
+    },
+    {
+      "group": "confirmation",
+      "text": "han g",
+      "expected": true,
+      "actual": null,
+      "status": "FAIL",
+      "note": "None means the bot asks again"
+    },
+    {
+      "group": "confirmation",
+      "text": "kr do",
+      "expected": true,
+      "actual": null,
+      "status": "FAIL",
+      "note": "None means the bot asks again"
+    },
+    {
+      "group": "confirmation",
+      "text": "kar do",
+      "expected": true,
+      "actual": null,
+      "status": "FAIL",
+      "note": "None means the bot asks again"
+    },
+    {
+      "group": "confirmation",
+      "text": "nahi",
+      "expected": false,
+      "actual": false,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "nhi",
+      "expected": false,
+      "actual": false,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "nai",
+      "expected": false,
+      "actual": false,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "na ji",
+      "expected": false,
+      "actual": null,
+      "status": "FAIL",
+      "note": "None means the bot asks again"
+    },
+    {
+      "group": "confirmation",
+      "text": "mat karo",
+      "expected": false,
+      "actual": null,
+      "status": "FAIL",
+      "note": "None means the bot asks again"
+    },
+    {
+      "group": "confirmation",
+      "text": "rehne do",
+      "expected": false,
+      "actual": null,
+      "status": "FAIL",
+      "note": "None means the bot asks again"
+    },
+    {
+      "group": "confirmation",
+      "text": "nahin",
+      "expected": false,
+      "actual": null,
+      "status": "FAIL",
+      "note": "None means the bot asks again"
+    },
+    {
+      "group": "confirmation",
+      "text": "yes",
+      "expected": true,
+      "actual": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "confirmation",
+      "text": "no",
+      "expected": false,
+      "actual": false,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "employee_flow",
+      "text": "employee add karo Ali and number",
+      "expected": "ASK_DETAILS",
+      "actual": "ASK_DETAILS",
+      "status": "PASS",
+      "note": "Handler given expected extracted fields; classifier was not run"
+    },
+    {
+      "group": "employee_flow",
+      "text": "add employee ali 0333",
+      "expected": "INVALID_PHONE",
+      "actual": "INVALID_PHONE",
+      "status": "PASS",
+      "note": "Handler given expected extracted fields; classifier was not run"
+    },
+    {
+      "group": "employee_flow",
+      "text": "add ali number",
+      "expected": "ASK_DETAILS",
+      "actual": "ASK_DETAILS",
+      "status": "PASS",
+      "note": "Handler given expected extracted fields; classifier was not run"
+    },
+    {
+      "group": "employee_flow",
+      "text": "ali ko add kardo 03323",
+      "expected": "INVALID_PHONE",
+      "actual": "INVALID_PHONE",
+      "status": "PASS",
+      "note": "Handler given expected extracted fields; classifier was not run"
+    },
+    {
+      "group": "employee_flow",
+      "text": "ali ko add kr oska number ye hai",
+      "expected": "ASK_DETAILS",
+      "actual": "ASK_DETAILS",
+      "status": "PASS",
+      "note": "Handler given expected extracted fields; classifier was not run"
+    },
+    {
+      "group": "employee_flow",
+      "text": "ali ko add kardo 03331234567",
+      "expected": "CONFIRM",
+      "actual": "CONFIRM",
+      "status": "PASS",
+      "note": "Handler given expected extracted fields; classifier was not run"
+    },
+    {
+      "group": "employee_flow",
+      "text": "ali ko add kardo 03331234567 [no immediate write]",
+      "expected": true,
+      "actual": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "employee_flow",
+      "text": "ali ko add kardo 03331234567 -> nahi",
+      "expected": "CANCEL",
+      "actual": "CANCEL",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "employee_flow",
+      "text": "ali ko add kardo 03331234567 -> haan",
+      "expected": "COMMIT_READY",
+      "actual": "COMMIT_READY",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "employee_flow",
+      "text": "ali ko add kardo 03331234567 -> hanji",
+      "expected": "ASK_AGAIN",
+      "actual": "ASK_AGAIN",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "employee_flow",
+      "text": "Ali ko add karo 1234567890",
+      "expected": "INVALID_PHONE",
+      "actual": "CONFIRM",
+      "status": "FAIL",
+      "note": "Handler given expected extracted fields; classifier was not run"
+    },
+    {
+      "group": "employee_flow",
+      "text": "Ali ko add karo 1234567890 [no immediate write]",
+      "expected": true,
+      "actual": true,
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "employee_flow",
+      "text": "Ali ko add karo 1234567890 -> nahi",
+      "expected": "CANCEL",
+      "actual": "CANCEL",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "employee_flow",
+      "text": "Ali ko add karo 1234567890 -> haan",
+      "expected": "COMMIT_READY",
+      "actual": "COMMIT_READY",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "employee_flow",
+      "text": "Ali ko add karo 1234567890 -> hanji",
+      "expected": "ASK_AGAIN",
+      "actual": "ASK_AGAIN",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "authorization",
+      "text": "employee tries to add Ali",
+      "expected": "OWNER_ONLY",
+      "actual": "OWNER_ONLY",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "group": "pending_routing",
+      "text": "haan ji after confirmation",
+      "expected": true,
+      "actual": false,
+      "status": "FAIL",
+      "note": ""
+    }
+  ]
+}

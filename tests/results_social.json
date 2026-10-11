@@ -1,0 +1,925 @@
+[
+ {
+  "id": "SOC-01",
+  "feature": "Conversation",
+  "style": "Normal",
+  "text": "kya kar rahe ho?",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-02",
+  "feature": "Conversation",
+  "style": "Karachi casual",
+  "text": "kiya kar rha hai tou?",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-03",
+  "feature": "Conversation",
+  "style": "Pronoun aap",
+  "text": "kya krrhe ho aap?",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-04",
+  "feature": "Conversation",
+  "style": "Pronoun tum",
+  "text": "kya krrhe ho tum?",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-05",
+  "feature": "Conversation",
+  "style": "Karachi casual",
+  "text": "mere bhai tum kiya karhe ho?",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "FAIL",
+  "why": "reply contains forbidden /samajh nahi aaya|didn't understand/"
+ },
+ {
+  "id": "SOC-06",
+  "feature": "Conversation",
+  "style": "Misspelled",
+  "text": "mere bhi tum kiya karrhe ho?",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-07",
+  "feature": "Conversation",
+  "style": "Compressed",
+  "text": "kya kr rhy",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-08",
+  "feature": "Conversation",
+  "style": "Compressed",
+  "text": "kia krra",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-09",
+  "feature": "Conversation",
+  "style": "Compressed",
+  "text": "kya krha h",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-10",
+  "feature": "Conversation",
+  "style": "Repeated letters",
+  "text": "kyaa kr rhe ho",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-11",
+  "feature": "Conversation",
+  "style": "Compressed",
+  "text": "kya krre ho",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-12",
+  "feature": "Conversation",
+  "style": "Rough",
+  "text": "abe tu kya kr raha h",
+  "session": "301",
+  "intent": "help",
+  "reply": "Mujhe aise likhein:\n• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n• \"Ali ka hisaab\" / \"sab ka hisaab\"\n• \"chai 200\" / \"3000 aaye\" / \"aaj 20000 ki sale hui\"\n• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n• \"aaj ka cash\" / \"September ki cash book PDF\"\n• \"socks add karo 30 ki bechta hun 100 pcs\" / \"Bilal se 50 socks udhaar aae\" / \"stock dikhao\"\n• \"Rohaan ka bill: 50 socks, 10% discount, 1000 cash baqi udhaar\" / \"2 socks bech diye\" / \"bills dikhao\"\n• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n• \"Ali ka September ka statement\" / \"sab ka statement\"\n• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\"",
+  "cls": {
+   "intent": "help",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-13",
+  "feature": "Conversation",
+  "style": "Rough",
+  "text": "oye tou kya karha hai",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-14",
+  "feature": "Conversation",
+  "style": "Greeting",
+  "text": "assalam o alaikum bhai kese ho",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-15",
+  "feature": "Conversation",
+  "style": "Slang",
+  "text": "bhai kia scene h",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-16",
+  "feature": "Conversation",
+  "style": "Identity",
+  "text": "tm kon ho bhai",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "FAIL",
+  "why": "reply contains forbidden /samajh nahi aaya|didn't understand/"
+ },
+ {
+  "id": "SOC-17",
+  "feature": "Conversation",
+  "style": "Capability",
+  "text": "tu kia kia kr skta h",
+  "session": "301",
+  "intent": "help",
+  "reply": "Mujhe aise likhein:\n• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n• \"Ali ka hisaab\" / \"sab ka hisaab\"\n• \"chai 200\" / \"3000 aaye\" / \"aaj 20000 ki sale hui\"\n• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n• \"aaj ka cash\" / \"September ki cash book PDF\"\n• \"socks add karo 30 ki bechta hun 100 pcs\" / \"Bilal se 50 socks udhaar aae\" / \"stock dikhao\"\n• \"Rohaan ka bill: 50 socks, 10% discount, 1000 cash baqi udhaar\" / \"2 socks bech diye\" / \"bills dikhao\"\n• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n• \"Ali ka September ka statement\" / \"sab ka statement\"\n• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\"",
+  "cls": {
+   "intent": "help",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-18",
+  "feature": "Conversation",
+  "style": "Capability",
+  "text": "kya kya kar sakte ho aap",
+  "session": "301",
+  "intent": "help",
+  "reply": "Mujhe aise likhein:\n• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n• \"Ali ka hisaab\" / \"sab ka hisaab\"\n• \"chai 200\" / \"3000 aaye\" / \"aaj 20000 ki sale hui\"\n• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n• \"aaj ka cash\" / \"September ki cash book PDF\"\n• \"socks add karo 30 ki bechta hun 100 pcs\" / \"Bilal se 50 socks udhaar aae\" / \"stock dikhao\"\n• \"Rohaan ka bill: 50 socks, 10% discount, 1000 cash baqi udhaar\" / \"2 socks bech diye\" / \"bills dikhao\"\n• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n• \"Ali ka September ka statement\" / \"sab ka statement\"\n• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\"",
+  "cls": {
+   "intent": "help",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-19",
+  "feature": "Conversation",
+  "style": "Help",
+  "text": "madad chahiye bhai kese use karun is ko",
+  "session": "301",
+  "intent": "help",
+  "reply": "Mujhe aise likhein:\n• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n• \"Ali ka hisaab\" / \"sab ka hisaab\"\n• \"chai 200\" / \"3000 aaye\" / \"aaj 20000 ki sale hui\"\n• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n• \"aaj ka cash\" / \"September ki cash book PDF\"\n• \"socks add karo 30 ki bechta hun 100 pcs\" / \"Bilal se 50 socks udhaar aae\" / \"stock dikhao\"\n• \"Rohaan ka bill: 50 socks, 10% discount, 1000 cash baqi udhaar\" / \"2 socks bech diye\" / \"bills dikhao\"\n• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n• \"Ali ka September ka statement\" / \"sab ka statement\"\n• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\"",
+  "cls": {
+   "intent": "help",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-20",
+  "feature": "Conversation",
+  "style": "Short",
+  "text": "help",
+  "session": "301",
+  "intent": "help",
+  "reply": "Mujhe aise likhein:\n• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n• \"Ali ka hisaab\" / \"sab ka hisaab\"\n• \"chai 200\" / \"3000 aaye\" / \"aaj 20000 ki sale hui\"\n• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n• \"aaj ka cash\" / \"September ki cash book PDF\"\n• \"socks add karo 30 ki bechta hun 100 pcs\" / \"Bilal se 50 socks udhaar aae\" / \"stock dikhao\"\n• \"Rohaan ka bill: 50 socks, 10% discount, 1000 cash baqi udhaar\" / \"2 socks bech diye\" / \"bills dikhao\"\n• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n• \"Ali ka September ka statement\" / \"sab ka statement\"\n• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\"",
+  "cls": {
+   "intent": "help",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-21",
+  "feature": "Conversation",
+  "style": "Short",
+  "text": "hi",
+  "session": "301",
+  "intent": "greeting",
+  "reply": "Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?",
+  "cls": {
+   "intent": "greeting",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "SOC-22",
+  "feature": "Conversation",
+  "style": "Gratitude",
+  "text": "shukriya bhai",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "FAIL",
+  "why": "reply contains forbidden /samajh nahi aaya|didn't understand/"
+ },
+ {
+  "id": "SOC-23",
+  "feature": "Conversation",
+  "style": "Rude no abuse",
+  "text": "bekar bot hai tu kuch nahi aata",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "greeting",
+    "help",
+    "unknown"
+   ],
+   "w": "none",
+   "nx": "samajh nahi aaya|didn't understand"
+  },
+  "verdict": "FAIL",
+  "why": "reply contains forbidden /samajh nahi aaya|didn't understand/"
+ },
+ {
+  "id": "WRG-01",
+  "feature": "Wrong/accidental input",
+  "style": "Filler",
+  "text": "ok",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "WRG-02",
+  "feature": "Wrong/accidental input",
+  "style": "Filler",
+  "text": "hmm",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "WRG-03",
+  "feature": "Wrong/accidental input",
+  "style": "Emoji",
+  "text": "👍",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "WRG-04",
+  "feature": "Wrong/accidental input",
+  "style": "Gibberish",
+  "text": "asdfgh",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "WRG-05",
+  "feature": "Wrong/accidental input",
+  "style": "Punctuation",
+  "text": "???",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "WRG-06",
+  "feature": "Wrong/accidental input",
+  "style": "Wrong input",
+  "text": "kal",
+  "session": "301",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "WRG-07",
+  "feature": "Wrong/accidental input",
+  "style": "Wrong input",
+  "text": "cash",
+  "session": "301",
+  "intent": "money_report",
+  "reply": "Abhi cash book mein koi entry nahi. Likhein: \"chai 200\" ya \"3000 aaye\"",
+  "cls": {
+   "intent": "money_report",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {
+    "account": "cash",
+    "start_date": null,
+    "end_date": null,
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ }
+]

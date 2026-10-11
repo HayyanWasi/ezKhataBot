@@ -1,0 +1,95 @@
+[SOC-01] PASS    'kya kar rahe ho?' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-02] PASS    'kiya kar rha hai tou?' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-03] PASS    'kya krrhe ho aap?' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-04] PASS    'kya krrhe ho tum?' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-05] FAIL    'mere bhai tum kiya karhe ho?' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[SOC-06] PASS    'mere bhi tum kiya karrhe ho?' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-07] PASS    'kya kr rhy' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-08] PASS    'kia krra' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-09] PASS    'kya krha h' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-10] PASS    'kyaa kr rhe ho' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-11] PASS    'kya krre ho' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-12] PASS    'abe tu kya kr raha h' -> help pend=None d={}
+      Mujhe aise likhein:
+      • "Ali ko 500 diye" / "Ali se 300 mile"
+      • "Ali ka hisaab" / "sab ka hisaab"
+      • "chai 200" / "3000 aaye" / "aaj 20000 ki sale hui"
+      • "Ali ne 1000 wapas diye" / "JazzCash mein 10000 jama karaye"
+      • "aaj ka cash" / "September ki cash book PDF"
+      • "socks add karo 30 ki bechta hun 100 pcs" / "Bilal se 50 socks udhaar aae" / "stock dikhao"
+      • "Ro
+[SOC-13] PASS    'oye tou kya karha hai' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-14] PASS    'assalam o alaikum bhai kese ho' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-15] PASS    'bhai kia scene h' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-16] FAIL    'tm kon ho bhai' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[SOC-17] PASS    'tu kia kia kr skta h' -> help pend=None d={}
+      Mujhe aise likhein:
+      • "Ali ko 500 diye" / "Ali se 300 mile"
+      • "Ali ka hisaab" / "sab ka hisaab"
+      • "chai 200" / "3000 aaye" / "aaj 20000 ki sale hui"
+      • "Ali ne 1000 wapas diye" / "JazzCash mein 10000 jama karaye"
+      • "aaj ka cash" / "September ki cash book PDF"
+      • "socks add karo 30 ki bechta hun 100 pcs" / "Bilal se 50 socks udhaar aae" / "stock dikhao"
+      • "Ro
+[SOC-18] PASS    'kya kya kar sakte ho aap' -> help pend=None d={}
+      Mujhe aise likhein:
+      • "Ali ko 500 diye" / "Ali se 300 mile"
+      • "Ali ka hisaab" / "sab ka hisaab"
+      • "chai 200" / "3000 aaye" / "aaj 20000 ki sale hui"
+      • "Ali ne 1000 wapas diye" / "JazzCash mein 10000 jama karaye"
+      • "aaj ka cash" / "September ki cash book PDF"
+      • "socks add karo 30 ki bechta hun 100 pcs" / "Bilal se 50 socks udhaar aae" / "stock dikhao"
+      • "Ro
+[SOC-19] PASS    'madad chahiye bhai kese use karun is ko' -> help pend=None d={}
+      Mujhe aise likhein:
+      • "Ali ko 500 diye" / "Ali se 300 mile"
+      • "Ali ka hisaab" / "sab ka hisaab"
+      • "chai 200" / "3000 aaye" / "aaj 20000 ki sale hui"
+      • "Ali ne 1000 wapas diye" / "JazzCash mein 10000 jama karaye"
+      • "aaj ka cash" / "September ki cash book PDF"
+      • "socks add karo 30 ki bechta hun 100 pcs" / "Bilal se 50 socks udhaar aae" / "stock dikhao"
+      • "Ro
+[SOC-20] PASS    'help' -> help pend=None d={}
+      Mujhe aise likhein:
+      • "Ali ko 500 diye" / "Ali se 300 mile"
+      • "Ali ka hisaab" / "sab ka hisaab"
+      • "chai 200" / "3000 aaye" / "aaj 20000 ki sale hui"
+      • "Ali ne 1000 wapas diye" / "JazzCash mein 10000 jama karaye"
+      • "aaj ka cash" / "September ki cash book PDF"
+      • "socks add karo 30 ki bechta hun 100 pcs" / "Bilal se 50 socks udhaar aae" / "stock dikhao"
+      • "Ro
+[SOC-21] PASS    'hi' -> greeting pend=None d={}
+      Salam QA 301! 👋 Aap *QA Social Shop* mein hain. Batayein kya karna hai?
+[SOC-22] FAIL    'shukriya bhai' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[SOC-23] FAIL    'bekar bot hai tu kuch nahi aata' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[WRG-01] PASS    'ok' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[WRG-02] PASS    'hmm' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[WRG-03] PASS    '👍' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[WRG-04] PASS    'asdfgh' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[WRG-05] PASS    '???' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[WRG-06] PASS    'kal' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[WRG-07] PASS    'cash' -> money_report pend=None d={}
+      Abhi cash book mein koi entry nahi. Likhein: "chai 200" ya "3000 aaye"

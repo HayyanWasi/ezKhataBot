@@ -1,0 +1,762 @@
+[
+ {
+  "id": "CSH-01",
+  "feature": "Cash book",
+  "style": "Bare word amount",
+  "text": "rickshaw 300",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "\"rickshaw\" kis category mein daalun?\n1) Rickshaw (nayi)\nYa naya naam likhein.",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 300,
+    "date": null,
+    "note": "rickshaw",
+    "category_word": "rickshaw",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "choose_category",
+  "delta": {},
+  "exp": {
+   "i": [
+    "cash_entry"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-01b",
+  "feature": "Cash book",
+  "style": "Category answer",
+  "text": "1",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 300 gaye · Rickshaw (5 Oct)\n💵 Cash: Rs 700",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "choose_category",
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "some",
+   "rx": "300"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-02",
+  "feature": "Cash book",
+  "style": "Reversed",
+  "text": "300 chai",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "\"chai\" kis category mein daalun?\n1) Chai (nayi)\n2) Rickshaw\nYa naya naam likhein.",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 300,
+    "date": "2026-10-05",
+    "note": "chai",
+    "category_word": "chai",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "choose_category",
+  "delta": {},
+  "exp": {
+   "i": [
+    "cash_entry"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-02b",
+  "feature": "Cash book",
+  "style": "Category answer",
+  "text": "1",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 300 gaye · Chai (5 Oct)\n💵 Cash: Rs 400",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "choose_category",
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "some",
+   "rx": "300"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-03",
+  "feature": "Cash book",
+  "style": "Roman Urdu",
+  "text": "bijli ka bill 3500 bhara",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "\"bijli\" kis category mein daalun?\n1) Bijli (nayi)\n2) Chai\n3) Rickshaw\nYa naya naam likhein.",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 3500,
+    "date": "2026-10-05",
+    "note": "bijli ka bill",
+    "category_word": "bijli",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "choose_category",
+  "delta": {},
+  "exp": {
+   "i": [
+    "cash_entry"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-03b",
+  "feature": "Cash book",
+  "style": "Category answer",
+  "text": "1",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 3,500 gaye · Bijli (5 Oct)\n⚠️ Cash: -Rs 3,100",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "choose_category",
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "some",
+   "rx": "3,?500"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-04",
+  "feature": "Cash book",
+  "style": "Compressed",
+  "text": "kiraya 15k diya",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "\"kiraya\" kis category mein daalun?\n1) Kiraya (nayi)\n2) Bijli\n3) Chai\n4) Rickshaw\nYa naya naam likhein.",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 15000,
+    "date": "2026-10-05",
+    "note": null,
+    "category_word": "kiraya",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "choose_category",
+  "delta": {},
+  "exp": {
+   "i": [
+    "cash_entry"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-04b",
+  "feature": "Cash book",
+  "style": "Category answer",
+  "text": "1",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 15,000 gaye · Kiraya (5 Oct)\n⚠️ Cash: -Rs 18,100",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "choose_category",
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "some",
+   "rx": "15,?000"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-05",
+  "feature": "Cash book",
+  "style": "Word amount",
+  "text": "ek hazar nashta ka kharcha",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "Kitne paise?",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 1000,
+    "date": null,
+    "note": "nashta",
+    "category_word": "nashta",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "cash_amount",
+  "delta": {},
+  "exp": {
+   "i": [
+    "cash_entry"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-11",
+  "feature": "Cash book",
+  "style": "Salary",
+  "text": "salary 20000 di",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "\"salary\" kis category mein daalun?\n1) Salary (nayi)\n2) Bijli\n3) Chai\n4) Kiraya\n5) Rickshaw\nYa naya naam likhein.",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 20000,
+    "date": "2026-10-05",
+    "note": "salary",
+    "category_word": "salary",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "choose_category",
+  "delta": {},
+  "exp": {
+   "i": [
+    "cash_entry"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CSH-11b",
+  "feature": "Cash book",
+  "style": "Category answer",
+  "text": "1",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 20,000 gaye · Salary (5 Oct)\n⚠️ Cash: -Rs 38,100",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "choose_category",
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "some",
+   "rx": "20,?000"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "COR-20",
+  "feature": "Cash corr",
+  "style": "Edit no 'entry' dates",
+  "text": "chai wali 300 entry 350 thi",
+  "session": "309",
+  "intent": "edit_entry",
+  "reply": "Chai wali entry (5 Oct): Rs 300 → Rs 350. Theek hai? haan/nahi",
+  "cls": {
+   "intent": "edit_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": null,
+    "item": "chai",
+    "amount": 300,
+    "new_amount": 350,
+    "new_date": null,
+    "new_note": null,
+    "new_qty": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_edit",
+  "delta": {},
+  "exp": {
+   "i": [
+    "edit_entry"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "COR-20b",
+  "feature": "Cash corr",
+  "style": "Confirm",
+  "text": "haan",
+  "session": "309",
+  "intent": "edit_entry",
+  "reply": "✏️ Entry theek ho gayi\n⚠️ Cash: -Rs 38,150",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_edit",
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was"
+ },
+ {
+  "id": "DUP-01",
+  "feature": "Duplicate",
+  "style": "Repeat",
+  "text": "rickshaw 100",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 100 gaye · Rickshaw (5 Oct)\n⚠️ Cash: -Rs 38,250",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 100,
+    "date": "2026-10-05",
+    "note": "rickshaw",
+    "category_word": "rickshaw",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "cash_entry"
+   ],
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "DUP-02",
+  "feature": "Duplicate",
+  "style": "Repeat immediately",
+  "text": "rickshaw 100",
+  "session": "309",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 100 gaye · Rickshaw (5 Oct)\n⚠️ Cash: -Rs 38,350",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 100,
+    "date": "2026-10-05",
+    "note": "rickshaw",
+    "category_word": "rickshaw",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "cash_entry"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "RPT-17",
+  "feature": "Reports",
+  "style": "Multi report",
+  "text": "kal ki sale dikhao aur aj ka expense bhi batao",
+  "session": "309",
+  "intent": "bill_report",
+  "reply": "🧾 *Bills* · 4 Oct\nKul sale: *Rs 0* (0 bills: Rs 0)\nIs dauran koi bill nahi.",
+  "cls": {
+   "intent": "bill_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "list",
+    "bill_no": null,
+    "customer_name": null,
+    "start_date": "2026-10-04",
+    "end_date": "2026-10-04",
+    "pdf": false
+   },
+   "then": [
+    {
+     "intent": "money_report",
+     "fields": {
+      "account": "cash",
+      "start_date": "2026-10-05",
+      "end_date": "2026-10-05",
+      "pdf": false
+     }
+    }
+   ]
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "RPT-18",
+  "feature": "Reports",
+  "style": "Mixed",
+  "text": "bro aaj ki sale kitni hui",
+  "session": "309",
+  "intent": "bill_report",
+  "reply": "🧾 *Bills* · 5 Oct\nKul sale: *Rs 0* (0 bills: Rs 0)\nIs dauran koi bill nahi.",
+  "cls": {
+   "intent": "bill_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "list",
+    "bill_no": null,
+    "customer_name": null,
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-05",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "bill_report",
+    "money_report"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "RPT-21",
+  "feature": "Reports",
+  "style": "Profit kal",
+  "text": "boss kal ka profit?",
+  "session": "309",
+  "intent": "profit_report",
+  "reply": "4 Oct ko koi bikri nahi hui.",
+  "cls": {
+   "intent": "profit_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "start_date": "2026-10-04",
+    "end_date": "2026-10-04"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "profit_report"
+   ],
+   "w": "none",
+   "rx": "4 Oct"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "RPT-23",
+  "feature": "Reports",
+  "style": "Kal expense",
+  "text": "kal kitna kharcha hua",
+  "session": "309",
+  "intent": "money_report",
+  "reply": "📒 Cash · 4 Oct\nShuru mein: Rs 0\nAaye: Rs 0\nGaye: Rs 0\nBaqi: Rs 0",
+  "cls": {
+   "intent": "money_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "account": "cash",
+    "start_date": "2026-10-04",
+    "end_date": "2026-10-04",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "money_report"
+   ],
+   "w": "none",
+   "rx": "4 Oct"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "RPT-24",
+  "feature": "Reports",
+  "style": "Specific date",
+  "text": "15 sep ka hisab",
+  "session": "309",
+  "intent": "money_report",
+  "reply": "📒 Cash · 15 Sep\nShuru mein: Rs 0\nAaye: Rs 0\nGaye: Rs 0\nBaqi: Rs 0",
+  "cls": {
+   "intent": "money_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "account": null,
+    "start_date": "2026-09-15",
+    "end_date": "2026-09-15",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "money_report"
+   ],
+   "w": "none",
+   "rx": "15 Sep"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "RPT-25",
+  "feature": "Reports",
+  "style": "Parso",
+  "text": "parso ki sale",
+  "session": "309",
+  "intent": "profit_report",
+  "reply": "5 Oct ko koi bikri nahi hui.\nKharche: Rs 39,350",
+  "cls": {
+   "intent": "profit_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "start_date": "2026-10-07",
+    "end_date": "2026-10-07"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "rx": "3 Oct"
+  },
+  "verdict": "FAIL",
+  "why": "reply missing /3 Oct/"
+ },
+ {
+  "id": "RPT-26",
+  "feature": "Reports",
+  "style": "Pichle hafte",
+  "text": "pichle hafte ka kharcha",
+  "session": "309",
+  "intent": "money_report",
+  "reply": "📒 Cash · 28 Sep – 4 Oct\nShuru mein: Rs 0\nAaye: Rs 0\nGaye: Rs 0\nBaqi: Rs 0",
+  "cls": {
+   "intent": "money_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "account": "cash",
+    "start_date": "2026-09-28",
+    "end_date": "2026-10-04",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "money_report"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "RPT-27",
+  "feature": "Reports",
+  "style": "Month name",
+  "text": "september ke kharche",
+  "session": "309",
+  "intent": "money_report",
+  "reply": "📒 Cash · 1 Sep – 30 Sep\nShuru mein: Rs 0\nAaye: Rs 0\nGaye: Rs 0\nBaqi: Rs 0",
+  "cls": {
+   "intent": "money_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "account": "cash",
+    "start_date": "2026-09-01",
+    "end_date": "2026-09-30",
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "money_report"
+   ],
+   "w": "none",
+   "rx": "Sep"
+  },
+  "verdict": "PASS",
+  "why": ""
+ }
+]

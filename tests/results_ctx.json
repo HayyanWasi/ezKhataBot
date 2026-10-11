@@ -1,0 +1,1858 @@
+[
+ {
+  "id": "CTX-10",
+  "feature": "Context",
+  "style": "Missing amount",
+  "text": "expense add kr",
+  "session": "307",
+  "intent": "cash_entry",
+  "reply": "Kitne paise?",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": null,
+    "amount": null,
+    "date": null,
+    "note": null,
+    "category_word": null,
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "cash_amount",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-11",
+  "feature": "Context",
+  "style": "Bare number answer",
+  "text": "500",
+  "session": "307",
+  "intent": "cash_entry",
+  "reply": "Rs 500:\n1) Aaye (cash in)\n2) Gaye (cash out)",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "cash_amount",
+  "pend_after": "cash_direction",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-12",
+  "feature": "Context",
+  "style": "Word answer",
+  "text": "chai",
+  "session": "307",
+  "intent": "cash_entry",
+  "reply": "Kitne paise?",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": null,
+    "date": "2026-10-05",
+    "note": "chai",
+    "category_word": "chai",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "cash_direction",
+  "pend_after": "cash_amount",
+  "delta": {},
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was"
+ },
+ {
+  "id": "CTX-13",
+  "feature": "Context",
+  "style": "Missing amount",
+  "text": "chai ka kharcha likh do",
+  "session": "307",
+  "intent": "cash_entry",
+  "reply": "Kitne paise?",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": null,
+    "date": null,
+    "note": "kharcha",
+    "category_word": "chai",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "cash_amount",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-14",
+  "feature": "Context",
+  "style": "Hazar answer",
+  "text": "2 hazar",
+  "session": "307",
+  "intent": "cash_entry",
+  "reply": "\"chai\" kis category mein daalun?\n1) Chai (nayi)\nYa naya naam likhein.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "cash_amount",
+  "pend_after": "choose_category",
+  "delta": {},
+  "exp": {
+   "w": "some",
+   "rx": "2,?000"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was; reply missing /2,?000/"
+ },
+ {
+  "id": "CTX-15",
+  "feature": "Context",
+  "style": "Direction q",
+  "text": "Ali 500",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Rs 500:\n1) Ali ko diye\n2) Ali se liye",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": null,
+    "amount": 500,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_direction",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-16",
+  "feature": "Context",
+  "style": "Answer 'pehla'",
+  "text": "pehla wala",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 500 diye (5 Oct)\nAli se lene hain: Rs 500",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "Ali ko diye"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "entry_direction",
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "some",
+   "rx": "Ali.*500|500"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-17",
+  "feature": "Context",
+  "style": "Direction q",
+  "text": "Ali 700",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Rs 700:\n1) Ali ko diye\n2) Ali se liye",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": null,
+    "amount": 700,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_direction",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-18",
+  "feature": "Context",
+  "style": "Answer word",
+  "text": "liye",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "✅ Ali se Rs 700 liye (5 Oct)\nAli ko dene hain: Rs 200",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "Ali se liye"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "entry_direction",
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-19",
+  "feature": "Context",
+  "style": "Direction q",
+  "text": "Ali 900",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Rs 900:\n1) Ali ko diye\n2) Ali se liye",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": null,
+    "amount": 900,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_direction",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-20",
+  "feature": "Context",
+  "style": "Answer ambiguous han",
+  "text": "han",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "entry_direction",
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-21",
+  "feature": "Context",
+  "style": "Direction q",
+  "text": "Ali 100",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Rs 100:\n1) Ali ko diye\n2) Ali se liye",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": null,
+    "amount": 100,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_direction",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-22",
+  "feature": "Context",
+  "style": "Answer cancel",
+  "text": "rehne do",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "entry_direction",
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": false
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-23",
+  "feature": "Context",
+  "style": "New party",
+  "text": "Zeeshan ko 700 diye",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Zeeshan naya hai.\n1) Customer\n2) Supplier",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Zeeshan",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 700,
+    "date": null,
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "new_party_type",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-24",
+  "feature": "Context",
+  "style": "Answer 'supplier hai'",
+  "text": "nahi supplier hai",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "✅ Zeeshan ko Rs 700 diye (5 Oct)\nZeeshan se lene hain: Rs 700\n💵 Cash: Rs 300",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "supplier"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "new_party_type",
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "accounts": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-25",
+  "feature": "Context",
+  "style": "New party",
+  "text": "Waqar ko 300 udhaar diye",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Waqar naya hai.\n1) Customer\n2) Supplier",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Waqar",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 300,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "new_party_type",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-26",
+  "feature": "Context",
+  "style": "Answer nai",
+  "text": "nai",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Waqar naya hai.\n1) Customer\n2) Supplier",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "nai"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "new_party_type",
+  "pend_after": "new_party_type",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-27",
+  "feature": "Context",
+  "style": "Stock pay q",
+  "text": "50 socks aye bilal se",
+  "session": "307",
+  "intent": "stock_in",
+  "reply": "✅ Stock aa gaya (5 Oct)\n📦 Socks: +50 → 60 pcs\n💰 Kul: Rs 1,000\nBilal ko dene hain: Rs 1,000",
+  "cls": {
+   "intent": "stock_in",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "items": [
+     {
+      "name": "socks",
+      "qty": 50,
+      "unit": "pcs",
+      "rate": null
+     }
+    ],
+    "supplier_name": "Bilal",
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "stock_in"
+   ],
+   "w": "none",
+   "p": true
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'txn': 1}; expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "CTX-28",
+  "feature": "Context",
+  "style": "Answer word",
+  "text": "udhar",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was"
+ },
+ {
+  "id": "CTX-29",
+  "feature": "Context",
+  "style": "Stock pay q",
+  "text": "10 socks aye",
+  "session": "307",
+  "intent": "stock_in",
+  "reply": "10 pcs Socks: paise kaise diye?\n1) Udhaar\n2) Cash\n3) Online (bank)\n4) Sirf stock, paison ka hisaab nahi",
+  "cls": {
+   "intent": "stock_in",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "items": [
+     {
+      "name": "socks",
+      "qty": 10,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "supplier_name": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "stock_pay",
+  "delta": {},
+  "exp": {
+   "i": [
+    "stock_in"
+   ],
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-30",
+  "feature": "Context",
+  "style": "Answer cash word",
+  "text": "cash se",
+  "session": "307",
+  "intent": "stock_in",
+  "reply": "✅ Stock aa gaya (5 Oct)\n📦 Socks: +10 → 70 pcs\n💰 Kul: Rs 200\n💵 Cash: Rs 100",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "cash"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "stock_pay",
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-31",
+  "feature": "Context",
+  "style": "Missing",
+  "text": "customer add krna hai",
+  "session": "307",
+  "intent": "add_party",
+  "reply": "Naam kya hai?",
+  "cls": {
+   "intent": "add_party",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": null,
+    "type": "customer",
+    "phone": null,
+    "opening_amount": null,
+    "opening_direction": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_party",
+  "delta": {},
+  "exp": {
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-32",
+  "feature": "Context",
+  "style": "Interrupt",
+  "text": "ali ka khata dikha",
+  "session": "307",
+  "intent": "party_balance",
+  "reply": "*Ali (customer)* · 📞 923331234567\nAli ko dene hain: Rs 200\n\n5 Oct · liye Rs 700 → dene Rs 200\n5 Oct · diye Rs 500 → lene Rs 500",
+  "cls": {
+   "intent": "party_balance",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "entry_party",
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "party_balance"
+   ],
+   "w": "none",
+   "rx": "Ali"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-33",
+  "feature": "Context",
+  "style": "Orphan answer",
+  "text": "Ahmed",
+  "session": "307",
+  "intent": "party_balance",
+  "reply": "Ahmed naam ki koi party nahi mili.",
+  "cls": {
+   "intent": "party_balance",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ahmed"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-34",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "ali",
+  "session": "307",
+  "intent": "party_balance",
+  "reply": "*Ali (customer)* · 📞 923331234567\nAli ko dene hain: Rs 200\n\n5 Oct · liye Rs 700 → dene Rs 200\n5 Oct · diye Rs 500 → lene Rs 500",
+  "cls": {
+   "intent": "party_balance",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-35",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "500",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Rs 500:\n1) Ali ko diye\n2) Ali se liye",
+  "cls": {
+   "intent": "party_entry",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": null,
+    "amount": 500,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_direction",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-36",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "han",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-37",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "nai",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-38",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "woh wala",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-39",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "cash",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Sorry, I didn't understand. Send /help to see what I can do.",
+  "cls": {
+   "intent": "unknown",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-40",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "03331234567",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-41",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "2 hazar",
+  "session": "307",
+  "intent": "cash_entry",
+  "reply": "Rs 2,000:\n1) Aaye (cash in)\n2) Gaye (cash out)",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": null,
+    "amount": 2000,
+    "date": null,
+    "note": null,
+    "category_word": null,
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "cash_direction",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-42",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "uska",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-43",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "same",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-44",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "rehne do",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-45",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "change krdo",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-46",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "kal",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CTX-47",
+  "feature": "Orphan compressed",
+  "style": "Bare token no context",
+  "text": "theek hai",
+  "session": "307",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-01",
+  "feature": "Compressed",
+  "style": "kr",
+  "text": "ali add kr",
+  "session": "307",
+  "intent": "add_party",
+  "reply": "Ali naya hai.\n1) Customer\n2) Supplier",
+  "cls": {
+   "intent": "add_party",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "ali",
+    "type": null,
+    "phone": null,
+    "opening_amount": null,
+    "opening_direction": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "new_party_type",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_party"
+   ],
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-02",
+  "feature": "Compressed",
+  "style": "dal",
+  "text": "ali ko dal",
+  "session": "307",
+  "intent": "add_party",
+  "reply": "Ali naya hai.\n1) Customer\n2) Supplier",
+  "cls": {
+   "intent": "add_party",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "ali",
+    "type": null,
+    "phone": null,
+    "opening_amount": null,
+    "opening_direction": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "new_party_type",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-03",
+  "feature": "Compressed",
+  "style": "udhr",
+  "text": "500 udhr",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Kis ka hisaab hai? Naam likhein.",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": null,
+    "party_type": null,
+    "direction": "gave",
+    "amount": 500,
+    "date": null,
+    "note": "udhaar",
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_party",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-04",
+  "feature": "Compressed",
+  "style": "2k name",
+  "text": "2k ali",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Rs 2,000:\n1) Ali ko diye\n2) Ali se liye",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "party_type": null,
+    "direction": null,
+    "amount": 2000,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_direction",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-05",
+  "feature": "Compressed",
+  "style": "kitna bnta",
+  "text": "kitna bnta",
+  "session": "307",
+  "intent": "party_balance",
+  "reply": "*Ali (customer)* · 📞 923331234567\nAli ko dene hain: Rs 200\n\n5 Oct · liye Rs 700 → dene Rs 200\n5 Oct · diye Rs 500 → lene Rs 500",
+  "cls": {
+   "intent": "party_balance",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-06",
+  "feature": "Compressed",
+  "style": "usko 500 de",
+  "text": "usko 500 de",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Kis ka hisaab hai? Naam likhein.",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": null,
+    "party_type": null,
+    "direction": "gave",
+    "amount": 500,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_party",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-07",
+  "feature": "Compressed",
+  "style": "add kr phone name",
+  "text": "add kr 03331239999 hamid",
+  "session": "307",
+  "intent": "add_party",
+  "reply": "Hamid naya hai.\n1) Customer\n2) Supplier",
+  "cls": {
+   "intent": "add_party",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "hamid",
+    "type": null,
+    "phone": "03331239999",
+    "opening_amount": null,
+    "opening_direction": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "new_party_type",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_party",
+    "add_employee"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-08",
+  "feature": "Compressed",
+  "style": "ali ko khata",
+  "text": "ali ko 3k udhr de dia",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 3,000 diye (5 Oct)\nAli se lene hain: Rs 2,800",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 3000,
+    "date": null,
+    "note": "udhr",
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "w": "some",
+   "rx": "3,?000"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-09",
+  "feature": "Compressed",
+  "style": "kl ki sale",
+  "text": "kl ki sale",
+  "session": "307",
+  "intent": "profit_report",
+  "reply": "4 Oct ko koi bikri nahi hui.",
+  "cls": {
+   "intent": "profit_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "start_date": "2026-10-04",
+    "end_date": "2026-10-04"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "bill_report",
+    "money_report"
+   ],
+   "w": "none"
+  },
+  "verdict": "FAIL",
+  "why": "intent 'profit_report' not in ['bill_report', 'money_report']"
+ },
+ {
+  "id": "CMP-10",
+  "feature": "Compressed",
+  "style": "cash kitna",
+  "text": "cash kitna",
+  "session": "307",
+  "intent": "money_report",
+  "reply": "📒 Cash · 5 Oct\nShuru mein: Rs 0\nAaye: Rs 1,000\nGaye: Rs 900\nBaqi: Rs 100",
+  "cls": {
+   "intent": "money_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "account": "cash",
+    "start_date": null,
+    "end_date": null,
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "money_report"
+   ],
+   "w": "none",
+   "rx": "Rs"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "CMP-11",
+  "feature": "Compressed",
+  "style": "5k aya",
+  "text": "5k aya",
+  "session": "307",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 5,000 aaye (5 Oct)\n💵 Cash: Rs 5,100",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "in",
+    "amount": 5000,
+    "date": null,
+    "note": null,
+    "category_word": null,
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'txn': 1}; expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "CMP-12",
+  "feature": "Compressed",
+  "style": "3k gya",
+  "text": "3k gya",
+  "session": "307",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 3,000 gaye (5 Oct)\n💵 Cash: Rs 2,100",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 3000,
+    "date": "2026-10-05",
+    "note": null,
+    "category_word": null,
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'txn': 1}; expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "DUP-10",
+  "feature": "Context",
+  "style": "Duplicate",
+  "text": "Ali ko 450 diye",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 450 diye (5 Oct)\nAli se lene hain: Rs 3,250",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 450,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "DUP-11",
+  "feature": "Context",
+  "style": "Duplicate repeat",
+  "text": "Ali ko 450 diye",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 450 diye (5 Oct)\nAli se lene hain: Rs 3,700\n💵 Cash: Rs 1,650",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 450,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "DUP-12",
+  "feature": "Context",
+  "style": "Correction w/o entry word",
+  "text": "sorry 540 the",
+  "session": "307",
+  "intent": "edit_entry",
+  "reply": "Ali wali entry (5 Oct): Rs 450 → Rs 540. Theek hai? haan/nahi",
+  "cls": {
+   "intent": "edit_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "item": null,
+    "amount": 450,
+    "new_amount": 540,
+    "new_date": null,
+    "new_note": null,
+    "new_qty": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_edit",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "ACC-01",
+  "feature": "Context",
+  "style": "Accident",
+  "text": "Ali ko 5000000 diye",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 5,000,000 diye (5 Oct)\nAli se lene hain: Rs 5,003,700\n⚠️ Cash: -Rs 4,998,350",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 5000000,
+    "date": null,
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'txn': 1}; expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "ACC-02",
+  "feature": "Context",
+  "style": "Accident",
+  "text": "Ali ko 0 diye",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Ali: kitne paise?",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 0,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_amount",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "ACC-03",
+  "feature": "Context",
+  "style": "Negative",
+  "text": "Ali ko -500 diye",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "Ali: kitne paise?",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": -500,
+    "date": null,
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_amount",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "ACC-04",
+  "feature": "Context",
+  "style": "Decimal",
+  "text": "Ali ko 500.50 diye",
+  "session": "307",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 500.50 diye (5 Oct)\nAli se lene hain: Rs 5,004,200.50\n⚠️ Cash: -Rs 4,998,850.50",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 500.5,
+    "date": null,
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "500\\.5"
+  },
+  "verdict": "PASS",
+  "why": ""
+ }
+]

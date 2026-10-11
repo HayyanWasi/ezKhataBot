@@ -1,0 +1,612 @@
+[
+ {
+  "id": "BIL-00",
+  "feature": "Stock/bills",
+  "style": "Shop details answer",
+  "text": "Shop 5 Gulshan Karachi 03211234567",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "🧾 *Bill #1* · Walk-in · 5 Oct\n1) Socks 2 × Rs 30 = Rs 60\n*Kul: Rs 60*\n✅ Poore paise mil gae (Cash)\n📦 Socks: 48 pcs\n💵 Cash: Rs 1,060",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "shop_details",
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "bills": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-01",
+  "feature": "Stock/bills",
+  "style": "Sale",
+  "text": "3 socks bech diye",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "🧾 *Bill #2* · Walk-in · 5 Oct\n1) Socks 3 × Rs 30 = Rs 90\n*Kul: Rs 90*\n✅ Poore paise mil gae (Cash)\n📦 Socks: 45 pcs\n💵 Cash: Rs 1,150",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "socks",
+      "qty": 3,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "bills": 1
+  },
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some",
+   "rx": "90"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-02",
+  "feature": "Stock/bills",
+  "style": "Counter",
+  "text": "counter sale 1 charger",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "🧾 *Bill #3* · Walk-in · 5 Oct\n1) Charger 1 × Rs 1,500 = Rs 1,500\n*Kul: Rs 1,500*\n✅ Poore paise mil gae (Cash)\n📦 Charger: 19 pcs\n💵 Cash: Rs 2,650",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "charger",
+      "qty": 1,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "bills": 1
+  },
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some",
+   "rx": "1,?500"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-03",
+  "feature": "Stock/bills",
+  "style": "Multi sale+expense",
+  "text": "2 charger 3000 ke sell kiye aur 500 delivery wale ko diye",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "Udhaar ke liye naam chahiye: kis customer ka bill hai?",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "charger",
+      "qty": 2,
+      "unit": null,
+      "rate": 3000
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax": null,
+    "tax_amount": 2,
+    "tax_percent": null,
+    "paid_via": "cash",
+    "paid_amount": 500,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "bill_customer",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some",
+   "rx": "500"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was; reply missing /500/"
+ },
+ {
+  "id": "BIL-04",
+  "feature": "Stock/bills",
+  "style": "Customer udhaar",
+  "text": "Ali ko 2 socks udhaar diye",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "🧾 *Bill #4* · Ali · 5 Oct\n1) Socks 2 × Rs 30 = Rs 60\n*Kul: Rs 60*\nMila: Rs 0 · Baqi: Rs 60\n📦 Socks: 43 pcs\nAli se lene hain: Rs 60",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": "Ali",
+    "items": [
+     {
+      "name": "socks",
+      "qty": 2,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": "udhaar",
+    "paid_amount": null,
+    "bank_name": null,
+    "date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "bills": 1
+  },
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some",
+   "rx": "Ali"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-11",
+  "feature": "Stock/bills",
+  "style": "Mixed",
+  "text": "sir 3 socks aur 1 charger ka bill bana do cash",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "🧾 *Bill #5* · Walk-in · 5 Oct\n1) Socks 3 × Rs 30 = Rs 90\n2) Charger 1 × Rs 1,500 = Rs 1,500\n*Kul: Rs 1,590*\n✅ Poore paise mil gae (Cash)\n📦 Socks: 40 pcs\n📦 Charger: 18 pcs\n💵 Cash: Rs 4,240",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "socks",
+      "qty": 3,
+      "unit": null,
+      "rate": null
+     },
+     {
+      "name": "charger",
+      "qty": 1,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": "cash",
+    "paid_amount": null,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "bills": 1
+  },
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-13",
+  "feature": "Stock/bills",
+  "style": "Compressed price",
+  "text": "2 socks 60 me bech de",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "🧾 *Bill #6* · Walk-in · 5 Oct\n1) Socks 2 × Rs 30 = Rs 60\n*Kul: Rs 60*\n✅ Poore paise mil gae (Cash)\n📦 Socks: 38 pcs\n💵 Cash: Rs 4,300",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "socks",
+      "qty": 2,
+      "unit": null,
+      "rate": 30
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "bills": 1
+  },
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "w": "some",
+   "rx": "60"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-15",
+  "feature": "Stock/bills",
+  "style": "Discount",
+  "text": "10 charger ka bill 10% discount ke sath",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "🧾 *Bill #7* · Walk-in · 5 Oct\n1) Charger 10 × Rs 1,500 = Rs 15,000\nTotal: Rs 15,000\nDiscount 10%: -Rs 1,500\n*Kul: Rs 13,500*\n✅ Poore paise mil gae (Cash)\n📦 Charger: 8 pcs\n💵 Cash: Rs 17,800",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "charger",
+      "qty": 10,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": 10,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "bills": 1
+  },
+  "exp": {
+   "i": [
+    "create_bill"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-16",
+  "feature": "Stock/bills",
+  "style": "Casual cust",
+  "text": "ali ko 5 socks de diye 150 ke",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "Bill Rs 150: paise kaise mile?\n1) Cash\n2) Online (bank)\n3) Udhaar",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": "Ali",
+    "items": [
+     {
+      "name": "socks",
+      "qty": 5,
+      "unit": null,
+      "rate": 30
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": "2026-10-05"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "bill_pay",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-16b",
+  "feature": "Stock/bills",
+  "style": "Pay answer",
+  "text": "udhaar",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "🧾 *Bill #8* · Ali · 5 Oct\n1) Socks 5 × Rs 30 = Rs 150\n*Kul: Rs 150*\nMila: Rs 0 · Baqi: Rs 150\n📦 Socks: 33 pcs\nAli se lene hain: Rs 210",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "udhaar"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "bill_pay",
+  "pend_after": null,
+  "delta": {
+   "txn": 1,
+   "bills": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-17",
+  "feature": "Stock/bills",
+  "style": "Bill show",
+  "text": "bill 2 dikhao",
+  "session": "311",
+  "intent": "bill_report",
+  "reply": "🧾 *Bill #2* · Walk-in · 5 Oct\n1) Socks 3 × Rs 30 = Rs 90\n*Kul: Rs 90*\n✅ Poore paise mil gae (Cash)",
+  "cls": {
+   "intent": "bill_report",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "kind": "one",
+    "bill_no": 2,
+    "customer_name": null,
+    "start_date": null,
+    "end_date": null,
+    "pdf": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "bill_report"
+   ],
+   "w": "none",
+   "rx": "Bill|bill"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-20",
+  "feature": "Stock/bills",
+  "style": "Cancel then confirm",
+  "text": "bill 2 cancel kr do",
+  "session": "311",
+  "intent": "cancel_bill",
+  "reply": "Bill #2 (Walk-in, Rs 90) cancel karun? Stock, cash aur khata wapas ho jaenge. (haan/nahi)",
+  "cls": {
+   "intent": "cancel_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "bill_no": 2
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_cancel_bill",
+  "delta": {},
+  "exp": {
+   "i": [
+    "cancel_bill"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "BIL-20b",
+  "feature": "Stock/bills",
+  "style": "Confirm",
+  "text": "ji haan",
+  "session": "311",
+  "intent": "cancel_bill",
+  "reply": "❌ Bill #2 cancel ho gaya\n📦 Socks: 36 pcs\n💵 Cash: Rs 17,710",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "haan"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_cancel_bill",
+  "pend_after": null,
+  "delta": {
+   "txn": -1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was"
+ },
+ {
+  "id": "BIL-21",
+  "feature": "Stock/bills",
+  "style": "Sale multi-item words",
+  "text": "teen socks aur do charger bech diye",
+  "session": "311",
+  "intent": "create_bill",
+  "reply": "*Socks* kitne pcs?",
+  "cls": {
+   "intent": "create_bill",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "customer_name": null,
+    "items": [
+     {
+      "name": "socks",
+      "qty": 3,
+      "unit": null,
+      "rate": null
+     },
+     {
+      "name": "charger",
+      "qty": 2,
+      "unit": null,
+      "rate": null
+     }
+    ],
+    "discount_percent": null,
+    "discount_amount": null,
+    "tax_percent": null,
+    "tax_amount": null,
+    "paid_via": null,
+    "paid_amount": null,
+    "bank_name": null,
+    "date": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "stock_qty",
+  "delta": {},
+  "exp": {
+   "i": [
+    "create_bill"
+   ],
+   "rx": "3|2"
+  },
+  "verdict": "FAIL",
+  "why": "reply missing /3|2/"
+ }
+]

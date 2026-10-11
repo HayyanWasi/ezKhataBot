@@ -1,0 +1,357 @@
+{
+  "user_id": "a201797b-03a6-4947-a9d5-86eed01ad6b7",
+  "shop_id": "4ea24386-67e4-41cb-af4f-ef700260d34a",
+  "results": [
+    {
+      "input": "kiya kar rha hai tou?",
+      "result": "processed",
+      "intent": "greeting",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?"
+      ],
+      "index": 1,
+      "group": "social",
+      "expected_intents": [
+        "greeting",
+        "help"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "kya krrhe ho aap?",
+      "result": "processed",
+      "intent": "greeting",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?"
+      ],
+      "index": 2,
+      "group": "social",
+      "expected_intents": [
+        "greeting",
+        "help"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "kya krrhe ho tum?",
+      "result": "processed",
+      "intent": "greeting",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?"
+      ],
+      "index": 3,
+      "group": "social",
+      "expected_intents": [
+        "greeting",
+        "help"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "mere bhai tum kiya kaarhe ho?",
+      "result": "processed",
+      "intent": "greeting",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?"
+      ],
+      "index": 4,
+      "group": "social",
+      "expected_intents": [
+        "greeting",
+        "help"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "mere bhi tum kiya karrhe ho?",
+      "result": "processed",
+      "intent": "greeting",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?"
+      ],
+      "index": 5,
+      "group": "social",
+      "expected_intents": [
+        "greeting",
+        "help"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "oye tou kya karha hai?",
+      "result": "processed",
+      "intent": "help",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Mujhe aise likhein:\n• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n• \"Ali ka hisaab\" / \"sab ka hisaab\"\n• \"chai 200\" / \"3000 aaye\" / \"aaj 20000 ki sale hui\"\n• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n• \"aaj ka cash\" / \"September ki cash book PDF\"\n• \"socks add karo 30 ki bechta hun 100 pcs\" / \"Bilal se 50 socks udhaar aae\" / \"stock dikhao\"\n• \"Rohaan ka bill: 50 socks, 10% discount, 1000 cash baqi udhaar\" / \"2 socks bech diye\" / \"bills dikhao\"\n• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n• \"Ali ka September ka statement\" / \"sab ka statement\"\n• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\"",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Mujhe aise likhein:\n• \"Ali ko 500 diye\" / \"Ali se 300 mile\"\n• \"Ali ka hisaab\" / \"sab ka hisaab\"\n• \"chai 200\" / \"3000 aaye\" / \"aaj 20000 ki sale hui\"\n• \"Ali ne 1000 wapas diye\" / \"JazzCash mein 10000 jama karaye\"\n• \"aaj ka cash\" / \"September ki cash book PDF\"\n• \"socks add karo 30 ki bechta hun 100 pcs\" / \"Bilal se 50 socks udhaar aae\" / \"stock dikhao\"\n• \"Rohaan ka bill: 50 socks, 10% discount, 1000 cash baqi udhaar\" / \"2 socks bech diye\" / \"bills dikhao\"\n• \"Rohaan supplier add karo\" / \"undo\" / \"Ali wali entry 500 nahi 600 thi\"\n• \"Ali ka September ka statement\" / \"sab ka statement\"\n• \"kal 10 baje yaad dilana Rohaan ko payment karni hai\" / \"meri reminders\"\n• \"dukaan badlo\" / \"English mein baat karo\" / \"yaad rakhna …\""
+      ],
+      "index": 6,
+      "group": "social",
+      "expected_intents": [
+        "greeting",
+        "help"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "abe tu kya kr raha hai?",
+      "result": "processed",
+      "intent": "unknown",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon."
+      ],
+      "index": 7,
+      "group": "social",
+      "expected_intents": [
+        "greeting",
+        "help"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "input": "assalam o alaikum bhai",
+      "result": "processed",
+      "intent": "greeting",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Salam Roman Urdu Audit! 👋 Aap *EzKhata Roman Urdu Audit Shop* mein hain. Batayein kya karna hai?"
+      ],
+      "index": 8,
+      "group": "social",
+      "expected_intents": [
+        "greeting"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "employee add karo Ali and number",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\""
+      ],
+      "index": 9,
+      "group": "employee",
+      "expected_intents": [
+        "add_employee"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "add employee ali 0333",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Number theek nahi. Aise likhein: 03001234567",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Number theek nahi. Aise likhein: 03001234567"
+      ],
+      "index": 10,
+      "group": "employee",
+      "expected_intents": [
+        "add_employee"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "add ali number",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\""
+      ],
+      "index": 11,
+      "group": "employee",
+      "expected_intents": [
+        "add_employee",
+        "add_party"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "ali ko add kardo 03323",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Number theek nahi. Aise likhein: 03001234567",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Number theek nahi. Aise likhein: 03001234567"
+      ],
+      "index": 12,
+      "group": "employee",
+      "expected_intents": [
+        "add_employee"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "ali ko add kr oska number ye hai",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\""
+      ],
+      "index": 13,
+      "group": "employee",
+      "expected_intents": [
+        "add_employee"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "oye ali ko employee add kr 999000000000002",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "*Ali* (999000000000002) ko *EzKhata Roman Urdu Audit Shop* mein employee add karun? haan/nahi",
+      "delivery_status": "sent",
+      "pending_kind": "confirm_add_employee",
+      "delivered_replies": [
+        "*Ali* (999000000000002) ko *EzKhata Roman Urdu Audit Shop* mein employee add karun? haan/nahi"
+      ],
+      "index": 14,
+      "group": "employee",
+      "expected_intents": [
+        "add_employee"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "employees dikhao",
+      "result": "processed",
+      "intent": "list_employees",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Abhi koi employee nahi. Add karne ke liye: \"Bilal ko employee add karo 03001234567\"",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Abhi koi employee nahi. Add karne ke liye: \"Bilal ko employee add karo 03001234567\""
+      ],
+      "index": 15,
+      "group": "employee",
+      "expected_intents": [
+        "list_employees"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "aaj ka hisaab dikhao",
+      "result": "processed",
+      "intent": "money_report",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Abhi cash book mein koi entry nahi. Likhein: \"chai 200\" ya \"3000 aaye\"",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Abhi cash book mein koi entry nahi. Likhein: \"chai 200\" ya \"3000 aaye\""
+      ],
+      "index": 16,
+      "group": "accounting",
+      "expected_intents": [
+        "money_report",
+        "recent_entries"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "Ali ka udhaar kitna hai?",
+      "result": "processed",
+      "intent": "party_balance",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Ali naam ki koi party nahi mili.",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Ali naam ki koi party nahi mili."
+      ],
+      "index": 17,
+      "group": "accounting",
+      "expected_intents": [
+        "party_balance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "input": "yaar kal ka munafa batao",
+      "result": "processed",
+      "intent": "profit_report",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "4 Oct ko koi bikri nahi hui.",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "4 Oct ko koi bikri nahi hui."
+      ],
+      "index": 18,
+      "group": "accounting",
+      "expected_intents": [
+        "profit_report"
+      ],
+      "status": "PASS"
+    }
+  ]
+}

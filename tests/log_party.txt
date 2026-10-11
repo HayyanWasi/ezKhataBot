@@ -1,0 +1,180 @@
+[PTY-01] PASS    'Ali ko 500 udhaar diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 500 diye (5 Oct)
+      Ali se lene hain: Rs 500
+[PTY-02] FAIL    'ali ne 300 diye' -> party_entry pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[PTY-03] PASS    '2k udhr ahmed ko' -> party_entry pend=None d={'txn': 1}
+      ✅ Ahmed ko Rs 2,000 diye (5 Oct)
+      Ahmed se lene hain: Rs 2,000
+[PTY-04] FAIL    'Ahmed ko dhai hazar udhaar diye' -> party_entry pend=entry_amount d={}
+      Ahmed: kitne paise?
+[PTY-05] FAIL    'Ali ko paanch sau diye' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[PTY-06] FAIL    'ali ko dedh hazar udhar de diye' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[PTY-07] FAIL    'Ali ne 1,500 wapas kiye' -> party_entry pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[PTY-08] FAIL    'kal Ali ko 700 diye the' -> party_entry pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[PTY-09] PASS    'Bilal se 4000 ka maal liya udhaar' -> party_entry pend=None d={'txn': 1}
+      ✅ Bilal se Rs 4,000 liye (5 Oct)
+      Bilal ko dene hain: Rs 4,000
+[PTY-10] FAIL    'Bilal ko 1000 payment ki cash' -> party_entry pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[PTY-11] PASS    'ali ka khata' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali se lene hain: Rs 500
+      
+      5 Oct · diye Rs 500 → lene Rs 500
+[PTY-12] PASS    'ali wala hisab bata' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali se lene hain: Rs 500
+      
+      5 Oct · diye Rs 500 → lene Rs 500
+[PTY-13] PASS    'ali ka kitna bnta hai' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali se lene hain: Rs 500
+      
+      5 Oct · diye Rs 500 → lene Rs 500
+[PTY-14] PASS    'ali se kitne lene hain' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali se lene hain: Rs 500
+      
+      5 Oct · diye Rs 500 → lene Rs 500
+[PTY-15] PASS    'sab udhar dikhao' -> list_parties pend=None d={}
+      Kul lene hain: Rs 2,500
+      Kul dene hain: Rs 4,000
+      
+      1) Bilal — dene Rs 4,000
+      2) Ahmed — lene Rs 2,000
+      3) Ali — lene Rs 500
+[PTY-16] PASS    'kis kis ne paise dene hain' -> list_parties pend=None d={}
+      Kul lene hain: Rs 2,500
+      Kul dene hain: Rs 4,000
+      
+      1) Bilal — dene Rs 4,000
+      2) Ahmed — lene Rs 2,000
+      3) Ali — lene Rs 500
+[PTY-17] PASS    'Ali ka total outstanding batao' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali se lene hain: Rs 500
+      
+      5 Oct · diye Rs 500 → lene Rs 500
+[PTY-18] PASS    'kya ali ne paise diye the?' -> party_balance pend=None d={}
+      ✅ Haan, 5 Oct ko entry hai: Ali · diye Rs 500
+      
+      *Ali (customer)* · 📞 923331234567
+      Ali se lene hain: Rs 500
+      
+      5 Oct · diye Rs 500 → lene Rs 500
+[PTY-19] FAIL    'ali ka no 03339998887' -> set_party_phone pend=None d={}
+      ✅ Ali ka number save ho gaya
+[PTY-20] FAIL    'Ali ko 100 diye aur Ahmed se 200 liye' -> read_image pend=confirm_image d={}
+      📝 2 entries mili:
+      Party khata:
+      1) 5 Oct · Ali ko Rs 100 diye
+      2) 5 Oct · Ahmed se Rs 200 liye
+      Save karun? haan/nahi
+[AMB-01] UNSAFE  'ali ko 500 daldo' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 500 diye (5 Oct)
+      Ali se lene hain: Rs 1,000
+[AMB-02] PASS    'ali 500' -> party_entry pend=entry_direction d={}
+      Rs 500:
+      1) Ali ko diye
+      2) Ali se liye
+[AMB-03] PASS    '5k add kr' -> party_entry pend=entry_party d={}
+      Kis ka hisaab hai? Naam likhein.
+[AMB-04] PASS    'usko 500 de' -> party_entry pend=entry_party d={}
+      Kis ka hisaab hai? Naam likhein.
+[AMB-05] PASS    'usko payment krdi' -> party_entry pend=entry_party d={}
+      Kis ka hisaab hai? Naam likhein.
+[AMB-06] PASS    '2 hazar uske account me' -> party_entry pend=entry_party d={}
+      Kis ka hisaab hai? Naam likhein.
+[AMB-07] PASS    'customer ka balance update kr' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[AMB-08] PASS    '5k aya' -> cash_entry pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[AMB-09] PASS    '3k gya' -> cash_entry pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[AMB-10] PASS    'Zeeshan ko 700 diye' -> party_entry pend=new_party_type d={}
+      Zeeshan naya hai.
+      1) Customer
+      2) Supplier
+[AMB-11] UNSAFE  'Ali ko 500' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 500 diye (5 Oct)
+      Ali se lene hain: Rs 1,500
+[AMB-12] PASS    'Ali ko 5oo diye' -> party_entry pend=entry_amount d={}
+      Ali: kitne paise?
+[AMB-13] PASS    'Ali ko 500 diye nahi 700 diye' -> edit_entry pend=confirm_edit d={}
+      Ali wali entry (5 Oct): Rs 500 → Rs 700. Theek hai? haan/nahi
+[COR-01] FAIL    'Ali ko 800 diye' -> party_entry pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[COR-02] UNSAFE  'nahi 900 the' -> party_entry pend=None d={'txn': 2, 'accounts': 1}
+      ✅ Ali ko Rs 800 diye (5 Oct)
+      Ali se lene hain: Rs 2,300
+      💵 Cash: Rs 100
+[COR-02b] FAIL    'haan' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[COR-03] PASS    'woh entry delete kr' -> delete_entry pend=confirm_delete d={}
+      Ali ki Rs 800 wali entry (5 Oct) delete karun? haan/nahi
+[COR-04] PASS    'purana wala hata do' -> delete_entry pend=confirm_delete d={}
+      Ali ki Rs 800 wali entry (5 Oct) delete karun? haan/nahi
+[COR-05] PASS    'kal wala change krdo' -> edit_entry pend=confirm_edit d={}
+      Shuru ka balance wali entry (5 Oct): 5 Oct → 4 Oct. Theek hai? haan/nahi
+[COR-06] PASS    'last entry undo kr do' -> delete_entry pend=confirm_delete d={}
+      Shuru ka balance ki Rs 900 wali entry (5 Oct) delete karun? haan/nahi
+[COR-06b] PASS    'rehne do' -> delete_entry pend=None d={}
+      Theek hai, entry nahi hati.
+[COR-07] PASS    'mene ali ka kuch dala tha?' -> party_balance pend=None d={}
+      ✅ Haan, 5 Oct ko entry hai: Ali · diye Rs 800
+      
+      *Ali (customer)* · 📞 923339998887
+      Ali se lene hain: Rs 2,300
+      
+      5 Oct · diye Rs 800 → lene Rs 2,300
+      5 Oct · diye Rs 500 → lene Rs 1,500
+      5 Oct · diye Rs 500 → lene Rs 1,000
+      5 Oct · diye Rs 500 → lene Rs 500
+[COR-08] FAIL    'wo 500 wala entry dikha' -> list_parties pend=None d={}
+      Kul lene hain: Rs 4,300
+      Kul dene hain: Rs 4,000
+      
+      1) Bilal — dene Rs 4,000
+      2) Ali — lene Rs 2,300
+      3) Ahmed — lene Rs 2,000
+[COR-09] PASS    'kya record kiya tha' -> recent_entries pend=None d={}
+      🕘 *Haaliya entries*
+      • 5 Oct · Shuru ka balance · Rs 900
+      • 5 Oct · Ali · diye Rs 800
+      • 5 Oct · Ali · diye Rs 500
+      • 5 Oct · Ali · diye Rs 500
+      • 5 Oct · Bilal · liye Rs 4,000
+[COR-10] PASS    'pichla record kholo' -> recent_entries pend=None d={}
+      🕘 *Haaliya entries*
+      • 5 Oct · Shuru ka balance · Rs 900
+[COR-11] PASS    'kal jo entry ki thi wo dikhao' -> recent_entries pend=None d={}
+      Abhi koi entry nahi.
+[CTX-01] PASS    'Ahmed ko 250 diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ahmed ko Rs 250 diye (5 Oct)
+      Ahmed se lene hain: Rs 2,250
+      ⚠️ Cash: -Rs 150
+[CTX-02] FAIL    'uska number 03337776665' -> set_party_phone pend=None d={}
+      ✅ Ahmed ka number save ho gaya
+[CTX-03] PASS    'uska hisab bta' -> party_balance pend=None d={}
+      *Ahmed (customer)* · 📞 923337776665
+      Ahmed se lene hain: Rs 2,250
+      
+      5 Oct · diye Rs 250 → lene Rs 2,250
+      5 Oct · diye Rs 2,000 → lene Rs 2,000
+[CTX-04] PASS    'same Ali ko bhi' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923339998887
+      Ali se lene hain: Rs 2,300
+      
+      5 Oct · diye Rs 800 → lene Rs 2,300
+      5 Oct · diye Rs 500 → lene Rs 1,500
+      5 Oct · diye Rs 500 → lene Rs 1,000
+      5 Oct · diye Rs 500 → lene Rs 500
+[CTX-05] PASS    'aur 300 bhi' -> party_entry pend=entry_direction d={}
+      Rs 300:
+      1) Ali ko diye
+      2) Ali se liye

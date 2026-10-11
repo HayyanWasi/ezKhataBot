@@ -1,0 +1,41 @@
+D:\Hayyan\Projects\ezKhataBot\tests\qa_battery.py:454: SyntaxWarning: invalid escape sequence '\.'
+  T(s, "ACC-04", F, "Decimal", "Ali ko 500.50 diye", i=["party_entry"], rx="500\.5")
+[BIL-01] FAIL    '2 socks bech diye' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-02] FAIL    'counter sale 3 charger' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-03] FAIL    '2 charger 3000 ke sell kiye aur 500 delivery wale ko diye' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-04] FAIL    'Ali ko 2 socks udhaar diye' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-07] FAIL    'bill 1 cancel kr do' -> cancel_bill pend=None d={}
+      Bill #1 nahi mila.
+[BIL-07b] PASS    'chor do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[BIL-08] FAIL    'aj ki sale' -> bill_report pend=None d={}
+      🧾 *Bills* · 5 Oct
+      Kul sale: *Rs 0* (0 bills: Rs 0)
+      Is dauran koi bill nahi.
+[BIL-09] PASS    'munafa kitna hua aaj' -> profit_report pend=None d={}
+      5 Oct ko koi bikri nahi hui.
+[BIL-11] FAIL    'sir 3 socks aur 1 charger ka bill bana do cash' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-12] PASS    'aj kitna bana' -> bill_report pend=None d={}
+      🧾 *Bills* · 5 Oct
+      Kul sale: *Rs 0* (0 bills: Rs 0)
+      Is dauran koi bill nahi.
+[BIL-13] FAIL    '2 socks 60 me bech de' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-14] PASS    'socks bech diye' -> create_bill pend=stock_qty d={}
+      *Socks* kitne pcs?
+[ENG-02] UNSAFE  'ali ko 500 pay kardo' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 500 diye (5 Oct)
+      Ali se lene hain: Rs 500
+      💵 Cash: Rs 500
+[CAN-04] PASS    'Ali ko 100 diye' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 100 diye (5 Oct)
+      Ali se lene hain: Rs 600
+[CAN-05] PASS    'rehne do' -> delete_entry pend=confirm_delete d={}
+      Ali ki Rs 100 wali entry (5 Oct) delete karun? haan/nahi
+[CAN-06] PASS    'change krdo' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.

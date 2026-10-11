@@ -1,0 +1,1423 @@
+[
+ {
+  "id": "VAR-01",
+  "feature": "Party/cash variants",
+  "style": "No amount",
+  "text": "ali ne paise de diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "Ali: kitne paise?",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "got",
+    "amount": null,
+    "date": null,
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_amount",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-02",
+  "feature": "Party/cash variants",
+  "style": "Clear got",
+  "text": "Ali se 500 mile",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali se Rs 500 liye (5 Oct)\nAli se lene hain: Rs 500",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "got",
+    "amount": 500,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "w": "some",
+   "rx": "500"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-03",
+  "feature": "Party/cash variants",
+  "style": "Wallet",
+  "text": "ali ne 500 bheje jazzcash pe",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "JazzCash naya account hai, add karun? haan/nahi",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "got",
+    "amount": 500,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": "bank",
+    "bank_name": "JazzCash",
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_new_bank",
+  "delta": {},
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-04",
+  "feature": "Party/cash variants",
+  "style": "Baqi",
+  "text": "Ali ka 500 baqi hai",
+  "session": "312",
+  "intent": "party_balance",
+  "reply": "*Ali (customer)* · 📞 923331234567\nAli se lene hain: Rs 500\n\n5 Oct · liye Rs 500 → lene Rs 500\n5 Oct · diye Rs 1,000 → lene Rs 1,000",
+  "cls": {
+   "intent": "party_balance",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-05",
+  "feature": "Party/cash variants",
+  "style": "Likh lo",
+  "text": "Ali k 500 likh lo",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "Rs 500:\n1) Ali ko diye\n2) Ali se liye",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": "customer",
+    "direction": null,
+    "amount": 500,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_direction",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-06",
+  "feature": "Party/cash variants",
+  "style": "Spelling sey/lenay",
+  "text": "ali sey 500 lenay hain",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 500 diye (5 Oct)\nAli se lene hain: Rs 1,000",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": "customer",
+    "direction": "gave",
+    "amount": 500,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "500"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-07",
+  "feature": "Party/cash variants",
+  "style": "Spelling nay/dey",
+  "text": "ali nay 500 rupay dey diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali se Rs 500 liye (5 Oct)\nAli se lene hain: Rs 500\n💵 Cash: Rs 1,500",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "got",
+    "amount": 500,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "500"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-08",
+  "feature": "Party/cash variants",
+  "style": "Compressed rs",
+  "text": "500rs ali ko",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 500 diye (5 Oct)\nAli se lene hain: Rs 1,000",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 500,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'txn': 1}; expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "VAR-09",
+  "feature": "Party/cash variants",
+  "style": "Statement not txn",
+  "text": "ali ne kaha kal dega",
+  "session": "312",
+  "intent": "set_reminder",
+  "reply": "⏰ 6 Oct, 10:00 AM aur 06:00 PM yaad dilaunga: Ali payment dega",
+  "cls": {
+   "intent": "set_reminder",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "text": "Ali payment dega",
+    "date": "2026-10-06",
+    "time": null,
+    "party_name": "Ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "reminders": 1
+  },
+  "exp": {
+   "w": "none",
+   "nx": "✅"
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'reminders': 1}"
+ },
+ {
+  "id": "VAR-10",
+  "feature": "Party/cash variants",
+  "style": "Question",
+  "text": "ali kitne ka hai",
+  "session": "312",
+  "intent": "party_balance",
+  "reply": "*Ali (customer)* · 📞 923331234567\nAli se lene hain: Rs 1,000\n\n5 Oct · diye Rs 500 → lene Rs 1,000\n5 Oct · liye Rs 500 → lene Rs 500\n5 Oct · diye Rs 500 → lene Rs 1,000\n5 Oct · liye Rs 500 → lene Rs 500\n5 Oct · diye Rs 1,000 → lene Rs 1,000",
+  "cls": {
+   "intent": "party_balance",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "party_balance"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-11",
+  "feature": "Party/cash variants",
+  "style": "Settle full",
+  "text": "ali ka hisab saaf kr do",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "Ali: kitne paise?",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": "customer",
+    "direction": "got",
+    "amount": 1000,
+    "date": "2026-10-05",
+    "note": "hisab saaf",
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_amount",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-12",
+  "feature": "Party/cash variants",
+  "style": "Full payment no amount",
+  "text": "ali se sare paise le liye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "Ali: kitne paise?",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": "customer",
+    "direction": "got",
+    "amount": null,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_amount",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-13",
+  "feature": "Party/cash variants",
+  "style": "Bill arrived not paid",
+  "text": "bijli ka bill aya hai 4000 ka",
+  "session": "312",
+  "intent": "cash_entry",
+  "reply": "\"bijli\" kis category mein daalun?\n1) Bijli (nayi)\nYa naya naam likhein.",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 4000,
+    "date": null,
+    "note": null,
+    "category_word": "bijli",
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "choose_category",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-14",
+  "feature": "Party/cash variants",
+  "style": "Backdated sale",
+  "text": "kal 3000 ki sale hui thi",
+  "session": "312",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 3,000 ki sale (4 Oct)\n💵 Cash: Rs 4,500",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "in",
+    "amount": 3000,
+    "date": "2026-10-04",
+    "note": "sale",
+    "category_word": null,
+    "is_sale": true,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "cash_entry"
+   ],
+   "w": "some",
+   "rx": "3,?000"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-15",
+  "feature": "Party/cash variants",
+  "style": "Chai wale",
+  "text": "chai wale ko 200 de diye",
+  "session": "312",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 200 gaye · chai wale (5 Oct)\n💵 Cash: Rs 4,300",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 200,
+    "date": "2026-10-04",
+    "note": "chai wale",
+    "category_word": null,
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'txn': 1}"
+ },
+ {
+  "id": "VAR-16",
+  "feature": "Party/cash variants",
+  "style": "Drawings",
+  "text": "paise nikaale 1000 ghar ke liye",
+  "session": "312",
+  "intent": "cash_entry",
+  "reply": "✅ Rs 1,000 gaye · ghar ke liye (5 Oct)\n💵 Cash: Rs 3,300",
+  "cls": {
+   "intent": "cash_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "direction": "out",
+    "amount": 1000,
+    "date": null,
+    "note": "ghar ke liye",
+    "category_word": null,
+    "is_sale": false,
+    "bank_name": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "cash_entry"
+   ],
+   "w": "none"
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'txn': 1}"
+ },
+ {
+  "id": "VAR-17",
+  "feature": "Party/cash variants",
+  "style": "Two parties",
+  "text": "ali ko 500 aur ahmed ko 300 de diye",
+  "session": "312",
+  "intent": "read_image",
+  "reply": "📝 2 entries mili:\nParty khata:\n1) 5 Oct · Ali ko Rs 500 diye\n2) 5 Oct · Ahmed ko Rs 300 diye\nSave karun? haan/nahi",
+  "cls": {
+   "intent": "many_entries",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_image",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "rx": "500.*300|300.*500"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-18",
+  "feature": "Party/cash variants",
+  "style": "Delete vague sale",
+  "text": "kal wali sale delete kr do",
+  "session": "312",
+  "intent": "delete_entry",
+  "reply": "sale ki Rs 3,000 wali entry (4 Oct) delete karun? haan/nahi",
+  "cls": {
+   "intent": "delete_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": null,
+    "item": "sale",
+    "amount": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_delete",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-19",
+  "feature": "Party/cash variants",
+  "style": "Dangerous delete all",
+  "text": "sab kuch delete kr do",
+  "session": "312",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "nx": "delete ho gaya|hata di|mita di"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-20",
+  "feature": "Party/cash variants",
+  "style": "Dangerous wipe",
+  "text": "mera sara record mita do",
+  "session": "312",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "nx": "delete ho gaya|hata di|mita di"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-21",
+  "feature": "Party/cash variants",
+  "style": "Delete party",
+  "text": "ali ko hata do",
+  "session": "312",
+  "intent": "delete_entry",
+  "reply": "Ali ki Rs 500 wali entry (5 Oct) delete karun? haan/nahi",
+  "cls": {
+   "intent": "delete_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "item": null,
+    "amount": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_delete",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-22",
+  "feature": "Party/cash variants",
+  "style": "Close account",
+  "text": "ali ka account band kr do",
+  "session": "312",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-23",
+  "feature": "Party/cash variants",
+  "style": "Reverse payment",
+  "text": "500 ali ko diye the wapas kr do",
+  "session": "312",
+  "intent": "delete_entry",
+  "reply": "Ali ki Rs 500 wali entry (5 Oct) delete karun? haan/nahi",
+  "cls": {
+   "intent": "delete_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "item": null,
+    "amount": 500
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_delete",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-24",
+  "feature": "Party/cash variants",
+  "style": "Misspelled name aly",
+  "text": "aly ko 500 diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "Aly naya hai.\n1) Customer\n2) Supplier",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "aly",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 500,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "new_party_type",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-25",
+  "feature": "Party/cash variants",
+  "style": "Misspelled name alii",
+  "text": "alii ko 500 dye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "Alii naya hai.\n1) Customer\n2) Supplier",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "alii",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 500,
+    "date": null,
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "new_party_type",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-26",
+  "feature": "Party/cash variants",
+  "style": "CAPS",
+  "text": "ALI KO 200 UDHAAR DIYE",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 200 diye (5 Oct)\nAli se lene hain: Rs 1,200",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ALI",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 200,
+    "date": null,
+    "note": "udhaar",
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "w": "some",
+   "rx": "200"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-27",
+  "feature": "Party/cash variants",
+  "style": "Name contains ko",
+  "text": "Kokab ko 300 diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "Kokab naya hai.\n1) Customer\n2) Supplier",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Kokab",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 300,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "new_party_type",
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-28",
+  "feature": "Party/cash variants",
+  "style": "Phone dashed",
+  "text": "ali ka number 0333-1234567",
+  "session": "312",
+  "intent": "set_party_phone",
+  "reply": "✅ Ali ka number save ho gaya",
+  "cls": {
+   "intent": "set_party_phone",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "phone": "0333-1234567"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "set_party_phone"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-29",
+  "feature": "Party/cash variants",
+  "style": "Phone short",
+  "text": "ali ka number 0333123",
+  "session": "312",
+  "intent": "set_party_phone",
+  "reply": "Number theek nahi. Aise likhein: 03001234567",
+  "cls": {
+   "intent": "set_party_phone",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "phone": "0333123"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "set_party_phone"
+   ],
+   "w": "none",
+   "nx": "save ho gaya"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-30",
+  "feature": "Party/cash variants",
+  "style": "Phone +92",
+  "text": "ahmed ka nbr +923331234567",
+  "session": "312",
+  "intent": "set_party_phone",
+  "reply": "✅ Ahmed ka number save ho gaya",
+  "cls": {
+   "intent": "set_party_phone",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ahmed",
+    "phone": "+923331234567"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "set_party_phone"
+   ],
+   "rx": "Ahmed"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-31",
+  "feature": "Party/cash variants",
+  "style": "Phone 10 digit",
+  "text": "ahmed ka num 3331234568",
+  "session": "312",
+  "intent": "set_party_phone",
+  "reply": "✅ Ahmed ka number save ho gaya",
+  "cls": {
+   "intent": "set_party_phone",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ahmed",
+    "phone": "3331234568"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "set_party_phone"
+   ]
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-32",
+  "feature": "Party/cash variants",
+  "style": "Emp invalid phone",
+  "text": "employee add karo Zain 12345",
+  "session": "312",
+  "intent": "add_employee",
+  "reply": "Number theek nahi. Aise likhein: 03001234567",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Zain",
+    "phone": "12345"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "w": "none",
+   "nx": "add karun|haan/nahi"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-33",
+  "feature": "Party/cash variants",
+  "style": "Number words",
+  "text": "Ali ko teen hazar diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "Ali: kitne paise?",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 3000,
+    "date": null,
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_amount",
+  "delta": {},
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "3,?000"
+  },
+  "verdict": "FAIL",
+  "why": "reply missing /3,?000/"
+ },
+ {
+  "id": "VAR-34",
+  "feature": "Party/cash variants",
+  "style": "Number words sau",
+  "text": "Ali ko do sau diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "Ali: kitne paise?",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 200,
+    "date": null,
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "entry_amount",
+  "delta": {},
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "200"
+  },
+  "verdict": "FAIL",
+  "why": "reply missing /200/"
+ },
+ {
+  "id": "VAR-35",
+  "feature": "Party/cash variants",
+  "style": "k suffix",
+  "text": "ali ko 1.5k udhaar de diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 1,500 diye (5 Oct)\nAli se lene hain: Rs 2,700",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 1500,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": null,
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "1,?500"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-36",
+  "feature": "Party/cash variants",
+  "style": "lakh",
+  "text": "ali ko 1 lakh diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 100,000 diye (5 Oct)\nAli se lene hain: Rs 102,700\n⚠️ Cash: -Rs 96,700",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 100000,
+    "date": null,
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "100,?000"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-37",
+  "feature": "Party/cash variants",
+  "style": "Urdu digits words mix",
+  "text": "Ali ko 5 hazar rupay diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 5,000 diye (5 Oct)\nAli se lene hain: Rs 107,700\n⚠️ Cash: -Rs 101,700",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 5000,
+    "date": "2026-10-05",
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "5,?000"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-38",
+  "feature": "Party/cash variants",
+  "style": "Date parso",
+  "text": "parso Ali ko 400 diye the",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali ko Rs 400 diye (3 Oct)\nAli se lene hain: Rs 108,100\n⚠️ Cash: -Rs 102,100",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "gave",
+    "amount": 400,
+    "date": "2026-10-03",
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "3 Oct|400"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-39",
+  "feature": "Party/cash variants",
+  "style": "Date weekday",
+  "text": "pichle mangal ko Ali ne 300 diye",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali se Rs 300 liye (29 Sep)\nAli se lene hain: Rs 107,800\n⚠️ Cash: -Rs 101,800",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "got",
+    "amount": 300,
+    "date": "2026-09-29",
+    "note": null,
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "i": [
+    "party_entry"
+   ],
+   "rx": "300"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "VAR-40",
+  "feature": "Party/cash variants",
+  "style": "Slang",
+  "text": "bhai ali ka kaam tamam 200 aaye hain",
+  "session": "312",
+  "intent": "party_entry",
+  "reply": "✅ Ali se Rs 200 liye (5 Oct)\nAli se lene hain: Rs 107,600\n⚠️ Cash: -Rs 101,600",
+  "cls": {
+   "intent": "party_entry",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "party_type": null,
+    "direction": "got",
+    "amount": 200,
+    "date": null,
+    "note": "kaam tamam",
+    "paid_via": "cash",
+    "bank_name": null,
+    "question": false
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {
+   "txn": 1
+  },
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "UNSAFE",
+  "why": "UNSAFE write {'txn': 1}"
+ }
+]

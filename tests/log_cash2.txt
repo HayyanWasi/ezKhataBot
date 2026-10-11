@@ -1,0 +1,97 @@
+D:\Hayyan\Projects\ezKhataBot\tests\qa_battery.py:456: SyntaxWarning: invalid escape sequence '\.'
+  T(s, "ACC-04", F, "Decimal", "Ali ko 500.50 diye", i=["party_entry"], rx="500\.5")
+[CSH-01] PASS    'rickshaw 300' -> cash_entry pend=choose_category d={}
+      "rickshaw" kis category mein daalun?
+      1) Rickshaw (nayi)
+      Ya naya naam likhein.
+[CSH-01b] PASS    '1' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 300 gaye · Rickshaw (5 Oct)
+      💵 Cash: Rs 700
+[CSH-02] PASS    '300 chai' -> cash_entry pend=choose_category d={}
+      "chai" kis category mein daalun?
+      1) Chai (nayi)
+      2) Rickshaw
+      Ya naya naam likhein.
+[CSH-02b] PASS    '1' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 300 gaye · Chai (5 Oct)
+      💵 Cash: Rs 400
+[CSH-03] PASS    'bijli ka bill 3500 bhara' -> cash_entry pend=choose_category d={}
+      "bijli" kis category mein daalun?
+      1) Bijli (nayi)
+      2) Chai
+      3) Rickshaw
+      Ya naya naam likhein.
+[CSH-03b] PASS    '1' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 3,500 gaye · Bijli (5 Oct)
+      ⚠️ Cash: -Rs 3,100
+[CSH-04] PASS    'kiraya 15k diya' -> cash_entry pend=choose_category d={}
+      "kiraya" kis category mein daalun?
+      1) Kiraya (nayi)
+      2) Bijli
+      3) Chai
+      4) Rickshaw
+      Ya naya naam likhein.
+[CSH-04b] PASS    '1' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 15,000 gaye · Kiraya (5 Oct)
+      ⚠️ Cash: -Rs 18,100
+[CSH-05] PASS    'ek hazar nashta ka kharcha' -> cash_entry pend=cash_amount d={}
+      Kitne paise?
+[CSH-11] PASS    'salary 20000 di' -> cash_entry pend=choose_category d={}
+      "salary" kis category mein daalun?
+      1) Salary (nayi)
+      2) Bijli
+      3) Chai
+      4) Kiraya
+      5) Rickshaw
+      Ya naya naam likhein.
+[CSH-11b] PASS    '1' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 20,000 gaye · Salary (5 Oct)
+      ⚠️ Cash: -Rs 38,100
+[COR-20] PASS    'chai wali 300 entry 350 thi' -> edit_entry pend=confirm_edit d={}
+      Chai wali entry (5 Oct): Rs 300 → Rs 350. Theek hai? haan/nahi
+[COR-20b] FAIL    'haan' -> edit_entry pend=None d={}
+      ✏️ Entry theek ho gayi
+      ⚠️ Cash: -Rs 38,150
+[DUP-01] PASS    'rickshaw 100' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 100 gaye · Rickshaw (5 Oct)
+      ⚠️ Cash: -Rs 38,250
+[DUP-02] PASS    'rickshaw 100' -> cash_entry pend=None d={'txn': 1}
+      ✅ Rs 100 gaye · Rickshaw (5 Oct)
+      ⚠️ Cash: -Rs 38,350
+[RPT-17] PASS    'kal ki sale dikhao aur aj ka expense bhi batao' -> bill_report pend=None d={}
+      🧾 *Bills* · 4 Oct
+      Kul sale: *Rs 0* (0 bills: Rs 0)
+      Is dauran koi bill nahi.
+[RPT-18] PASS    'bro aaj ki sale kitni hui' -> bill_report pend=None d={}
+      🧾 *Bills* · 5 Oct
+      Kul sale: *Rs 0* (0 bills: Rs 0)
+      Is dauran koi bill nahi.
+[RPT-21] PASS    'boss kal ka profit?' -> profit_report pend=None d={}
+      4 Oct ko koi bikri nahi hui.
+[RPT-23] PASS    'kal kitna kharcha hua' -> money_report pend=None d={}
+      📒 Cash · 4 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 0
+      Gaye: Rs 0
+      Baqi: Rs 0
+[RPT-24] PASS    '15 sep ka hisab' -> money_report pend=None d={}
+      📒 Cash · 15 Sep
+      Shuru mein: Rs 0
+      Aaye: Rs 0
+      Gaye: Rs 0
+      Baqi: Rs 0
+[RPT-25] FAIL    'parso ki sale' -> profit_report pend=None d={}
+      5 Oct ko koi bikri nahi hui.
+      Kharche: Rs 39,350
+[RPT-26] PASS    'pichle hafte ka kharcha' -> money_report pend=None d={}
+      📒 Cash · 28 Sep – 4 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 0
+      Gaye: Rs 0
+      Baqi: Rs 0
+[RPT-27] PASS    'september ke kharche' -> money_report pend=None d={}
+      📒 Cash · 1 Sep – 30 Sep
+      Shuru mein: Rs 0
+      Aaye: Rs 0
+      Gaye: Rs 0
+      Baqi: Rs 0

@@ -1,0 +1,58 @@
+[STK-01] PASS    'socks kitne hain' -> stock_report pend=None d={}
+      *Socks*
+      📦 Stock: 50 pcs · Sale Rs 30 · Khareed Rs 20
+      💰 Value: Rs 1,000
+      
+      5 Oct · Shuru ka stock +50
+[STK-02] PASS    'stock dikhao' -> stock_report pend=None d={}
+      📦 *Stock* (2 items)
+      1) Charger — 20 pcs
+      2) Socks — 50 pcs
+[STK-03] PASS    'maal kam kon sa hai' -> stock_report pend=None d={}
+      Koi item kam nahi 👍 (Alert aise lagayein: "socks ka alert 10 pe lagao")
+[STK-04] PASS    '30 socks aaye bilal se udhaar' -> stock_in pend=None d={'txn': 1}
+      ✅ Stock aa gaya (5 Oct)
+      📦 Socks: +30 → 80 pcs
+      💰 Kul: Rs 600
+      Bilal ko dene hain: Rs 600
+[STK-05] PASS    '5 socks kharab ho gaye' -> stock_out pend=None d={'txn': 1}
+      ✅ Stock kam kar diya (5 Oct)
+      📦 Socks: -5 → 75 pcs
+[STK-06] FAIL    'socks ka rate 35 kr do' -> edit_item pend=confirm_edit_item d={}
+      *Socks* mein yeh badlun?
+      Sale rate: Rs 30 → Rs 35
+      (haan/nahi)
+[STK-07] PASS    'charger delete kr do' -> delete_item pend=confirm_delete_item d={}
+      Item *Charger* delete karun? (stock 20 pcs) (haan/nahi)
+[STK-07b] PASS    'nahi' -> delete_item pend=None d={}
+      Theek hai, entry nahi hati.
+[BIL-01] FAIL    '2 socks bech diye' -> create_bill pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[BIL-02] FAIL    'counter sale 3 charger' -> create_bill pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[BIL-03] FAIL    '2 charger 3000 ke sell kiye aur 500 delivery wale ko diye' -> create_bill pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[BIL-04] PASS    'Ali ko 2 socks udhaar diye' -> create_bill pend=bill_new_customer d={}
+      *Ali* naya customer hai. Add karun? (haan/nahi)
+[BIL-05] PASS    '1000 charger bech diye' -> create_bill pend=None d={}
+      ❌ *Charger* sirf 20 pcs hain. Kuch save nahi hua.
+[BIL-06] PASS    '5 laptop bech diye' -> create_bill pend=None d={}
+      *laptop* naam ka koi item stock mein nahi. Items dekhne ke liye "stock dikhao" likhein.
+[BIL-07] FAIL    'bill 1 cancel kr do' -> cancel_bill pend=None d={}
+      Bill #1 nahi mila.
+[BIL-07b] PASS    'chor do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[BIL-08] PASS    'aj ki sale' -> bill_report pend=None d={}
+      🧾 *Bills* · 5 Oct
+      Kul sale: *Rs 0* (0 bills: Rs 0)
+      Is dauran koi bill nahi.
+[BIL-09] PASS    'munafa kitna hua aaj' -> profit_report pend=None d={}
+      5 Oct ko koi bikri nahi hui.
+[BIL-10] PASS    '20 charger aye' -> stock_in pend=stock_pay d={}
+      20 pcs Charger: paise kaise diye?
+      1) Udhaar
+      2) Cash
+      3) Online (bank)
+      4) Sirf stock, paison ka hisaab nahi
+[BIL-11] PASS    'sir 3 socks aur 1 charger ka bill bana do cash' -> create_bill pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)

@@ -1,0 +1,42 @@
+[
+  {
+    "input": "chai 200",
+    "intent": "cash_entry",
+    "processing_status": "processed",
+    "error": null,
+    "reply": "Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)",
+    "delivery_status": "sent"
+  },
+  {
+    "input": "0",
+    "intent": "cash_entry",
+    "processing_status": "processed",
+    "error": null,
+    "reply": "\"chai\" kis category mein daalun?\n1) Chai (nayi)\nYa naya naam likhein.",
+    "delivery_status": "sent"
+  },
+  {
+    "input": "1",
+    "intent": "cash_entry",
+    "processing_status": "processed",
+    "error": null,
+    "reply": "✅ Rs 200 gaye · Chai (5 Oct)\n⚠️ Cash: -Rs 200",
+    "delivery_status": "sent"
+  },
+  {
+    "input": "aaj ka cash dikhao",
+    "intent": "unknown",
+    "processing_status": "processed",
+    "error": null,
+    "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+    "delivery_status": "sent"
+  },
+  {
+    "input": "aaj ka hisaab",
+    "intent": "money_report",
+    "processing_status": "processed",
+    "error": null,
+    "reply": "📒 Cash · 5 Oct\nShuru mein: Rs 0\nAaye: Rs 0\nGaye: Rs 200\nBaqi: -Rs 200\n\nKharche:\n• Chai: Rs 200",
+    "delivery_status": "sent"
+  }
+]

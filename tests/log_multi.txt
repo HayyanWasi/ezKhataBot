@@ -1,0 +1,125 @@
+D:\Hayyan\Projects\ezKhataBot\tests\qa_battery.py:458: SyntaxWarning: invalid escape sequence '\.'
+  T(s, "ACC-04", F, "Decimal", "Ali ko 500.50 diye", i=["party_entry"], rx="500\.5")
+[MUL-01] PASS    '2 charger 3000 ke sell kiye aur 500 delivery wale ko diye' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[MUL-01v] PASS    'aaj kya kya hua' -> recent_entries pend=None d={}
+      🕘 *Haaliya entries*
+      • 5 Oct · Delivery · Rs 1
+      • 5 Oct · Bill #2 · Walk-in · Rs 3,000 (Charger 2)
+      • 5 Oct · Bill #1 · Walk-in · Rs 60 (Socks 2)
+      • 5 Oct · Chai · Rs 10
+      • 5 Oct · Shuru ka stock (Charger) · 20 pcs
+[MUL-02] PASS    'Ahmed ko customer add karo aur uske account mein 2500 udhar likhdo' -> add_party pend=None d={'txn': 1, 'accounts': 1}
+      ✅ Ahmed customer add ho gaya
+      Ahmed se lene hain: Rs 2,500
+[MUL-02v] PASS    'ahmed ka khata' -> party_balance pend=None d={}
+      *Ahmed (customer)*
+      Ahmed se lene hain: Rs 2,500
+      
+      5 Oct · pehle ka Rs 2,500 → lene Rs 2,500
+[MUL-03] PASS    '5000 sale add karo aur 1000 expense bhi daldo' -> read_image pend=confirm_image d={}
+      📝 2 entries mili:
+      Cash book:
+      1) 5 Oct · Counter sale · Rs 5,000
+      ❓ 2) 5 Oct · Kharcha · expense · Rs 1,000 · kaunsi category? (baad mein poochunga)
+      Save karun? haan/nahi
+[MUL-03v] FAIL    'aj ka hisab' -> money_report pend=None d={}
+      📒 Cash · 5 Oct
+      Shuru mein: Rs 0
+      Aaye: Rs 9,060
+      Gaye: Rs 1,011
+      Baqi: Rs 8,049
+      
+      Kharche:
+      • Expense: Rs 1,000
+      • Chai: Rs 10
+      • Delivery: Rs 1
+[MUL-04] PASS    'Ali ko 100 diye aur Ahmed se 200 liye' -> read_image pend=confirm_image d={}
+      📝 2 entries mili:
+      Party khata:
+      1) 5 Oct · Ali ko Rs 100 diye
+      2) 5 Oct · Ahmed se Rs 200 liye
+      Save karun? haan/nahi
+[MUL-04v] PASS    'sab udhar dikhao' -> list_parties pend=None d={}
+      Kul lene hain: Rs 2,400
+      Kul dene hain: Rs 0
+      
+      1) Ahmed — lene Rs 2,300
+      2) Ali — lene Rs 100
+[MUL-05] PASS    'chai 50 aur rickshaw 100 aur nashta 150' -> read_image pend=confirm_image d={}
+      📝 3 entries mili:
+      Cash book:
+      1) 5 Oct · Kharcha · Chai · Rs 50
+      ❓ 2) 5 Oct · Kharcha · rickshaw · Rs 100 · kaunsi category? (baad mein poochunga)
+      ❓ 3) 5 Oct · Kharcha · nashta · Rs 150 · kaunsi category? (baad mein poochunga)
+      Save karun? haan/nahi
+[MUL-05v] PASS    'aj kya kya hua' -> recent_entries pend=None d={}
+      🕘 *Haaliya entries*
+      • 5 Oct · Chai · Rs 50
+      • 5 Oct · Ali · diye Rs 100
+      • 5 Oct · Ahmed · liye Rs 200
+      • 5 Oct · Expense · Rs 1,000
+      • 5 Oct · Sale · Rs 5,000
+[MUL-06] PASS    'Ali ko 500 diye aur uska number 03331239876 save kr lo' -> party_entry pend=None d={'txn': 1}
+      ✅ Ali ko Rs 500 diye (5 Oct)
+      Ali se lene hain: Rs 600
+      💵 Cash: Rs 7,499
+[MUL-06v] PASS    'ali ka khata' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331239876
+      Ali se lene hain: Rs 600
+      
+      5 Oct · diye Rs 500 → lene Rs 600
+      5 Oct · diye Rs 100 → lene Rs 100
+[MUL-07] PASS    '50 socks aye bilal se cash aur 5 kharab nikle' -> stock_in pend=None d={'txn': 2}
+      ✅ Stock aa gaya (5 Oct)
+      📦 Socks: +50 → 98 pcs
+      💰 Kul: Rs 1,000
+      💵 Cash: Rs 6,499
+[MUL-07v] PASS    'socks kitne hain' -> stock_report pend=None d={}
+      *Socks*
+      📦 Stock: 93 pcs · Sale Rs 30 · Khareed Rs 20
+      💰 Value: Rs 1,860
+      
+      5 Oct · Stock kam -5
+      5 Oct · Khareeda +50
+      5 Oct · Bill se bika -2
+      5 Oct · Shuru ka stock +50
+[MUL-08] PASS    'ali ka khata dikhao aur ahmed ka bhi' -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331239876
+      Ali se lene hain: Rs 600
+      
+      5 Oct · diye Rs 500 → lene Rs 600
+      5 Oct · diye Rs 100 → lene Rs 100
+invalid fields for set_party_phone: 1 validation error for SetPartyPhoneFields
+phone
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.13/v/string_type
+[MUL-09] PASS    'Ali ka number update karo aur uski salary bhi 35k kar do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[MUL-10] PASS    '10k aya 3k supplier ko diya baki cash me rakhdo' -> read_image pend=confirm_image d={}
+      📝 2 entries mili:
+      Cash book:
+      1) 5 Oct · Cash jama · Rs 10,000
+      Party khata:
+      2) 5 Oct · supplier ko Rs 3,000 diye (naya)
+      Save karun? haan/nahi
+[MUL-10v] PASS    'aj kya kya hua' -> recent_entries pend=None d={}
+      🕘 *Haaliya entries*
+      • 5 Oct · Cash in · Rs 10,000
+      • 5 Oct · Supplier · diye Rs 3,000
+      • 5 Oct · Stock out (Socks) · 5 pcs
+      • 5 Oct · Khareed (Socks) · Rs 1,000
+      • 5 Oct · Ali · diye Rs 500
+[MUL-11] PASS    'socks ka rate 35 kar do aur charger ka 1600' -> edit_item pend=confirm_edit_item d={}
+      *Socks* mein yeh badlun?
+      Sale rate: Rs 30 → Rs 35
+      (haan/nahi)
+[MUL-11v] FAIL    'rate list dikhao' -> stock_report pend=None d={}
+      🏷️ *Rate list*
+      1) Charger — sale Rs 1,500 · khareed Rs 1,000
+      2) Socks — sale Rs 35 · khareed Rs 20
+[MUL-12] PASS    'Ali ko 300 diye aur kal yaad dila dena paise lene hain' -> set_reminder pend=None d={'reminders': 1}
+      ⏰ 6 Oct, 10:00 AM aur 06:00 PM yaad dilaunga: paise lene hain
+[MUL-12v] PASS    'reminders dikhao' -> list_reminders pend=None d={}
+      Aapki reminders:
+      1) 6 Oct, 10:00 AM — paise lene hain

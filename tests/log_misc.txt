@@ -1,0 +1,56 @@
+[REM-01] PASS    'Ali se paise lene hain kal yaad dila dena' -> set_reminder pend=None d={'reminders': 1}
+      ⏰ 6 Oct, 10:00 AM aur 06:00 PM yaad dilaunga: Ali se paise lene hain
+[REM-02] PASS    'kal 5 baje bijli ka bill yaad krwana' -> set_reminder pend=None d={'reminders': 1}
+      ⏰ 6 Oct, 05:00 AM yaad dilaunga: bijli ka bill
+[REM-03] PASS    'reminders dikhao' -> list_reminders pend=None d={}
+      Aapki reminders:
+      1) 6 Oct, 05:00 AM — bijli ka bill
+      2) 6 Oct, 10:00 AM — Ali se paise lene hain
+[REM-04] PASS    'reminder hata do' -> cancel_reminder pend=choose_reminder d={}
+      Kaun si reminder?
+      1) 6 Oct, 05:00 AM — bijli ka bill
+      2) 6 Oct, 10:00 AM — Ali se paise lene hain
+[STM-01] PASS    'ali ka statement bhej' -> statement pend=None d={}
+      📄 Ali ka statement (poora khata)
+      Ali se lene hain: Rs 500
+[STM-02] PASS    'ali ka pdf' -> statement pend=None d={}
+      📄 Ali ka statement (poora khata)
+      Ali se lene hain: Rs 500
+[STM-03] PASS    'sab ka hisab pdf me do' -> statement pend=None d={}
+      📄 Sab parties ka statement (poora khata)
+      Kul lene hain: Rs 500
+      Kul dene hain: Rs 0
+[MEM-01] PASS    'mera naam Hayyan hai yaad rakhna' -> remember_user_fact pend=None d={}
+      ✅ Yaad rakh liya.
+[MEM-02] PASS    'kya yaad hai tmhe' -> list_memories pend=None d={}
+      Mujhe yeh yaad hai:
+      1) mera naam Hayyan hai
+[LNG-01] PASS    'ab se english me baat karo' -> set_language pend=None d={}
+      ✅ OK, I'll reply in English.
+[LNG-02] PASS    'roman urdu me jawab do' -> set_language pend=None d={}
+      ✅ Theek hai, ab Roman Urdu mein jawab dunga.
+[CAN-01] PASS    'customer add krna hai' -> add_party pend=entry_party d={}
+      Naam kya hai?
+[CAN-02] UNSAFE  'Zubair' -> add_party pend=None d={'accounts': 1}
+      ✅ Zubair customer add ho gaya
+[CAN-03] FAIL    '0333 7654321' -> set_party_phone pend=None d={}
+      ✅ Zubair ka number save ho gaya
+[CAN-04] FAIL    'Ali ko 100 diye' -> party_entry pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[CAN-05] PASS    'rehne do' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[CAN-06] PASS    'change krdo' -> unknown pend=None d={}
+      Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.
+[ENG-01] PASS    "show me ali's balance" -> party_balance pend=None d={}
+      *Ali (customer)* · 📞 923331234567
+      Ali se lene hain: Rs 500
+      
+      5 Oct · diye Rs 500 → lene Rs 500
+[ENG-02] PASS    'ali ko 500 pay kardo' -> party_entry pend=opening_cash d={}
+      Pehle bata dein, abhi dukaan mein kitna cash hai? (pata nahi to 0 ya skip likhein)
+[ENG-03] PASS    'bhai last week ka total expenses send krdo' -> money_report pend=None d={}
+      Abhi cash book mein koi entry nahi. Likhein: "chai 200" ya "3000 aaye"
+[ENG-04] PASS    'kal ke bills show kro' -> bill_report pend=None d={}
+      🧾 *Bills* · 4 Oct
+      Kul sale: *Rs 0* (0 bills: Rs 0)
+      Is dauran koi bill nahi.

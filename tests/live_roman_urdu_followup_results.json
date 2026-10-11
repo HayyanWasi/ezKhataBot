@@ -1,0 +1,146 @@
+{
+  "user_id": "a201797b-03a6-4947-a9d5-86eed01ad6b7",
+  "shop_id": "4ea24386-67e4-41cb-af4f-ef700260d34a",
+  "results": [
+    {
+      "input": "Ali ko employee add karo 999000000000002",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "*Ali* (999000000000002) ko *EzKhata Roman Urdu Audit Shop* mein employee add karun? haan/nahi",
+      "delivery_status": "sent",
+      "pending_kind": "confirm_add_employee",
+      "delivered_replies": [
+        "*Ali* (999000000000002) ko *EzKhata Roman Urdu Audit Shop* mein employee add karun? haan/nahi"
+      ],
+      "index": 1
+    },
+    {
+      "input": "haan ji",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "✅ *Ali* (999000000000002) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "✅ *Ali* (999000000000002) employee ban gaye. Woh isi number se bot ko message kar sakte hain."
+      ],
+      "index": 2
+    },
+    {
+      "input": "employees dikhao",
+      "result": "processed",
+      "intent": "list_employees",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "👥 *Employees* (1)\n1) Ali · 999000000000002",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "👥 *Employees* (1)\n1) Ali · 999000000000002"
+      ],
+      "index": 3
+    },
+    {
+      "input": "Ali ko employee add karo 999000000000002",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "*Ali* pehle se yahan employee hain.",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "*Ali* pehle se yahan employee hain."
+      ],
+      "index": 4
+    },
+    {
+      "input": "Ali ko employee se hatao",
+      "result": "processed",
+      "intent": "remove_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "*Ali* ko *EzKhata Roman Urdu Audit Shop* se hata dun? Woh is dukaan ke liye bot use nahi kar sakenge. haan/nahi",
+      "delivery_status": "sent",
+      "pending_kind": "confirm_remove_employee",
+      "delivered_replies": [
+        "*Ali* ko *EzKhata Roman Urdu Audit Shop* se hata dun? Woh is dukaan ke liye bot use nahi kar sakenge. haan/nahi"
+      ],
+      "index": 5
+    },
+    {
+      "input": "nahi",
+      "result": "processed",
+      "intent": "remove_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Theek hai, cancel kar diya.",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Theek hai, cancel kar diya."
+      ],
+      "index": 6
+    },
+    {
+      "input": "employees dikhao",
+      "result": "processed",
+      "intent": "list_employees",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "👥 *Employees* (1)\n1) Ali · 999000000000002",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "👥 *Employees* (1)\n1) Ali · 999000000000002"
+      ],
+      "index": 7
+    },
+    {
+      "input": "employee add karo Sana and number",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\""
+      ],
+      "index": 8
+    },
+    {
+      "input": "999000000000003",
+      "result": "processed",
+      "intent": "add_employee",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\""
+      ],
+      "index": 9
+    },
+    {
+      "input": "employees dikhao",
+      "result": "processed",
+      "intent": "list_employees",
+      "processing_status": "processed",
+      "error": null,
+      "reply": "👥 *Employees* (1)\n1) Ali · 999000000000002",
+      "delivery_status": "sent",
+      "pending_kind": null,
+      "delivered_replies": [
+        "👥 *Employees* (1)\n1) Ali · 999000000000002"
+      ],
+      "index": 10
+    }
+  ]
+}

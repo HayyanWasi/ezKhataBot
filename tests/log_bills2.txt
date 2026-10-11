@@ -1,0 +1,52 @@
+D:\Hayyan\Projects\ezKhataBot\tests\qa_battery.py:458: SyntaxWarning: invalid escape sequence '\.'
+  T(s, "ACC-04", F, "Decimal", "Ali ko 500.50 diye", i=["party_entry"], rx="500\.5")
+[BIL-01] FAIL    '3 socks bech diye' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-02] FAIL    'counter sale 1 charger' -> create_bill pend=shop_details d={}
+      For your bills (asked once): write the shop's address and phone number. Or "skip".
+[BIL-03] FAIL    '2 charger 3000 ke sell kiye aur 500 delivery wale ko diye' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-04] FAIL    'Ali ko 2 socks udhaar diye' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-07] PASS    'bill 1 cancel kr do' -> cancel_bill pend=confirm_cancel_bill d={}
+      Bill #1 (Walk-in, Rs 60) cancel karun? Stock, cash aur khata wapas ho jaenge. (haan/nahi)
+[BIL-07b] PASS    'chor do' -> cancel_bill pend=None d={}
+      Theek hai, entry nahi hati.
+[BIL-08] PASS    'aj ki sale' -> bill_report pend=None d={}
+      🧾 *Bills* · 5 Oct
+      Kul sale: *Rs 60* (1 bills: Rs 60)
+      #1 · 5 Oct · Walk-in · Rs 60
+[BIL-09] PASS    'munafa kitna hua aaj' -> profit_report pend=None d={}
+      📈 *Faida* · 5 Oct
+      Bikri (items): Rs 60
+      Maal ki laagat: −Rs 40
+      *Faida: Rs 20*
+[BIL-10] PASS    'aj kitna bana' -> profit_report pend=None d={}
+      📈 *Faida* · 5 Oct
+      Bikri (items): Rs 60
+      Maal ki laagat: −Rs 40
+      *Faida: Rs 20*
+[BIL-11] FAIL    'sir 3 socks aur 1 charger ka bill bana do cash' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-13] FAIL    '2 socks 60 me bech de' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-15] PASS    '10 charger ka bill 10% discount ke sath' -> create_bill pend=shop_details d={}
+      Bill ke liye (sirf ek dafa): dukaan ka address aur phone number likhein. Ya "skip" likhein.
+[BIL-16] PASS    'ali ko 5 socks de diye 150 ke' -> create_bill pend=bill_pay d={}
+      Bill Rs 750: paise kaise mile?
+      1) Cash
+      2) Online (bank)
+      3) Udhaar
+[BIL-17] PASS    'bill 2 dikhao' -> bill_report pend=None d={}
+      Bill #2 nahi mila.
+[BIL-18] PASS    'aaj ke bills' -> bill_report pend=None d={}
+      🧾 *Bills* · 5 Oct
+      Kul sale: *Rs 60* (1 bills: Rs 60)
+      #1 · 5 Oct · Walk-in · Rs 60
+[BIL-19] PASS    'socks kitne bache' -> stock_report pend=None d={}
+      *Socks*
+      📦 Stock: 48 pcs · Sale Rs 30 · Khareed Rs 20
+      💰 Value: Rs 960
+      
+      5 Oct · Bill se bika -2
+      5 Oct · Shuru ka stock +50

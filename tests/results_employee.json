@@ -1,0 +1,1251 @@
+[
+ {
+  "id": "EMP-01",
+  "feature": "Employee",
+  "style": "Normal",
+  "text": "employee add karo Ali 03331000001",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Ali* (0333-1000001) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Ali",
+    "phone": "03331000001"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000001"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-01c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Ali* (0333-1000001) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-02",
+  "feature": "Employee",
+  "style": "English order",
+  "text": "add employee Asif 03331000002",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Asif* (0333-1000002) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Asif",
+    "phone": "03331000002"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000002"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-02c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Asif* (0333-1000002) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-03",
+  "feature": "Employee",
+  "style": "Name first",
+  "text": "Danish ko add kardo number 03331000004",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Danish* (0333-1000004) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Danish",
+    "phone": "03331000004"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000004"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-03c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Danish* (0333-1000004) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-04",
+  "feature": "Employee",
+  "style": "Pronoun ref",
+  "text": "Farhan add krdo iska number ye hai 03331000005",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Farhan* (0333-1000005) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Farhan",
+    "phone": "03331000005"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000005"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-04c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Farhan* (0333-1000005) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-05",
+  "feature": "Employee",
+  "style": "Compressed",
+  "text": "kamran 03331000006 add",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Kamran* (0333-1000006) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "kamran",
+    "phone": "03331000006"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000006"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-05c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Kamran* (0333-1000006) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-06",
+  "feature": "Employee",
+  "style": "Karachi casual",
+  "text": "bhai sajid ko employee mein daldo 03331000007",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Sajid* (0333-1000007) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "sajid",
+    "phone": "03331000007"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000007"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-06c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Sajid* (0333-1000007) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-07",
+  "feature": "Employee",
+  "style": "Rough",
+  "text": "oye imran ko add kr iska number 03331000008",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Imran* (0333-1000008) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "imran",
+    "phone": "03331000008"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000008"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-07c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Imran* (0333-1000008) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-08",
+  "feature": "Employee",
+  "style": "Compressed",
+  "text": "employee tariq 03331000009",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Tariq* (0333-1000009) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "tariq",
+    "phone": "03331000009"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000009"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-08c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Tariq* (0333-1000009) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-09",
+  "feature": "Employee",
+  "style": "Compressed",
+  "text": "zubair dal 03331000012",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Zubair* (0333-1000012) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Zubair",
+    "phone": "03331000012"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000012"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-09c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Zubair* (0333-1000012) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-10",
+  "feature": "Employee",
+  "style": "Spaced phone",
+  "text": "Hamza ko staff add karo 0333 1000013",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Hamza* (0333-1000013) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Hamza",
+    "phone": "0333 1000013"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000013"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-10c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Hamza* (0333-1000013) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-11",
+  "feature": "Employee",
+  "style": "+92 format",
+  "text": "naveed ko employee rakh lo +92 333 1000014",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Naveed* (0333-1000014) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "naveed",
+    "phone": "+92 333 1000014"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none",
+   "rx": "1000014"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-11c",
+  "feature": "Employee",
+  "style": "Confirmation",
+  "text": "haan",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Naveed* (0333-1000014) employee ban gaye. Woh isi number se bot ko message kar sakte hain.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-12",
+  "feature": "Employee",
+  "style": "Missing detail",
+  "text": "usman ko staff me dal",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "usman",
+    "phone": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "w": "none",
+   "p": true
+  },
+  "verdict": "FAIL",
+  "why": "expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "EMP-13",
+  "feature": "Employee",
+  "style": "Follow-up bare number",
+  "text": "03331000015",
+  "session": "302",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "03331000015"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "rx": "Usman|usman",
+   "p": true
+  },
+  "verdict": "FAIL",
+  "why": "intent 'unknown' not in ['add_employee']; expected the bot to ask a follow-up question (pending), none; reply missing /Usman|usman/"
+ },
+ {
+  "id": "EMP-14",
+  "feature": "Employee",
+  "style": "Missing detail",
+  "text": "waqas staff add kr",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "waqas",
+    "phone": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "w": "none",
+   "p": true
+  },
+  "verdict": "FAIL",
+  "why": "expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "EMP-15",
+  "feature": "Employee",
+  "style": "Follow-up name only",
+  "text": "employee add krdo",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": null,
+    "phone": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "w": "none",
+   "p": true
+  },
+  "verdict": "FAIL",
+  "why": "expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "EMP-16",
+  "feature": "Employee",
+  "style": "Follow-up name",
+  "text": "Rizwan",
+  "session": "302",
+  "intent": "unknown",
+  "reply": "Sorry, I didn't understand. Send /help to see what I can do.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "rx": "number|Number",
+   "nx": "samajh nahi aaya|Write the employee"
+  },
+  "verdict": "FAIL",
+  "why": "reply missing /number|Number/"
+ },
+ {
+  "id": "EMP-17",
+  "feature": "Employee",
+  "style": "Follow-up phone",
+  "text": "03331000016",
+  "session": "302",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "pending_answer",
+   "language": "roman_ur",
+   "answers_pending": true,
+   "fields": {
+    "answer": "03331000016"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "some",
+   "p": true
+  },
+  "verdict": "FAIL",
+  "why": "expected a record to be saved/changed, none was; expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "EMP-18",
+  "feature": "Employee",
+  "style": "Multi-action",
+  "text": "Rizwan ko employee add karo 03331000017 aur uski salary 30000 rakhdo",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Rizwan* (0333-1000017) ko *QA Employee Shop* mein employee add karun? haan/nahi",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Rizwan",
+    "phone": "03331000017"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee",
+    "many_entries"
+   ],
+   "rx": "30000|30,000|salary|tankhwah"
+  },
+  "verdict": "FAIL",
+  "why": "reply missing /30000|30,000|salary|tankhwah/"
+ },
+ {
+  "id": "EMP-19",
+  "feature": "Employee",
+  "style": "Multi-action update",
+  "text": "Ali ka number update karo aur uski salary bhi 35k kar do",
+  "session": "302",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "set_party_phone",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "party_name": "Ali",
+    "phone": null
+   },
+   "then": [
+    {
+     "intent": "edit_entry",
+     "fields": {
+      "party_name": null,
+      "item": null,
+      "amount": null,
+      "new_amount": null,
+      "new_date": null,
+      "new_note": "salary 35k",
+      "new_qty": null
+     }
+    }
+   ]
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "rx": "35|salary|number"
+  },
+  "verdict": "FAIL",
+  "why": "reply missing /35|salary|number/"
+ },
+ {
+  "id": "EMP-20",
+  "feature": "Employee",
+  "style": "List formal",
+  "text": "employees dikhao",
+  "session": "302",
+  "intent": "list_employees",
+  "reply": "👥 *Employees* (11)\n1) Ali · 0333-1000001\n2) Asif · 0333-1000002\n3) Danish · 0333-1000004\n4) Farhan · 0333-1000005\n5) Hamza · 0333-1000013\n6) Imran · 0333-1000008\n7) Kamran · 0333-1000006\n8) Naveed · 0333-1000014\n9) Sajid · 0333-1000007\n10) Tariq · 0333-1000009\n11) Zubair · 0333-1000012",
+  "cls": {
+   "intent": "list_employees",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "list_employees"
+   ],
+   "w": "none",
+   "rx": "Ali"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-21",
+  "feature": "Employee",
+  "style": "List compressed",
+  "text": "staff list bta",
+  "session": "302",
+  "intent": "list_employees",
+  "reply": "👥 *Employees* (11)\n1) Ali · 0333-1000001\n2) Asif · 0333-1000002\n3) Danish · 0333-1000004\n4) Farhan · 0333-1000005\n5) Hamza · 0333-1000013\n6) Imran · 0333-1000008\n7) Kamran · 0333-1000006\n8) Naveed · 0333-1000014\n9) Sajid · 0333-1000007\n10) Tariq · 0333-1000009\n11) Zubair · 0333-1000012",
+  "cls": {
+   "intent": "list_employees",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "list_employees"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-22",
+  "feature": "Employee",
+  "style": "List casual",
+  "text": "mere paas kitne banday kaam kr rhe hain",
+  "session": "302",
+  "intent": "list_employees",
+  "reply": "👥 *Employees* (11)\n1) Ali · 0333-1000001\n2) Asif · 0333-1000002\n3) Danish · 0333-1000004\n4) Farhan · 0333-1000005\n5) Hamza · 0333-1000013\n6) Imran · 0333-1000008\n7) Kamran · 0333-1000006\n8) Naveed · 0333-1000014\n9) Sajid · 0333-1000007\n10) Tariq · 0333-1000009\n11) Zubair · 0333-1000012",
+  "cls": {
+   "intent": "list_employees",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "list_employees"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-23",
+  "feature": "Employee",
+  "style": "List slang",
+  "text": "emp kon kon hain",
+  "session": "302",
+  "intent": "list_employees",
+  "reply": "👥 *Employees* (11)\n1) Ali · 0333-1000001\n2) Asif · 0333-1000002\n3) Danish · 0333-1000004\n4) Farhan · 0333-1000005\n5) Hamza · 0333-1000013\n6) Imran · 0333-1000008\n7) Kamran · 0333-1000006\n8) Naveed · 0333-1000014\n9) Sajid · 0333-1000007\n10) Tariq · 0333-1000009\n11) Zubair · 0333-1000012",
+  "cls": {
+   "intent": "list_employees",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "i": [
+    "list_employees"
+   ],
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-24",
+  "feature": "Employee",
+  "style": "Duplicate",
+  "text": "employee add karo Ali 03331000001",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "*Ali* pehle se yahan employee hain.",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Ali",
+    "phone": "03331000001"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "nx": "add ho gaya|add kar diya"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-25",
+  "feature": "Employee",
+  "style": "Remove casual",
+  "text": "asif ko hata do bhai",
+  "session": "302",
+  "intent": "remove_employee",
+  "reply": "*Asif* ko *QA Employee Shop* se hata dun? Woh is dukaan ke liye bot use nahi kar sakenge. haan/nahi",
+  "cls": {
+   "intent": "remove_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Asif",
+    "phone": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_remove_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "remove_employee"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-25b",
+  "feature": "Employee",
+  "style": "Cancel with nai",
+  "text": "nai",
+  "session": "302",
+  "intent": "remove_employee",
+  "reply": "Theek hai, cancel kar diya.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_remove_employee",
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-26",
+  "feature": "Employee",
+  "style": "Remove ambiguous pronoun",
+  "text": "usko nikal do",
+  "session": "302",
+  "intent": "remove_employee",
+  "reply": "*Asif* ko *QA Employee Shop* se hata dun? Woh is dukaan ke liye bot use nahi kar sakenge. haan/nahi",
+  "cls": {
+   "intent": "remove_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "Asif",
+    "phone": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_remove_employee",
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-27",
+  "feature": "Employee",
+  "style": "Remove unknown name",
+  "text": "farzana ko employee se hata do",
+  "session": "302",
+  "intent": "remove_employee",
+  "reply": "farzana naam ka koi employee nahi. List ke liye \"employees dikhao\" likhein.",
+  "cls": {
+   "intent": "remove_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": "farzana",
+    "phone": null
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-28",
+  "feature": "Employee",
+  "style": "Add no name",
+  "text": "03331000020 add kr employee me",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "Employee ka naam aur WhatsApp number likhein, jaise: \"Bilal ko employee add karo 03001234567\"",
+  "cls": {
+   "intent": "add_employee",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {
+    "name": null,
+    "phone": "03331000020"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none",
+   "p": true
+  },
+  "verdict": "FAIL",
+  "why": "expected the bot to ask a follow-up question (pending), none"
+ },
+ {
+  "id": "EMP-29",
+  "feature": "Employee",
+  "style": "Mixed English",
+  "text": "please add Sarmad as staff member his no is 03331000021",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "Add *Sarmad* (0333-1000021) as an employee of *QA Employee Shop*? yes/no",
+  "cls": {
+   "intent": "add_employee",
+   "language": "en",
+   "answers_pending": false,
+   "fields": {
+    "name": "Sarmad",
+    "phone": "03331000021"
+   },
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": "confirm_add_employee",
+  "delta": {},
+  "exp": {
+   "i": [
+    "add_employee"
+   ],
+   "p": true,
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-29b",
+  "feature": "Employee",
+  "style": "Confirm ji",
+  "text": "ji",
+  "session": "302",
+  "intent": "add_employee",
+  "reply": "✅ *Sarmad* (0333-1000021) is now an employee. They can message the bot from that number.",
+  "cls": null,
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": "confirm_add_employee",
+  "pend_after": null,
+  "delta": {
+   "emps": 1
+  },
+  "exp": {
+   "w": "some"
+  },
+  "verdict": "PASS",
+  "why": ""
+ },
+ {
+  "id": "EMP-30",
+  "feature": "Employee",
+  "style": "Confirm word w/o pending",
+  "text": "haan",
+  "session": "302",
+  "intent": "unknown",
+  "reply": "Maaf kijiye, samajh nahi aaya. /help bhej kar dekhein main kya kar sakta hoon.",
+  "cls": {
+   "intent": "unknown",
+   "language": "roman_ur",
+   "answers_pending": false,
+   "fields": {},
+   "then": []
+  },
+  "ai_error": null,
+  "retries": 0,
+  "pend_before": null,
+  "pend_after": null,
+  "delta": {},
+  "exp": {
+   "w": "none"
+  },
+  "verdict": "PASS",
+  "why": ""
+ }
+]
